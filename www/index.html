@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dodge the Blocks - Hypercasual</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: #111827;
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .game-wrapper {
+            background: #020617;
+            border-radius: 16px;
+            padding: 16px 20px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 420px;
+            max-width: 100%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f9fafb;
+        }
+
+        .score {
+            font-size: 0.95rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #0f172a;
+            border: 1px solid #1f2937;
+        }
+
+        .score span {
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .game-area {
+            position: relative;
+            margin-top: 6px;
+            width: 100%;
+            max-width: 380px;
+            height: 540px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: radial-gradient(circle at top, #1f2937 0, #020617 60%);
+            border: 2px solid #1f2937;
+            margin-inline: auto;
+        }
+
+        .lane {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(148,163,184,0.15);
+            left: 33.33%;
+        }
+        .lane:nth-child(2) {
+            left: 66.66%;
+        }
+
+        .player {
+            position: absolute;
+            bottom: 20px;
+            width: 60px;
+            height: 60px;
+            background: #3b82f6;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(59,130,246,0.7);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .obstacle {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #ef4444;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(248,113,113,0.9);
+        }
+
+        .hud {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #022c22;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.08s ease, box-shadow 0.08s ease, opacity 0.15s;
+            box-shadow: 0 4px 10px rgba(16,185,129,0.4);
+            white-space: nowrap;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(16,185,129,0.7);
+        }
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(16,185,129,0.4);
+            opacity: 0.9;
+        }
+
+        .instructions {
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+
+        .highlight {
+            color: #e5e7eb;
+            font-weight: 600;
+        }
+
+        .game-over-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15,23,42,0.92);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+            padding: 0 20px;
+            color: #e5e7eb;
+        }
+
+        .game-over-overlay h2 {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .game-over-overlay p {
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+
+        .best-score {
+            font-size: 0.85rem;
+            margin-top: 2px;
+            color: #a5b4fc;
+        }
+
+        @media (max-width: 480px) {
+            .game-wrapper {
+                width: 100%;
+                border-radius: 0;
+                min-height: 100vh;
+                box-shadow: none;
+            }
+            body {
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="game-wrapper">
+    <div class="header">
+        <div class="title">Dodge the Blocks - by JORGE KARIM </div>
+        <div class="score">Score: <span id="score">0</span></div>
+    </div>
+
+    <div class="game-area" id="gameArea">
+        <!-- linee di “corsia” -->
+        <div class="lane"></div>
+        <div class="lane"></div>
+
+        <!-- player -->
+        <div class="player" id="player"></div>
+
+        <!-- overlay game over (creato da JS) -->
+    </div>
+
+    <div class="hud">
+        <button class="btn" id="startBtn">▶ Start / Restart</button>
+        <div class="instructions">
+            <span class="highlight">← →</span> oppure <span class="highlight">A / D</span> per muoverti.
+            Evita i blocchi rossi!
+        </div>
+    </div>
+</div>
+
+<script>
+    // Elementi base
+    const gameArea = document.getElementById("gameArea");
+    const playerEl = document.getElementById("player");
+    const scoreEl = document.getElementById("score");
+    const startBtn = document.getElementById("startBtn");
+
+    // Stato di gioco
+    let playerX = 0;
+    let playerSpeed = 8;
+    let obstacles = [];
+    let lastTimestamp = 0;
+    let isRunning = false;
+    let score = 0;
+    let bestScore = 0;
+    let obstacleSpawnTimer = 0;
+    let obstacleSpawnInterval = 900; // ms
+    let baseFallSpeed = 150; // px per secondo, aumenterà nel tempo
+    let keys = { left: false, right: false };
+
+    function resetGame() {
+        // Riposiziona il player al centro
+        const areaWidth = gameArea.clientWidth;
+        playerX = areaWidth / 2 - playerEl.offsetWidth / 2;
+        playerEl.style.left = playerX + "px";
+
+        // Rimuovi tutti gli ostacoli
+        obstacles.forEach(o => o.el.remove());
+        obstacles = [];
+
+        score = 0;
+        scoreEl.textContent = "0";
+        obstacleSpawnTimer = 0;
+        baseFallSpeed = 150;
+        lastTimestamp = performance.now();
+    }
+
+    function spawnObstacle() {
+        const obstacleEl = document.createElement("div");
+        obstacleEl.classList.add("obstacle");
+
+        const areaWidth = gameArea.clientWidth;
+        const maxX = areaWidth - 60;
+        const x = Math.random() * maxX;
+
+        obstacleEl.style.left = x + "px";
+        obstacleEl.style.top = "-70px";
+
+        gameArea.appendChild(obstacleEl);
+
+        obstacles.push({
+            el: obstacleEl,
+            x,
+            y: -70,
+        });
+    }
+
+    function updatePlayer() {
+        const areaWidth = gameArea.clientWidth;
+        if (keys.left) {
+            playerX -= playerSpeed;
+        }
+        if (keys.right) {
+            playerX += playerSpeed;
+        }
+        // limiti
+        const minX = 0;
+        const maxX = areaWidth - playerEl.offsetWidth;
+        if (playerX < minX) playerX = minX;
+        if (playerX > maxX) playerX = maxX;
+
+        playerEl.style.left = playerX + "px";
+    }
+
+    function checkCollision(rect1, rect2) {
+        return !(
+            rect1.right < rect2.left ||
+            rect1.left > rect2.right ||
+            rect1.bottom < rect2.top ||
+            rect1.top > rect2.bottom
+        );
+    }
+
+    function endGame() {
+        isRunning = false;
+        if (score > bestScore) {
+            bestScore = score;
+        }
+        showGameOverOverlay();
+    }
+
+    function showGameOverOverlay() {
+        // Rimuovi eventuale overlay precedente
+        const oldOverlay = gameArea.querySelector(".game-over-overlay");
+        if (oldOverlay) oldOverlay.remove();
+
+        const overlay = document.createElement("div");
+        overlay.classList.add("game-over-overlay");
+
+        overlay.innerHTML = `
+        <h2>Game Over</h2>
+        <div>Score: <strong>${score}</strong></div>
+        <div class="best-score">Best: ${bestScore}</div>
+        <p>Premi <strong>Start / Restart</strong> per riprovare.</p>
+      `;
+
+        gameArea.appendChild(overlay);
+    }
+
+    function hideGameOverOverlay() {
+        const overlay = gameArea.querySelector(".game-over-overlay");
+        if (overlay) overlay.remove();
+    }
+
+    function gameLoop(timestamp) {
+        if (!isRunning) return;
+
+        const delta = timestamp - lastTimestamp;
+        lastTimestamp = timestamp;
+
+        // Aggiorna player
+        updatePlayer();
+
+        // Aggiorna ostacoli
+        const fallSpeed = baseFallSpeed + score * 0.5; // velocità aumenta col punteggio
+        const deltaY = (fallSpeed * delta) / 1000;
+
+        obstacles.forEach(o => {
+            o.y += deltaY;
+            o.el.style.top = o.y + "px";
+        });
+
+        // Rimuovi ostacoli fuori dallo schermo
+        obstacles = obstacles.filter(o => {
+            if (o.y > gameArea.clientHeight + 100) {
+                o.el.remove();
+                return false;
+            }
+            return true;
+        });
+
+        // Collisioni
+        const playerRect = playerEl.getBoundingClientRect();
+
+        for (const o of obstacles) {
+            const obstacleRect = o.el.getBoundingClientRect();
+            if (checkCollision(playerRect, obstacleRect)) {
+                endGame();
+                return;
+            }
+        }
+
+        // Aggiorna spawn ostacoli
+        obstacleSpawnTimer += delta;
+        if (obstacleSpawnTimer >= obstacleSpawnInterval) {
+            obstacleSpawnTimer = 0;
+            spawnObstacle();
+        }
+
+        // Aggiorna punteggio
+        score += delta * 0.01; // 100 punti circa ogni 10 secondi
+        scoreEl.textContent = Math.floor(score);
+
+        // Richiama il prossimo frame
+        requestAnimationFrame(gameLoop);
+    }
+
+    // Gestione input tastiera
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
+            keys.left = true;
+        }
+        if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
+            keys.right = true;
+        }
+    });
+
+    window.addEventListener("keyup", (e) => {
+        if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
+            keys.left = false;
+        }
+        if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
+            keys.right = false;
+        }
+    });
+
+    // Start / Restart
+    startBtn.addEventListener("click", () => {
+        hideGameOverOverlay();
+        resetGame();
+        isRunning = true;
+        lastTimestamp = performance.now();
+        requestAnimationFrame(gameLoop);
+    });
+
+    // Posizionamento iniziale player
+    window.addEventListener("load", () => {
+        const areaWidth = gameArea.clientWidth;
+        playerX = areaWidth / 2 - playerEl.offsetWidth / 2;
+        playerEl.style.left = playerX + "px";
+        showGameOverOverlay();
+    });
+</script>
+</body>
+</html>
