@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8" />
-    <title>Dodge the Blocks - Hypercasual</title>
+    <title>Uccello volante</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         * {
@@ -67,7 +67,7 @@
             background: radial-gradient(circle at top, #1f2937 0, #020617 60%);
             border: 2px solid #1f2937;
             margin-inline: auto;
-            touch-action: none; /* blocca lo scroll durante il gioco */
+            touch-action: none; /* niente scroll, perfetto per drag su mobile */
         }
 
         .lane {
@@ -92,6 +92,12 @@
             box-shadow: 0 0 12px rgba(59,130,246,0.7);
             left: 50%;
             transform: translateX(-50%);
+            cursor: grab; /* su web fa capire che è trascinabile */
+            touch-action: none;
+        }
+
+        .player:active {
+            cursor: grabbing;
         }
 
         .obstacle {
@@ -101,23 +107,6 @@
             background: #ef4444;
             border-radius: 12px;
             box-shadow: 0 0 10px rgba(248,113,113,0.9);
-        }
-
-        /* Zone touch trasparenti sopra il gioco */
-        .touch-zone {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 50%;
-            z-index: 10;
-            /* per il debug puoi mettere: background: rgba(255,255,255,0.02); */
-            background: transparent;
-        }
-        .touch-left {
-            left: 0;
-        }
-        .touch-right {
-            right: 0;
         }
 
         .hud {
@@ -208,7 +197,7 @@
 <body>
 <div class="game-wrapper">
     <div class="header">
-        <div class="title">Uccello Volante by Jorge e karim</div>
+        <div class="title">Uccello volante</div>
         <div class="score">Score: <span id="score">0</span></div>
     </div>
 
@@ -219,16 +208,12 @@
 
         <!-- player -->
         <div class="player" id="player"></div>
-
-        <!-- zone touch -->
-        <div class="touch-zone touch-left" id="touchLeft"></div>
-        <div class="touch-zone touch-right" id="touchRight"></div>
     </div>
 
     <div class="hud">
         <button class="btn" id="startBtn">▶ Start / Restart</button>
         <div class="instructions">
-            <span class="highlight">← →</span> / <span class="highlight">A / D</span> o tap sinistra/destra.
+            Trascina il <span class="highlight">player</span> con il dito o il mouse.
         </div>
     </div>
 </div>
@@ -238,11 +223,9 @@
     const playerEl = document.getElementById("player");
     const scoreEl = document.getElementById("score");
     const startBtn = document.getElementById("startBtn");
-    const touchLeft = document.getElementById("touchLeft");
-    const touchRight = document.getElementById("touchRight");
 
     let playerX = 0;
-    let playerSpeed = 8;
+    let playerSpeed = 8; // ancora usato per tastiera se vuoi tenerla
     let obstacles = [];
     let lastTimestamp = 0;
     let isRunning = false;
@@ -252,6 +235,9 @@
     let obstacleSpawnInterval = 900;
     let baseFallSpeed = 150;
     let keys = { left: false, right: false };
+
+    // drag stato
+    let isDragging = false;
 
     function resetGame() {
         const areaWidth = gameArea.clientWidth;
@@ -315,6 +301,7 @@
 
     function endGame() {
         isRunning = false;
+        isDragging = false;
         if (score > bestScore) {
             bestScore = score;
         }
@@ -349,6 +336,7 @@
         const delta = timestamp - lastTimestamp;
         lastTimestamp = timestamp;
 
+        // aggiorna player (tastiera o drag)
         updatePlayer();
 
         const fallSpeed = baseFallSpeed + score * 0.5;
@@ -389,7 +377,44 @@
         requestAnimationFrame(gameLoop);
     }
 
-    // Tastiera
+    // --- DRAG con pointer events (funziona per mouse e touch) ---
+
+    function movePlayerToPointer(e) {
+        const rect = gameArea.getBoundingClientRect();
+        const pointerX = e.clientX - rect.left; // posizione relativa al gameArea
+        let newX = pointerX - playerEl.offsetWidth / 2;
+
+        const minX = 0;
+        const maxX = rect.width - playerEl.offsetWidth;
+        if (newX < minX) newX = minX;
+        if (newX > maxX) newX = maxX;
+
+        playerX = newX;
+        playerEl.style.left = playerX + "px";
+    }
+
+    function onPointerDown(e) {
+        e.preventDefault();
+        isDragging = true;
+        movePlayerToPointer(e);
+    }
+
+    function onPointerMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        movePlayerToPointer(e);
+    }
+
+    function onPointerUp(e) {
+        isDragging = false;
+    }
+
+    gameArea.addEventListener("pointerdown", onPointerDown, { passive: false });
+    window.addEventListener("pointermove", onPointerMove, { passive: false });
+    window.addEventListener("pointerup", onPointerUp, { passive: false });
+    window.addEventListener("pointercancel", onPointerUp, { passive: false });
+
+    // --- Tastiera (resta attiva su desktop se vuoi) ---
     window.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
             keys.left = true;
@@ -407,35 +432,6 @@
             keys.right = false;
         }
     });
-
-    // Touch: metà sinistra/destra dello schermo
-    function setupTouchZone(zone, side) {
-        const start = (ev) => {
-            ev.preventDefault();
-            if (side === "left") {
-                keys.left = true;
-                keys.right = false;
-            } else {
-                keys.right = true;
-                keys.left = false;
-            }
-        };
-        const end = (ev) => {
-            ev.preventDefault();
-            if (side === "left") {
-                keys.left = false;
-            } else {
-                keys.right = false;
-            }
-        };
-
-        zone.addEventListener("touchstart", start, { passive: false });
-        zone.addEventListener("touchend", end, { passive: false });
-        zone.addEventListener("touchcancel", end, { passive: false });
-    }
-
-    setupTouchZone(touchLeft, "left");
-    setupTouchZone(touchRight, "right");
 
     // Start / Restart
     startBtn.addEventListener("click", () => {
