@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Dodge the Blocks - Hypercasual</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         * {
             box-sizing: border-box;
@@ -66,6 +67,7 @@
             background: radial-gradient(circle at top, #1f2937 0, #020617 60%);
             border: 2px solid #1f2937;
             margin-inline: auto;
+            touch-action: none; /* blocca lo scroll durante il gioco */
         }
 
         .lane {
@@ -99,6 +101,23 @@
             background: #ef4444;
             border-radius: 12px;
             box-shadow: 0 0 10px rgba(248,113,113,0.9);
+        }
+
+        /* Zone touch trasparenti sopra il gioco */
+        .touch-zone {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            z-index: 10;
+            /* per il debug puoi mettere: background: rgba(255,255,255,0.02); */
+            background: transparent;
+        }
+        .touch-left {
+            left: 0;
+        }
+        .touch-right {
+            right: 0;
         }
 
         .hud {
@@ -154,6 +173,7 @@
             text-align: center;
             padding: 0 20px;
             color: #e5e7eb;
+            z-index: 20;
         }
 
         .game-over-overlay h2 {
@@ -188,7 +208,7 @@
 <body>
 <div class="game-wrapper">
     <div class="header">
-        <div class="title">Dodge the Blocks - by JORGE KARIM </div>
+        <div class="title">Uccello Volante by Jorge e karim</div>
         <div class="score">Score: <span id="score">0</span></div>
     </div>
 
@@ -200,26 +220,27 @@
         <!-- player -->
         <div class="player" id="player"></div>
 
-        <!-- overlay game over (creato da JS) -->
+        <!-- zone touch -->
+        <div class="touch-zone touch-left" id="touchLeft"></div>
+        <div class="touch-zone touch-right" id="touchRight"></div>
     </div>
 
     <div class="hud">
         <button class="btn" id="startBtn">▶ Start / Restart</button>
         <div class="instructions">
-            <span class="highlight">← →</span> oppure <span class="highlight">A / D</span> per muoverti.
-            Evita i blocchi rossi!
+            <span class="highlight">← →</span> / <span class="highlight">A / D</span> o tap sinistra/destra.
         </div>
     </div>
 </div>
 
 <script>
-    // Elementi base
     const gameArea = document.getElementById("gameArea");
     const playerEl = document.getElementById("player");
     const scoreEl = document.getElementById("score");
     const startBtn = document.getElementById("startBtn");
+    const touchLeft = document.getElementById("touchLeft");
+    const touchRight = document.getElementById("touchRight");
 
-    // Stato di gioco
     let playerX = 0;
     let playerSpeed = 8;
     let obstacles = [];
@@ -228,17 +249,15 @@
     let score = 0;
     let bestScore = 0;
     let obstacleSpawnTimer = 0;
-    let obstacleSpawnInterval = 900; // ms
-    let baseFallSpeed = 150; // px per secondo, aumenterà nel tempo
+    let obstacleSpawnInterval = 900;
+    let baseFallSpeed = 150;
     let keys = { left: false, right: false };
 
     function resetGame() {
-        // Riposiziona il player al centro
         const areaWidth = gameArea.clientWidth;
         playerX = areaWidth / 2 - playerEl.offsetWidth / 2;
         playerEl.style.left = playerX + "px";
 
-        // Rimuovi tutti gli ostacoli
         obstacles.forEach(o => o.el.remove());
         obstacles = [];
 
@@ -277,7 +296,6 @@
         if (keys.right) {
             playerX += playerSpeed;
         }
-        // limiti
         const minX = 0;
         const maxX = areaWidth - playerEl.offsetWidth;
         if (playerX < minX) playerX = minX;
@@ -304,7 +322,6 @@
     }
 
     function showGameOverOverlay() {
-        // Rimuovi eventuale overlay precedente
         const oldOverlay = gameArea.querySelector(".game-over-overlay");
         if (oldOverlay) oldOverlay.remove();
 
@@ -313,8 +330,8 @@
 
         overlay.innerHTML = `
         <h2>Game Over</h2>
-        <div>Score: <strong>${score}</strong></div>
-        <div class="best-score">Best: ${bestScore}</div>
+        <div>Score: <strong>${Math.floor(score)}</strong></div>
+        <div class="best-score">Best: ${Math.floor(bestScore)}</div>
         <p>Premi <strong>Start / Restart</strong> per riprovare.</p>
       `;
 
@@ -332,11 +349,9 @@
         const delta = timestamp - lastTimestamp;
         lastTimestamp = timestamp;
 
-        // Aggiorna player
         updatePlayer();
 
-        // Aggiorna ostacoli
-        const fallSpeed = baseFallSpeed + score * 0.5; // velocità aumenta col punteggio
+        const fallSpeed = baseFallSpeed + score * 0.5;
         const deltaY = (fallSpeed * delta) / 1000;
 
         obstacles.forEach(o => {
@@ -344,7 +359,6 @@
             o.el.style.top = o.y + "px";
         });
 
-        // Rimuovi ostacoli fuori dallo schermo
         obstacles = obstacles.filter(o => {
             if (o.y > gameArea.clientHeight + 100) {
                 o.el.remove();
@@ -353,7 +367,6 @@
             return true;
         });
 
-        // Collisioni
         const playerRect = playerEl.getBoundingClientRect();
 
         for (const o of obstacles) {
@@ -364,22 +377,19 @@
             }
         }
 
-        // Aggiorna spawn ostacoli
         obstacleSpawnTimer += delta;
         if (obstacleSpawnTimer >= obstacleSpawnInterval) {
             obstacleSpawnTimer = 0;
             spawnObstacle();
         }
 
-        // Aggiorna punteggio
-        score += delta * 0.01; // 100 punti circa ogni 10 secondi
+        score += delta * 0.01;
         scoreEl.textContent = Math.floor(score);
 
-        // Richiama il prossimo frame
         requestAnimationFrame(gameLoop);
     }
 
-    // Gestione input tastiera
+    // Tastiera
     window.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
             keys.left = true;
@@ -398,6 +408,35 @@
         }
     });
 
+    // Touch: metà sinistra/destra dello schermo
+    function setupTouchZone(zone, side) {
+        const start = (ev) => {
+            ev.preventDefault();
+            if (side === "left") {
+                keys.left = true;
+                keys.right = false;
+            } else {
+                keys.right = true;
+                keys.left = false;
+            }
+        };
+        const end = (ev) => {
+            ev.preventDefault();
+            if (side === "left") {
+                keys.left = false;
+            } else {
+                keys.right = false;
+            }
+        };
+
+        zone.addEventListener("touchstart", start, { passive: false });
+        zone.addEventListener("touchend", end, { passive: false });
+        zone.addEventListener("touchcancel", end, { passive: false });
+    }
+
+    setupTouchZone(touchLeft, "left");
+    setupTouchZone(touchRight, "right");
+
     // Start / Restart
     startBtn.addEventListener("click", () => {
         hideGameOverOverlay();
@@ -407,7 +446,6 @@
         requestAnimationFrame(gameLoop);
     });
 
-    // Posizionamento iniziale player
     window.addEventListener("load", () => {
         const areaWidth = gameArea.clientWidth;
         playerX = areaWidth / 2 - playerEl.offsetWidth / 2;
