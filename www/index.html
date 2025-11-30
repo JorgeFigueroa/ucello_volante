@@ -67,7 +67,7 @@
             background: radial-gradient(circle at top, #1f2937 0, #020617 60%);
             border: 2px solid #1f2937;
             margin-inline: auto;
-            touch-action: none; /* niente scroll, perfetto per drag su mobile */
+            touch-action: none; /* niente scroll durante drag su mobile */
         }
 
         .lane {
@@ -84,15 +84,15 @@
 
         .player {
             position: absolute;
-            bottom: 20px;
             width: 60px;
             height: 60px;
             background: #3b82f6;
             border-radius: 12px;
             box-shadow: 0 0 12px rgba(59,130,246,0.7);
             left: 50%;
+            top: 400px; /* posizione iniziale approssimativa, verrà settata da JS */
             transform: translateX(-50%);
-            cursor: grab; /* su web fa capire che è trascinabile */
+            cursor: grab;
             touch-action: none;
         }
 
@@ -202,7 +202,7 @@
     </div>
 
     <div class="game-area" id="gameArea">
-        <!-- linee di “corsia” -->
+        <!-- linee decorative -->
         <div class="lane"></div>
         <div class="lane"></div>
 
@@ -213,7 +213,7 @@
     <div class="hud">
         <button class="btn" id="startBtn">▶ Start / Restart</button>
         <div class="instructions">
-            Trascina il <span class="highlight">player</span> con il dito o il mouse.
+            Trascina il <span class="highlight">player</span> con dito o mouse (su, giù, sinistra, destra).
         </div>
     </div>
 </div>
@@ -225,7 +225,8 @@
     const startBtn = document.getElementById("startBtn");
 
     let playerX = 0;
-    let playerSpeed = 8; // ancora usato per tastiera se vuoi tenerla
+    let playerY = 0;
+    let playerSpeed = 8; // ancora usato per tastiera se vuoi
     let obstacles = [];
     let lastTimestamp = 0;
     let isRunning = false;
@@ -234,15 +235,25 @@
     let obstacleSpawnTimer = 0;
     let obstacleSpawnInterval = 900;
     let baseFallSpeed = 150;
-    let keys = { left: false, right: false };
+    let keys = { left: false, right: false, up: false, down: false };
 
-    // drag stato
     let isDragging = false;
 
-    function resetGame() {
-        const areaWidth = gameArea.clientWidth;
+    function setInitialPlayerPosition() {
+        const areaRect = gameArea.getBoundingClientRect();
+        const areaWidth = areaRect.width;
+        const areaHeight = areaRect.height;
+
         playerX = areaWidth / 2 - playerEl.offsetWidth / 2;
+        // un po' sopra il fondo
+        playerY = areaHeight - playerEl.offsetHeight - 20;
+
         playerEl.style.left = playerX + "px";
+        playerEl.style.top = playerY + "px";
+    }
+
+    function resetGame() {
+        setInitialPlayerPosition();
 
         obstacles.forEach(o => o.el.remove());
         obstacles = [];
@@ -258,8 +269,8 @@
         const obstacleEl = document.createElement("div");
         obstacleEl.classList.add("obstacle");
 
-        const areaWidth = gameArea.clientWidth;
-        const maxX = areaWidth - 60;
+        const areaRect = gameArea.getBoundingClientRect();
+        const maxX = areaRect.width - 60;
         const x = Math.random() * maxX;
 
         obstacleEl.style.left = x + "px";
@@ -275,19 +286,32 @@
     }
 
     function updatePlayer() {
-        const areaWidth = gameArea.clientWidth;
+        const areaRect = gameArea.getBoundingClientRect();
+        const maxX = areaRect.width - playerEl.offsetWidth;
+        const maxY = areaRect.height - playerEl.offsetHeight;
+        const minX = 0;
+        const minY = 0;
+
         if (keys.left) {
             playerX -= playerSpeed;
         }
         if (keys.right) {
             playerX += playerSpeed;
         }
-        const minX = 0;
-        const maxX = areaWidth - playerEl.offsetWidth;
+        if (keys.up) {
+            playerY -= playerSpeed;
+        }
+        if (keys.down) {
+            playerY += playerSpeed;
+        }
+
         if (playerX < minX) playerX = minX;
         if (playerX > maxX) playerX = maxX;
+        if (playerY < minY) playerY = minY;
+        if (playerY > maxY) playerY = maxY;
 
         playerEl.style.left = playerX + "px";
+        playerEl.style.top = playerY + "px";
     }
 
     function checkCollision(rect1, rect2) {
@@ -336,7 +360,6 @@
         const delta = timestamp - lastTimestamp;
         lastTimestamp = timestamp;
 
-        // aggiorna player (tastiera o drag)
         updatePlayer();
 
         const fallSpeed = baseFallSpeed + score * 0.5;
@@ -377,20 +400,31 @@
         requestAnimationFrame(gameLoop);
     }
 
-    // --- DRAG con pointer events (funziona per mouse e touch) ---
+    // --- DRAG 2D con pointer events (mouse + touch) ---
 
     function movePlayerToPointer(e) {
         const rect = gameArea.getBoundingClientRect();
-        const pointerX = e.clientX - rect.left; // posizione relativa al gameArea
-        let newX = pointerX - playerEl.offsetWidth / 2;
+        const pointerX = e.clientX - rect.left;
+        const pointerY = e.clientY - rect.top;
 
-        const minX = 0;
         const maxX = rect.width - playerEl.offsetWidth;
+        const maxY = rect.height - playerEl.offsetHeight;
+        const minX = 0;
+        const minY = 0;
+
+        let newX = pointerX - playerEl.offsetWidth / 2;
+        let newY = pointerY - playerEl.offsetHeight / 2;
+
         if (newX < minX) newX = minX;
         if (newX > maxX) newX = maxX;
+        if (newY < minY) newY = minY;
+        if (newY > maxY) newY = maxY;
 
         playerX = newX;
+        playerY = newY;
+
         playerEl.style.left = playerX + "px";
+        playerEl.style.top = playerY + "px";
     }
 
     function onPointerDown(e) {
@@ -414,13 +448,19 @@
     window.addEventListener("pointerup", onPointerUp, { passive: false });
     window.addEventListener("pointercancel", onPointerUp, { passive: false });
 
-    // --- Tastiera (resta attiva su desktop se vuoi) ---
+    // --- tastiera opzionale ---
     window.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
             keys.left = true;
         }
         if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
             keys.right = true;
+        }
+        if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") {
+            keys.up = true;
+        }
+        if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") {
+            keys.down = true;
         }
     });
 
@@ -431,9 +471,14 @@
         if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
             keys.right = false;
         }
+        if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") {
+            keys.up = false;
+        }
+        if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") {
+            keys.down = false;
+        }
     });
 
-    // Start / Restart
     startBtn.addEventListener("click", () => {
         hideGameOverOverlay();
         resetGame();
@@ -443,9 +488,7 @@
     });
 
     window.addEventListener("load", () => {
-        const areaWidth = gameArea.clientWidth;
-        playerX = areaWidth / 2 - playerEl.offsetWidth / 2;
-        playerEl.style.left = playerX + "px";
+        setInitialPlayerPosition();
         showGameOverOverlay();
     });
 </script>

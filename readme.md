@@ -13,11 +13,12 @@ mkdir www
 # Installa la piattaforma Android di Capacitor
 npm install @capacitor/android
 
+# verificare versioni installate
+npm list @capacitor/android
+
 # npx cap add android
 npx cap add android
 
-# verificare versioni installate
-npm list @capacitor/android
 
 # Apri Android Studio - non funziona da errore no trova android varibile CAPACITOR_ANDROID_STUDIO_PATH
 npx cap open android
