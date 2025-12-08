@@ -8,7 +8,8 @@
     "add_android": "npx cap add android",
     "open_android": "npx cap open android",
     "sync_android": "npx cap sync android",
-    "copy_android": "npx cap copy android"
+    "copy_android": "npx cap copy android",
+    "git_commit_push": "git add . && git commit -m \"modifiche miglioramenti\" && git push origin master"
   },
   "keywords": [],
   "author": "",
