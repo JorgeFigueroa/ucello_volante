@@ -2,252 +2,168 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8" />
-    <title>Uccello di Fuoco - GIGANTE MODE</title>
+    <title>Uccello di Fuoco - VISIBLE BOMBS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        /* --- PALETTE DI COLORI --- */
+        /* --- PALETTE E COLORI (CONTRASTO MIGLIORATO) --- */
         :root {
-            --bg-main-start: #2a0a0a;
-            --bg-main-end: #5c1a0a;
-            --container-bg: rgba(50, 10, 5, 0.95);
-            --game-sky-top: #ff8c00;
-            --game-sky-bottom: #b33919;
-            --accent-gold: #ffd700;
-            --text-light: #fff7e6;
-            --lane-color: rgba(255, 215, 0, 0.2);
-            --ui-box-bg: rgba(40, 5, 5, 0.6);
-            --ui-border: #800000;
+            --bg-main-start: #1a0505; --bg-main-end: #3e1208;
+            --container-bg: rgba(30, 5, 2, 0.98);
+            /* Sfondo Scuro */
+            --sky-fire: linear-gradient(to bottom, #4a1e11 0%, #2a0a0a 80%, #000000 100%);
+            --sky-blue: linear-gradient(to bottom, #0288d1 0%, #01579b 80%, #000000 100%);
+            --sky-garden: linear-gradient(to bottom, #0097a7 0%, #006064 100%);
+
+            --accent-gold: #ffd700; --text-light: #ffffff;
+            --lane-color: rgba(255, 255, 255, 0.1);
+            --ui-box-bg: rgba(20, 2, 2, 0.8); --ui-border: #ff4500;
         }
 
         * {box-sizing: border-box;margin: 0;padding: 0;font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;}
 
         body {
             background: linear-gradient(135deg, var(--bg-main-start), var(--bg-main-end));
-            color: var(--text-light);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            color: var(--text-light); display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow: hidden; touch-action: none;
         }
 
         .game-wrapper {
-            background: var(--container-bg);
-            border-radius: 20px;
-            padding: 20px 24px 24px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(139, 0, 0, 0.2);
-            width: 440px;
-            max-width: 100%;
-            border: 1px solid rgba(139, 0, 0, 0.4);
+            background: var(--container-bg); border-radius: 20px; padding: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9), inset 0 0 30px rgba(255, 69, 0, 0.1);
+            width: 440px; max-width: 100%; height: 700px;
+            border: 2px solid var(--ui-border); display: flex; flex-direction: column;
         }
 
-        .header {display: flex;justify-content: space-between;align-items: center;margin-bottom: 12px;}
-        .title {font-size: 1.2rem;font-weight: 700;color: var(--accent-gold); text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
-
-        .header-right { display: flex; gap: 12px; align-items: center; }
+        .header {display: flex;justify-content: space-between;align-items: center;margin-bottom: 10px;}
+        .title {font-size: 1.2rem;font-weight: 800;color: var(--accent-gold); text-shadow: 0 2px 5px rgba(0,0,0,0.8);}
+        .header-right { display: flex; gap: 10px; align-items: center; }
 
         .score {
-            font-size: 1rem;
-            padding: 6px 14px;
-            border-radius: 999px;
-            background: var(--ui-box-bg);
-            border: 1px solid var(--ui-border);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            font-size: 1rem; padding: 8px 16px; border-radius: 999px;
+            background: var(--ui-box-bg); border: 2px solid var(--ui-border);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; gap: 10px;
         }
-        .score span {font-weight: 700;color: var(--accent-gold);}
+        .score span {font-weight: 800;color: var(--accent-gold); font-size: 1.1rem;}
+        .gen-counter { color: #39ff14; font-weight: 800; font-size: 0.9rem; }
 
-        .mute-btn { background: none; border: none; color: var(--accent-gold); opacity: 0.7; cursor: pointer; font-size: 1.3rem; transition: all 0.2s; }
+        .mute-btn { background: none; border: none; color: var(--accent-gold); opacity: 0.9; cursor: pointer; font-size: 1.5rem; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
 
         .game-area {
-            position: relative;
-            margin-top: 8px;
-            width: 100%;
-            max-width: 400px;
-            height: 560px;
-            border-radius: 16px;
-            overflow: hidden;
-            background: linear-gradient(to bottom, var(--game-sky-top) 0%, var(--game-sky-bottom) 80%, #1a0505 100%);
-            border: 3px solid #3e1208;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
-            margin-inline: auto;
-            touch-action: none;
+            position: relative; flex-grow: 1; width: 100%; border-radius: 16px; overflow: hidden;
+            background: var(--sky-fire); border: 3px solid var(--ui-border);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8); touch-action: none; cursor: grab;
+            transition: background 1.5s ease;
         }
+        .game-area:active { cursor: grabbing; }
 
-        .lane {position: absolute;top: 0;bottom: 0;width: 2px;background: var(--lane-color);left: 33.33%; box-shadow: 0 0 5px var(--lane-color);}
-        .lane:nth-child(2) {left: 66.66%;}
+        /* --- SCENA FINALE --- */
+        .scene-container { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; pointer-events: none; display: none; z-index: 8; }
+        .tree-trunk { position: absolute; bottom: 0; right: 20%; width: 60px; height: 400px; background: linear-gradient(to right, #3e2723, #5d4037); border-radius: 10px 10px 0 0; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+        .branch { position: absolute; bottom: 250px; right: 20%; width: 150px; height: 20px; background: #5d4037; transform: rotate(-10deg); border-radius: 10px; box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
+        .nest { position: absolute; bottom: 265px; right: 45%; width: 80px; height: 40px; background: #8d6e63; border-radius: 0 0 40px 40px; border: 4px solid #5d4037; z-index: 9; overflow: visible; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        .eggs-container { position: absolute; top: -15px; left: 15px; display: flex; gap: 2px; }
+        .egg { width: 15px; height: 20px; background: #fff8e1; border-radius: 50%; border: 1px solid #d7ccc8; box-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .leaf { position: absolute; background: rgba(46, 125, 50, 0.9); border-radius: 50%; box-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
 
-        /* --- PLAYER SPRITE (NORMALE = ORO) --- */
+        /* --- PLAYER --- */
         .player {
-            position: absolute;
-            width: 90px;
-            height: 90px;
+            position: absolute; width: 90px; height: 90px;
             background-image: url('bird-sprite-removebg-preview.png');
-            background-size: 200% 200%;
-            background-repeat: no-repeat;
-            background-position: 0% 0%;
-            background-color: transparent;
-            left: 50%;
-            top: 380px;
-            cursor: grab;
-            touch-action: none;
-            z-index: 10;
+            background-size: 200% 200%; background-repeat: no-repeat; background-position: 0% 0%;
+            background-color: transparent; left: 50%; top: 380px; z-index: 10;
             animation: fly-cycle 0.4s steps(1) infinite;
-            transition: transform 0.2s, filter 0.3s ease;
-
-            /* ORO DEBOLE */
-            filter: sepia(100%) saturate(1500%) hue-rotate(20deg) brightness(110%) drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            transition: transform 0.1s, filter 0.3s ease;
+            filter: sepia(100%) saturate(2000%) hue-rotate(20deg) brightness(120%) drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+            pointer-events: none;
         }
+        .player.super-mode { filter: sepia(100%) saturate(2500%) hue-rotate(-60deg) brightness(1.1) contrast(150%) drop-shadow(0 0 40px rgba(255, 0, 0, 1)) !important; }
+        .player.ultra-mode { filter: sepia(100%) saturate(800%) hue-rotate(70deg) brightness(1.5) contrast(130%) drop-shadow(0 0 60px rgba(50, 255, 50, 1)) !important; z-index: 12; }
+        .player.landing { animation: fly-cycle 0.2s steps(1) infinite; filter: none !important; transform: scale(0.6) !important; transition: left 2s, top 2s; }
+        .player.incubating { animation: happy-bounce 0.5s infinite alternate !important; filter: none !important; transform: scale(0.7) !important; transition: left 2s, top 2s; }
+        @keyframes happy-bounce { from { margin-top: 0; } to { margin-top: -10px; } }
 
-        /* --- MODALITÀ SANGUE (100 Punti) --- */
-        .player.super-mode {
-            /* ROSSO SANGUE SCURO */
-            filter: sepia(100%) saturate(2000%) hue-rotate(-60deg) brightness(0.9) contrast(150%) drop-shadow(0 0 30px rgba(255, 0, 0, 1)) !important;
+        .companion {
+            position: absolute; width: 60px; height: 60px;
+            background-image: url('bird-sprite-removebg-preview.png');
+            background-size: 200% 200%; background-repeat: no-repeat; background-position: 0% 0%;
+            z-index: 9; animation: fly-cycle 0.3s steps(1) infinite;
+            transition: transform 0.2s, filter 0.3s ease; display: none;
+            filter: sepia(100%) saturate(2000%) hue-rotate(20deg) brightness(120%) drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            pointer-events: none;
         }
+        .companion.ultra-mode { filter: sepia(100%) saturate(800%) hue-rotate(70deg) brightness(1.5) contrast(130%); }
 
-        /* --- NUOVA MODALITÀ: GIGANTE DI FUOCO (1000 Punti) --- */
-        .player.ultra-mode {
-            /* FUOCO E LAVA LUMINOSA */
-            /* saturate altissimo per colori vividi, hue-rotate verso l'arancio/rosso vivo, brightness altissima per sembrare lava */
-            filter: sepia(100%) saturate(3000%) hue-rotate(-20deg) brightness(1.5) contrast(120%) drop-shadow(0 0 50px rgba(255, 140, 0, 1)) !important;
-            /* Z-index più alto per stare sopra a tutto, anche alle esplosioni */
-            z-index: 12;
-        }
+        @keyframes fly-cycle { 0% { background-position: 0% 0%; } 33% { background-position: 0% 100%; } 66% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
+        .player.dead { animation-play-state: paused; filter: grayscale(100%) brightness(0.4) contrast(1.2) !important; }
 
-        @keyframes fly-cycle {
-            0% { background-position: 0% 0%; }
-            33% { background-position: 0% 100%; }
-            66% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
-        }
-
-        .player:active {cursor: grabbing;}
-        .player.dead {
-            animation-play-state: paused;
-            filter: grayscale(100%) brightness(0.6) !important;
-        }
-
-        /* --- TESCHIO --- */
+        /* --- TESCHI (Colori Neon) --- */
         .obstacle {
-            position: absolute;
-            width: 90px;
-            height: 100px;
+            position: absolute; width: 90px; height: 100px;
             background-image: url('fire-36.gif');
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            background-position: center;
-            mix-blend-mode: screen;
-            z-index: 5;
+            background-size: 100% 100%; background-repeat: no-repeat; background-position: center;
+            mix-blend-mode: screen; z-index: 5;
         }
+        /* Colori */
+        .obstacle.orange { filter: brightness(1.3) saturate(1.5); drop-shadow(0 0 10px orange); }
+        .obstacle.bordeaux { filter: hue-rotate(280deg) brightness(1.2) saturate(3); drop-shadow(0 0 15px purple); }
+        .obstacle.green { filter: hue-rotate(80deg) brightness(1.4) saturate(2.5); drop-shadow(0 0 15px lime); }
+        .obstacle.darkred { filter: sepia(1) saturate(6) hue-rotate(-20deg) brightness(0.9); drop-shadow(0 0 20px red); }
 
-        .obstacle.image-error {
-            background-image: none !important;
-            mix-blend-mode: normal;
-            background: radial-gradient(circle, #ffcc00, #ff4500);
-            border-radius: 50%;
-            border: 2px solid #fff;
-        }
-
-        /* ESPLOSIONE */
-        .explosion {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, #ff4500, #ffcc00, transparent);
-            border-radius: 50%;
-            animation: explode 0.4s forwards;
-            z-index: 15;
-            pointer-events: none;
-            mix-blend-mode: screen;
-        }
-        @keyframes explode {
-            0% { transform: scale(0.5); opacity: 1; }
-            100% { transform: scale(2.5); opacity: 0; }
-        }
-
-        /* --- MONETA --- */
-        .coin {
-            position: absolute;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #fffce0, #ffd700, #e6ac00);
-            border: 2px solid #b8860b;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        /* --- TESCHIO BOMBA (VISIBILE ORA) --- */
+        .obstacle.bomb {
+            /* Grigio metallico scuro, NON nero invisibile */
+            /* filter: grayscale(100%) brightness(0.7) contrast(1.3); */
+            /* Aggiunto bordo rosso luminoso tramite drop-shadow multiplo */
+            filter: grayscale(100%) brightness(0.7) contrast(1.5) drop-shadow(0 0 5px #ff0000) drop-shadow(0 0 15px #8b0000);
             z-index: 6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px;
-            font-weight: 800;
-            color: #7a4a00;
-            animation: spin 1s infinite alternate;
+            animation: bomb-pulse 0.4s infinite alternate;
         }
+
+        /* LA MICCIA */
+        .obstacle.bomb::before {
+            content: ''; position: absolute; top: -15px; left: 50%; width: 4px; height: 15px;
+            background: #8d6e63; transform: translateX(-50%) rotate(-10deg); border-radius: 2px; z-index: 7;
+            border: 1px solid #fff;
+        }
+
+        /* LA SCINTILLA */
+        .obstacle.bomb::after {
+            content: ''; position: absolute; top: -28px; left: 48%; width: 14px; height: 14px;
+            background: radial-gradient(circle, #ffffff, #ffff00, #ff0000); border-radius: 50%;
+            transform: translateX(-50%); z-index: 8; box-shadow: 0 0 20px #ffff00;
+            animation: fuse-burn 0.1s infinite alternate;
+        }
+
+        @keyframes bomb-pulse { from { transform: scale(1); } to { transform: scale(1.15); } }
+        @keyframes fuse-burn { 0% { transform: translateX(-50%) scale(1); opacity: 0.8; } 100% { transform: translateX(-50%) scale(1.8); opacity: 1; } }
+
+        .coin { position: absolute; width: 42px; height: 42px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffffff, #ffd700, #ff8c00); border: 3px solid #b8860b; box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); z-index: 6; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 900; color: #5c1a0a; animation: spin 1s infinite alternate; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
         .coin::after { content: '$'; }
-        @keyframes spin { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+        @keyframes spin { 0% { transform: scale(1); } 100% { transform: scale(1.2); } }
 
-        .score-pop {
-            position: absolute;
-            color: var(--accent-gold);
-            font-weight: 900;
-            font-size: 1.4rem;
-            animation: floatUp 0.8s forwards;
-            z-index: 20;
-            pointer-events: none;
-            text-shadow: 0 0 5px #000;
-        }
-        @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-40px); opacity: 0; } }
+        .explosion { position: absolute; width: 120px; height: 120px; background: radial-gradient(circle, #ff4500, #ffcc00, transparent); border-radius: 50%; animation: explode 0.4s forwards; z-index: 15; pointer-events: none; mix-blend-mode: screen; }
+        @keyframes explode { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+        .explosion.bomb-blast { background: radial-gradient(circle, #ff0000, #000000, transparent); mix-blend-mode: normal; }
 
-        /* TESTO POTERI */
-        .super-text {
-            position: absolute;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
-            font-weight: 900;
-            z-index: 30;
-            animation: pulse-text 0.2s infinite alternate;
-            pointer-events: none;
-            text-align: center;
-            width: 100%;
-            line-height: 1.1;
-            text-shadow: 2px 2px 4px #000;
-        }
-        .super-text.blood { color: #ff0000; text-shadow: 0 0 30px red; }
-        .super-text.fire { color: #ffcc00; font-size: 2.5rem; text-shadow: 0 0 40px orange, 0 0 10px white; }
+        .score-pop { position: absolute; color: var(--accent-gold); font-weight: 900; font-size: 1.6rem; animation: floatUp 0.8s forwards; z-index: 20; pointer-events: none; text-shadow: 0 0 8px #000, 0 0 4px var(--accent-gold); }
+        @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-50px); opacity: 0; } }
 
-        @keyframes pulse-text {
-            from { transform: translate(-50%, -50%) scale(1); }
-            to { transform: translate(-50%, -50%) scale(1.1); }
-        }
+        .super-text { position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); font-size: 2.2rem; font-weight: 900; z-index: 30; animation: pulse-text 0.2s infinite alternate; pointer-events: none; text-align: center; width: 100%; text-shadow: 3px 3px 6px #000; }
+        .super-text.blood { color: #ff0000; text-shadow: 0 0 40px red, 0 0 10px white; }
+        .super-text.green { color: #39ff14; font-size: 2.8rem; text-shadow: 0 0 50px #39ff14, 0 0 15px white; }
+        .super-text.ending { color: #ffffff; font-size: 2.2rem; text-shadow: 0 0 30px #00bfff; top: 50%; }
+        .super-text.danger { color: #ffffff; -webkit-text-stroke: 2px red; font-size: 3rem; text-shadow: 0 0 40px red; }
+        @keyframes pulse-text { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.1); } }
 
-        .hud {margin-top: 16px;display: flex;flex-direction: column; gap: 8px; align-items: center; font-size: 0.9rem; text-align: center;}
+        .hud {margin-top: 15px; display: flex;flex-direction: column; gap: 10px; align-items: center; font-size: 1rem; text-align: center;}
+        .btn { padding: 12px 24px; border-radius: 999px; border: none; background: linear-gradient(to right, #ff4500, #ffd700); color: #4a1e11; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 69, 0, 0.6); text-transform: uppercase; border: 2px solid #ffffff; }
+        .instructions {color: #ffffff; line-height: 1.5; font-weight: 600; text-shadow: 1px 1px 3px #000;}
+        .highlight-red {color: #ff4500; font-weight: 800; text-shadow: 0 0 10px red;}
+        .highlight-green {color: #39ff14; font-weight: 800; text-shadow: 0 0 10px #39ff14;}
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 999px;
-            border: none;
-            background: linear-gradient(to right, #ff4500, #ffcc00);
-            color: #4a1e11;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
-            text-transform: uppercase;
-        }
-        .btn:hover { transform: translateY(-2px); filter: brightness(1.2); }
-
-        .instructions {color: rgba(255, 247, 230, 0.8); line-height: 1.4; font-weight: 500;}
-        .highlight-red {color: #ff4500; font-weight: 700;}
-        .highlight-gold {color: #ffd700; font-weight: 700;}
-
-        /* --- GAME OVER --- */
-        .game-over-overlay {
-            position: absolute; inset: 0; background: rgba(20, 0, 0, 0.95);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            gap: 15px; text-align: center; color: #fff7e6; z-index: 20;
-        }
-        .game-over-overlay h2 { font-size: 2.5rem; color: #ff0000; text-transform: uppercase; text-shadow: 0 0 20px rgba(255,0,0,0.5); }
-        .best-score {font-size: 1rem; color: #ffd700; margin-top: 5px;}
+        .game-over-overlay { position: absolute; inset: 0; background: rgba(10, 0, 0, 0.98); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; text-align: center; color: #fff7e6; z-index: 50; }
+        .game-over-overlay h2 { font-size: 3rem; color: #ff0000; text-transform: uppercase; text-shadow: 0 0 30px rgba(255,0,0,0.8), 0 0 10px white; }
+        .best-score {font-size: 1.2rem; color: #ffd700; margin-top: 5px; font-weight: bold;}
     </style>
 </head>
 <body>
@@ -256,19 +172,34 @@
         <div class="title">Uccello di Fuoco</div>
         <div class="header-right">
             <button class="mute-btn" id="muteBtn">🔊</button>
-            <div class="score">Score: <span id="score">0</span></div>
+            <div class="score">
+                Score: <span id="score">0</span>
+                <div class="gen-counter">Gen: <span id="genCount">1</span></div>
+            </div>
         </div>
     </div>
     <div class="game-area" id="gameArea">
-        <div class="lane"></div>
-        <div class="lane"></div>
+        <div class="scene-container" id="sceneContainer">
+            <div class="tree-trunk"></div> <div class="branch"></div>
+            <div class="nest">
+                <div class="eggs-container" id="eggs">
+                    <div class="egg"></div><div class="egg"></div><div class="egg"></div>
+                </div>
+            </div>
+            <div class="leaf" style="bottom: 350px; right: 15%; width: 100px; height: 100px;"></div>
+            <div class="leaf" style="bottom: 380px; right: 25%; width: 80px; height: 80px;"></div>
+            <div class="leaf" style="bottom: 320px; right: 5%; width: 90px; height: 90px;"></div>
+        </div>
+        <div class="lane"></div> <div class="lane"></div>
         <div class="player" id="player"></div>
+        <div class="companion" id="companion1"></div>
+        <div class="companion" id="companion2"></div>
     </div>
     <div class="hud">
         <button class="btn" id="startBtn">▶ GIOCA ORA</button>
         <div class="instructions">
-            <span class="highlight-red">100 Punti:</span> Modalità Sangue (Distruggi).<br>
-            <span class="highlight-gold">1000 Punti:</span> GIGANTE DI FUOCO (Invincibile!).
+            <strong>Trascina</strong> l'uccello. Spacca i teschi col potere!<br>
+            <span style="color:red; font-weight:bold; text-shadow: 0 0 10px red;">ATTENZIONE:</span> Evita i teschi con la miccia!
         </div>
     </div>
 </div>
@@ -276,53 +207,40 @@
 <script>
     const gameArea = document.getElementById("gameArea");
     const playerEl = document.getElementById("player");
+    const companion1 = document.getElementById("companion1");
+    const companion2 = document.getElementById("companion2");
+    const sceneContainer = document.getElementById("sceneContainer");
+    const eggsContainer = document.getElementById("eggs");
     const scoreEl = document.getElementById("score");
+    const genCountEl = document.getElementById("genCount");
     const startBtn = document.getElementById("startBtn");
     const muteBtn = document.getElementById("muteBtn");
 
-
-
-    // --- CONFIGURAZIONE AUDIO (LINK FUNZIONANTI) ---
-
-    // Musica di sottofondo (Eric Skiff - Royalty Free da Archive.org)
+    // AUDIO ONLINE
     const bgMusic = new Audio('https://commondatastorage.googleapis.com/codeskulptor-assets/Epoq-Lepidoptera.ogg');
-    bgMusic.loop = true;
-    bgMusic.volume = 0.3;
-
-    // Suono esplosione (Google Storage - Educational Assets)
+    bgMusic.loop = true; bgMusic.volume = 0.3;
     const crashSound = new Audio('https://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/explosion.mp3');
     crashSound.volume = 0.5;
-
-    // Suono moneta (Google Storage - Educational Assets)
     const coinSound = new Audio('https://commondatastorage.googleapis.com/codeskulptor-assets/week7-brrring.m4a');
-    coinSound.volume = 0.6;
-
+    coinSound.volume = 1.0;
     const smashSound = new Audio('https://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/missile.mp3');
     smashSound.volume = 0.5;
-
-    // Suono extra per il Gigante (opzionale, usiamo lo stesso dell'esplosione ma più forte)
     const giantSmashSound = new Audio('https://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/explosion.mp3');
     giantSmashSound.volume = 0.8;
-    // --------------------------------------------------------
-
-
-
+    const winSound = new Audio('https://commondatastorage.googleapis.com/codeskulptor-assets/week7-bounce.m4a');
+    const whistleSound = new Audio('https://commondatastorage.googleapis.com/codeskulptor-assets/week7-brrring.m4a');
 
     let isMuted = false;
-
     function playMusic() { if(!isMuted) { bgMusic.currentTime = 0; bgMusic.play().catch(e=>{}); } }
     function stopMusic() { bgMusic.pause(); }
     function playCrash() { if(!isMuted) { crashSound.currentTime = 0; crashSound.play(); } }
-    function playCoin() { if(!isMuted) { const s = coinSound.cloneNode(); s.volume = 0.6; s.play(); } }
-    function playSmash(isGiant) { if(!isMuted) {
-        const s = isGiant ? giantSmashSound.cloneNode() : smashSound.cloneNode();
-        s.volume = isGiant ? 0.7 : 0.5;
-        s.play();
-    }}
+    function playCoin() { if(!isMuted) { const s = coinSound.cloneNode(); s.volume = 1.0; s.play(); } }
+    function playSmash(isGiant) { if(!isMuted) { const s = isGiant ? giantSmashSound.cloneNode() : smashSound.cloneNode(); s.volume = isGiant ? 0.7 : 0.5; s.play(); }}
+    function playWin() { if(!isMuted) { winSound.play(); } }
+    function playWhistle() { if(!isMuted) { const s = coinSound.cloneNode(); s.playbackRate = 1.5; s.play(); }}
 
     muteBtn.addEventListener("click", () => {
-        isMuted = !isMuted;
-        muteBtn.textContent = isMuted ? "🔇" : "🔊";
+        isMuted = !isMuted; muteBtn.textContent = isMuted ? "🔇" : "🔊";
         if(isMuted) bgMusic.pause(); else if(isRunning) bgMusic.play();
     });
 
@@ -330,29 +248,37 @@
     let obstacles = [], coins = [];
     let lastTimestamp = 0, isRunning = false;
     let score = 0, bestScore = 0;
+    let generation = 1;
 
-    // --- VARIABILI MODALITÀ ---
-    let isSuperMode = false; // Sangue (100 pts)
-    let superModeEndTime = 0;
-    let nextThreshold = 100;
-
-    let isUltraMode = false; // Gigante Fuoco (1000 pts)
-    let ultraModeEndTime = 0;
-    let nextUltraThreshold = 1000;
+    let isSuperMode = false; let superModeEndTime = 0; let nextThreshold = 100;
+    let isUltraMode = false; let ultraModeEndTime = 0; let nextUltraThreshold = 1000;
+    let isEndingSequence = false;
+    let isDragging = false;
 
     let currentLabel = null;
-
     let obstacleSpawnTimer = 0, coinSpawnTimer = 0;
     let keys = { left: false, right: false, up: false, down: false };
-    let isDragging = false, facingDirection = 1, fireballImageLoaded = true;
+    let facingDirection = 1, fireballImageLoaded = true;
 
     function setInitialPlayerPosition() {
         const r = gameArea.getBoundingClientRect();
-        playerX = r.width/2 - 50; playerY = r.height - 120;
+        playerX = r.width/2 - 50; playerY = r.height - 150;
         playerEl.style.left = playerX+"px"; playerEl.style.top = playerY+"px";
-        playerEl.classList.remove('dead', 'super-mode', 'ultra-mode');
+        playerEl.classList.remove('dead', 'super-mode', 'ultra-mode', 'landing', 'incubating');
+        playerEl.style.display = 'block';
         updatePlayerTransform();
         facingDirection = 1;
+
+        isCompanionActive = false;
+        companion1.style.display = 'none'; companion1.classList.remove('super-mode', 'ultra-mode');
+        companion2.style.display = 'none'; companion2.classList.remove('super-mode', 'ultra-mode');
+
+        if (generation >= 2) companion1.style.display = 'block';
+        if (generation >= 3) companion2.style.display = 'block';
+
+        sceneContainer.style.display = 'none';
+        eggsContainer.style.opacity = 1;
+        resetBackground();
     }
 
     function showLabel(text, type) {
@@ -361,41 +287,93 @@
         currentLabel.classList.add("super-text", type);
         currentLabel.innerHTML = text;
         gameArea.appendChild(currentLabel);
-        setTimeout(() => { if(currentLabel) currentLabel.remove(); }, 2500);
+        setTimeout(() => { if(currentLabel && !isEndingSequence) currentLabel.remove(); }, 2500);
     }
 
-    // --- MODALITÀ SANGUE (100 Pts) ---
+    function setBlueSky() { gameArea.style.background = "var(--sky-blue)"; }
+    function setGardenSky() { gameArea.style.background = "var(--sky-garden)"; }
+    function resetBackground() { gameArea.style.background = "var(--sky-fire)"; }
+
     function activateSuperMode() {
-        if(isUltraMode) return; // Il gigante ha la priorità
-        isSuperMode = true;
-        superModeEndTime = performance.now() + 10000; // 10s
+        if(isUltraMode) return;
+        isSuperMode = true; superModeEndTime = performance.now() + 10000;
         playerEl.classList.add('super-mode');
+        if(generation >= 2) companion1.classList.add('super-mode');
+        if(generation >= 3) companion2.classList.add('super-mode');
         showLabel("FURIA SANGUE!<br>DISTRUGGI!", "blood");
+        setBlueSky();
     }
 
     function deactivateSuperMode() {
         isSuperMode = false;
         playerEl.classList.remove('super-mode');
+        companion1.classList.remove('super-mode');
+        companion2.classList.remove('super-mode');
         nextThreshold = Math.floor(score / 100) * 100 + 100;
+        if(!isUltraMode && !isEndingSequence) resetBackground();
     }
 
-    // --- MODALITÀ GIGANTE DI FUOCO (1000 Pts) ---
     function activateUltraMode() {
-        // Disattiva la modalità sangue se attiva, il gigante è superiore
         if(isSuperMode) deactivateSuperMode();
-
-        isUltraMode = true;
-        ultraModeEndTime = performance.now() + 10000; // 10s
+        isUltraMode = true; ultraModeEndTime = performance.now() + 10000;
         playerEl.classList.add('ultra-mode');
-        showLabel("GIGANTE DI FUOCO!<br>INVINCIBILE!", "fire");
+        if(generation >= 2) companion1.classList.add('ultra-mode');
+        if(generation >= 3) companion2.classList.add('ultra-mode');
+        showLabel("GIGANTE VERDE!<br>+ COMPAGNO!", "green");
+        resetBackground();
     }
 
     function deactivateUltraMode() {
         isUltraMode = false;
         playerEl.classList.remove('ultra-mode');
+        companion1.classList.remove('ultra-mode');
+        companion2.classList.remove('ultra-mode');
         nextUltraThreshold = Math.floor(score / 1000) * 1000 + 1000;
-        // Ricalcola anche la soglia inferiore per sicurezza
         nextThreshold = Math.floor(score / 100) * 100 + 100;
+        resetBackground();
+    }
+
+    function triggerEnding() {
+        isEndingSequence = true; isRunning = false; stopMusic(); playWin();
+        obstacles.forEach(o => o.el.remove()); obstacles = [];
+        coins.forEach(c => c.el.remove()); coins = [];
+        playerEl.classList.remove('super-mode', 'ultra-mode');
+        companion1.style.display = 'none'; companion2.style.display = 'none';
+
+        setGardenSky();
+        sceneContainer.style.display = 'block';
+        showLabel("RITORNO AL NIDO...", "ending");
+
+        const r = gameArea.getBoundingClientRect();
+        const nestX = r.width * 0.55 - 45; const nestY = r.height - 330;
+        playerEl.classList.add('landing');
+        playerEl.style.left = nestX + "px"; playerEl.style.top = nestY + "px";
+
+        setTimeout(() => {
+            playerEl.classList.remove('landing');
+            playerEl.classList.add('incubating');
+            playWhistle();
+            currentLabel.innerHTML = "COVA...";
+            setTimeout(() => {
+                eggsContainer.style.opacity = 0;
+                currentLabel.innerHTML = "NUOVA VITA!";
+                playCoin();
+                setTimeout(() => {
+                    if(currentLabel) currentLabel.remove();
+                    generation++; genCountEl.textContent = generation;
+                    startNextGeneration();
+                }, 2000);
+            }, 3000);
+        }, 3000);
+    }
+
+    function startNextGeneration() {
+        isEndingSequence = false; setInitialPlayerPosition();
+        score = 0; scoreEl.textContent = "0";
+        isSuperMode = false; isUltraMode = false;
+        nextThreshold = 100; nextUltraThreshold = 1000;
+        playMusic(); isRunning = true; lastTimestamp = performance.now();
+        requestAnimationFrame(gameLoop);
     }
 
     function resetGame() {
@@ -404,35 +382,65 @@
         coins.forEach(c => c.el.remove()); coins = [];
         document.querySelectorAll('.score-pop').forEach(el => el.remove());
         if(currentLabel) currentLabel.remove();
-
         score = 0; scoreEl.textContent = "0";
         isSuperMode = false; isUltraMode = false;
         nextThreshold = 100; nextUltraThreshold = 1000;
+        isEndingSequence = false; isDragging = false;
+        generation = 1; genCountEl.textContent = 1;
         lastTimestamp = performance.now();
+        resetBackground();
     }
 
+    // --- SPAWN TESCHI E BOMBE (ALTO CONTRASTO) ---
     function spawnObstacle() {
-        const el = document.createElement("div"); el.classList.add("obstacle");
+        const el = document.createElement("div");
+        el.classList.add("obstacle");
         if(!fireballImageLoaded) el.classList.add("image-error");
+
+        const rand = Math.random() * 100;
+        let typeClass = 'orange'; let typeScore = 30;
+        let isBomb = false;
+
+        // Le bombe appaiono dopo 500 punti o nelle generazioni successive
+        if ((score > 500 || generation > 1) && rand > 85) {
+            isBomb = true;
+            typeClass = 'bomb';
+            typeScore = 0;
+        } else {
+            if (rand > 90) { typeClass = 'darkred'; typeScore = 120; }
+            else if (rand > 70) { typeClass = 'green'; typeScore = 100; }
+            else if (rand > 40) { typeClass = 'bordeaux'; typeScore = 60; }
+        }
+
+        el.classList.add(typeClass);
+
         const r = gameArea.getBoundingClientRect();
         const x = Math.random() * (r.width - 90);
         el.style.left = x+"px"; el.style.top = "-100px";
         gameArea.appendChild(el);
-        obstacles.push({el, x, y: -100});
+        obstacles.push({el, x, y: -100, scoreVal: typeScore, isBomb: isBomb});
     }
 
     function spawnCoin() {
-        const el = document.createElement("div"); el.classList.add("coin");
         const r = gameArea.getBoundingClientRect();
-        const x = Math.random() * (r.width - 40);
-        el.style.left = x+"px"; el.style.top = "-50px";
-        gameArea.appendChild(el);
-        coins.push({el, x, y: -50});
+        const isHorizontal = Math.random() > 0.5;
+        const safeWidth = isHorizontal ? (r.width - 140) : (r.width - 45);
+        const startX = Math.random() * safeWidth;
+        const startY = -50;
+        for(let i = 0; i < 3; i++) {
+            const el = document.createElement("div"); el.classList.add("coin");
+            let cx, cy;
+            if(isHorizontal) { cx = startX + (i * 45); cy = startY; }
+            else { cx = startX; cy = startY - (i * 45); }
+            el.style.left = cx+"px"; el.style.top = cy+"px";
+            gameArea.appendChild(el);
+            coins.push({el, x: cx, y: cy});
+        }
     }
 
-    function showExplosion(x, y, isGiant) {
+    function showExplosion(x, y, isGiant, isBomb) {
         const ex = document.createElement("div"); ex.classList.add("explosion");
-        // Esplosione più grande se sei gigante
+        if(isBomb) ex.classList.add("bomb-blast");
         if(isGiant) ex.style.transform = "scale(1.5)";
         ex.style.left = x + "px"; ex.style.top = y + "px";
         gameArea.appendChild(ex);
@@ -440,169 +448,127 @@
     }
 
     function updatePlayerTransform() {
-        // Gestione della scala in base alla modalità attiva
         let scale = "scale(1)";
-        if (isUltraMode) scale = "scale(1.5)"; // GIGANTE
-        else if (isSuperMode) scale = "scale(1.2)"; // Medio
-
+        if (isUltraMode) scale = "scale(1.5)"; else if (isSuperMode) scale = "scale(1.2)";
         playerEl.style.transform = `scaleX(${facingDirection}) ${scale}`;
+
+        if(generation >= 2) {
+            let cs = isUltraMode ? "scale(1.2)" : (isSuperMode ? "scale(1.0)" : "scale(0.8)");
+            companion1.style.transform = `scaleX(${facingDirection}) ${cs}`;
+        }
+        if(generation >= 3) {
+            let cs = isUltraMode ? "scale(1.2)" : (isSuperMode ? "scale(1.0)" : "scale(0.8)");
+            companion2.style.transform = `scaleX(${facingDirection}) ${cs}`;
+        }
     }
 
     function updatePlayerPosition() {
-        const r = gameArea.getBoundingClientRect();
-        if(keys.left) { playerX -= 8; facingDirection = -1; }
-        if(keys.right) { playerX += 8; facingDirection = 1; }
-        if(keys.up) playerY -= 8;
-        if(keys.down) playerY += 8;
+        if(isEndingSequence) return;
 
-        if(playerX < 0) playerX = 0; if(playerX > r.width - playerEl.offsetWidth) playerX = r.width - playerEl.offsetWidth;
-        if(playerY < 0) playerY = 0; if(playerY > r.height - playerEl.offsetHeight) playerY = r.height - playerEl.offsetHeight;
-        playerEl.style.left = playerX+"px"; playerEl.style.top = playerY+"px";
-
+        if(generation >= 2) {
+            const c1X = playerX - (facingDirection * 60); const c1Y = playerY + 40;
+            companion1.style.left = c1X + "px"; companion1.style.top = c1Y + "px";
+        }
+        if(generation >= 3) {
+            const c2X = playerX - (facingDirection * 100); const c2Y = playerY - 40;
+            companion2.style.left = c2X + "px"; companion2.style.top = c2Y + "px";
+        }
         updatePlayerTransform();
     }
 
     function checkCollision(r1, r2) {
-        const p = 20; // Collision box leggermente più permissiva
-        return !(r1.right-p < r2.left || r1.left+p > r2.right || r1.bottom-p < r2.top || r1.top+p > r2.bottom);
+        const p = 20; return !(r1.right-p < r2.left || r1.left+p > r2.right || r1.bottom-p < r2.top || r1.top+p > r2.bottom);
     }
 
     function endGame() {
         isRunning = false; isDragging = false;
-        playerEl.classList.add('dead');
-        stopMusic(); playCrash();
+        playerEl.classList.add('dead'); stopMusic(); playCrash();
         if(score > bestScore) bestScore = score;
         const ov = document.createElement("div"); ov.classList.add("game-over-overlay");
         ov.innerHTML = `<h2>GAME OVER</h2><div>Score: <strong>${Math.floor(score)}</strong></div>
-        <div class="best-score">Migliore: ${Math.floor(bestScore)}</div><p>Premi <strong>GIOCA ORA</strong></p>`;
+        <div class="best-score">Migliore: ${Math.floor(bestScore)}</div>
+        <p>Premi <strong>GIOCA ORA</strong></p>`;
         gameArea.appendChild(ov);
     }
 
     function gameLoop(ts) {
         if(!isRunning) return;
         const dt = ts - lastTimestamp; lastTimestamp = ts;
+        if(score >= 3000 && !isEndingSequence) { triggerEnding(); return; }
+
         updatePlayerPosition();
 
-        // --- CONTROLLO LOGICA POTERI ---
-        // Priorità assoluta all'Ultra Mode (1000 pts)
-        if(score >= nextUltraThreshold && !isUltraMode) {
-            activateUltraMode();
-        }
-        // Se non è Ultra, controlla il Super Mode (100 pts)
-        else if(score >= nextThreshold && !isSuperMode && !isUltraMode) {
-            activateSuperMode();
-        }
-
-        // Controllo scadenza timer
+        if(score >= nextUltraThreshold && !isUltraMode) activateUltraMode();
+        else if(score >= nextThreshold && !isSuperMode && !isUltraMode) activateSuperMode();
         if(isUltraMode && ts > ultraModeEndTime) deactivateUltraMode();
         if(isSuperMode && ts > superModeEndTime) deactivateSuperMode();
 
-        const speed = 150 + score*0.5;
+        const baseSpeed = 180;
+        const speedIncrease = score * 0.15;
+        const maxSpeed = 500;
+        const speed = Math.min(baseSpeed + speedIncrease, maxSpeed);
         const dy = (speed * dt)/1000;
 
-        // Loop Ostacoli
         for (let i = obstacles.length - 1; i >= 0; i--) {
-            let o = obstacles[i];
-            o.y += dy;
-            o.el.style.top = o.y + "px";
-
-            if (o.y > gameArea.clientHeight + 100) {
-                o.el.remove();
-                obstacles.splice(i, 1);
-                continue;
-            }
-
-            const pRect = playerEl.getBoundingClientRect();
-            const oRect = o.el.getBoundingClientRect();
+            let o = obstacles[i]; o.y += dy; o.el.style.top = o.y + "px";
+            if (o.y > gameArea.clientHeight + 100) { o.el.remove(); obstacles.splice(i, 1); continue; }
+            const pRect = playerEl.getBoundingClientRect(); const oRect = o.el.getBoundingClientRect();
 
             if (checkCollision(pRect, oRect)) {
-                // Sei potente? (Sangue O Gigante)
-                if (isSuperMode || isUltraMode) {
-                    showExplosion(o.x, o.y, isUltraMode);
-                    playSmash(isUltraMode);
-                    o.el.remove();
-                    obstacles.splice(i, 1);
-                    // Più punti se sei gigante
-                    score += isUltraMode ? 50 : 10;
-                    showScorePop(o.x, o.y, isUltraMode ? 50 : 10, isUltraMode ? "fire" : null);
-                } else {
-                    // Sei debole: GAME OVER
-                    endGame();
-                    return;
+                if (o.isBomb) {
+                    showExplosion(o.x, o.y, false, true);
+                    showLabel("BOMBA!!!", "danger");
+                    endGame(); return;
                 }
+                if (isSuperMode || isUltraMode) {
+                    showExplosion(o.x, o.y, isUltraMode, false); playSmash(isUltraMode);
+                    o.el.remove(); obstacles.splice(i, 1);
+                    score += o.scoreVal;
+                    showScorePop(o.x, o.y, o.scoreVal, isUltraMode ? "green" : null);
+                } else { endGame(); return; }
             }
         }
 
-        // Loop Monete
         for (let i = coins.length - 1; i >= 0; i--) {
-            let c = coins[i];
-            c.y += dy;
-            c.el.style.top = c.y + "px";
+            let c = coins[i]; c.y += dy; c.el.style.top = c.y + "px";
+            if (c.y > gameArea.clientHeight + 100) { c.el.remove(); coins.splice(i, 1); continue; }
+            const pRect = playerEl.getBoundingClientRect(); const cRect = c.el.getBoundingClientRect();
 
-            if (c.y > gameArea.clientHeight + 100) {
-                c.el.remove();
-                coins.splice(i, 1);
-                continue;
-            }
+            let hit = checkCollision(pRect, cRect);
+            if (!hit && generation >= 2) hit = checkCollision(companion1.getBoundingClientRect(), cRect);
+            if (!hit && generation >= 3) hit = checkCollision(companion2.getBoundingClientRect(), cRect);
 
-            const pRect = playerEl.getBoundingClientRect();
-            const cRect = c.el.getBoundingClientRect();
-            if (checkCollision(pRect, cRect)) {
-                playCoin();
-                score += 50;
-                showScorePop(c.x, c.y, 50);
-                c.el.remove();
-                coins.splice(i, 1);
-            }
+            if (hit) { playCoin(); score += 50; showScorePop(c.x, c.y, 50); c.el.remove(); coins.splice(i, 1); }
         }
 
-        obstacleSpawnTimer += dt;
-        if(obstacleSpawnTimer > 900) { obstacleSpawnTimer = 0; spawnObstacle(); }
-        coinSpawnTimer += dt;
-        if(coinSpawnTimer > 1500) { coinSpawnTimer = 0; spawnCoin(); }
-
-        score += dt * 0.01;
-        scoreEl.textContent = Math.floor(score);
+        obstacleSpawnTimer += dt; if(obstacleSpawnTimer > 1100) { obstacleSpawnTimer = 0; spawnObstacle(); }
+        coinSpawnTimer += dt; if(coinSpawnTimer > 2000) { coinSpawnTimer = 0; spawnCoin(); }
+        score += dt * 0.01; scoreEl.textContent = Math.floor(score);
         requestAnimationFrame(gameLoop);
     }
 
     function showScorePop(x, y, amount, style) {
-        const pop = document.createElement("div");
-        pop.classList.add("score-pop");
-        if(style === "fire") {
-            pop.style.color = "#ff4500";
-            pop.style.fontSize = "1.8rem";
-            pop.style.textShadow = "0 0 10px yellow";
-        }
-        pop.textContent = `+${amount}`;
-        pop.style.left = x + "px";
-        pop.style.top = y + "px";
-        gameArea.appendChild(pop);
-        setTimeout(() => pop.remove(), 800);
+        const pop = document.createElement("div"); pop.classList.add("score-pop");
+        if(style === "green") { pop.style.color = "#39ff14"; pop.style.fontSize = "1.8rem"; pop.style.textShadow = "0 0 10px white"; }
+        pop.textContent = `+${amount}`; pop.style.left = x + "px"; pop.style.top = y + "px";
+        gameArea.appendChild(pop); setTimeout(() => pop.remove(), 800);
     }
 
-    // Input touch/mouse
     function moveP(e) {
+        if(isEndingSequence) return;
         const r = gameArea.getBoundingClientRect();
         const px = e.clientX - r.left; const py = e.clientY - r.top;
         let nx = px - 45; let ny = py - 45;
         if(nx < playerX) facingDirection = -1; else facingDirection = 1;
         playerX = Math.max(0, Math.min(r.width - 90, nx));
         playerY = Math.max(0, Math.min(r.height - 90, ny));
-        updatePlayerTransform();
+        playerEl.style.left = playerX+"px"; playerEl.style.top = playerY+"px";
+        updatePlayerPosition();
     }
-    gameArea.addEventListener("pointerdown", e => { if(isRunning){ e.preventDefault(); isDragging=true; moveP(e); }});
-    window.addEventListener("pointermove", e => { if(isDragging) { e.preventDefault(); moveP(e); }});
-    window.addEventListener("pointerup", () => isDragging = false);
 
-    window.addEventListener("keydown", e => {
-        if(e.key==="ArrowLeft") keys.left=true; if(e.key==="ArrowRight") keys.right=true;
-        if(e.key==="ArrowUp") keys.up=true; if(e.key==="ArrowDown") keys.down=true;
-    });
-    window.addEventListener("keyup", e => {
-        if(e.key==="ArrowLeft") keys.left=false; if(e.key==="ArrowRight") keys.right=false;
-        if(e.key==="ArrowUp") keys.up=false; if(e.key==="ArrowDown") keys.down=false;
-    });
+    gameArea.addEventListener("pointerdown", e => { if(isRunning && !isEndingSequence) { e.preventDefault(); isDragging = true; moveP(e); } });
+    window.addEventListener("pointermove", e => { if(isRunning && !isEndingSequence && isDragging) { e.preventDefault(); moveP(e); } });
+    window.addEventListener("pointerup", () => isDragging = false);
 
     startBtn.addEventListener("click", () => {
         const ov = gameArea.querySelector(".game-over-overlay"); if(ov) ov.remove();
@@ -614,9 +580,7 @@
         const i = new Image(); i.src='fire-36.gif'; i.onload=()=>{fireballImageLoaded=true};
         setInitialPlayerPosition();
         const ov = document.createElement("div"); ov.classList.add("game-over-overlay");
-        ov.innerHTML = `<h2>UCCELLO DI FUOCO</h2>
-        <p style="margin-bottom:10px">Arriva a <strong>1000 punti</strong> per scatenare il<br><strong style="color:orange; font-size:1.2rem">GIGANTE DI FUOCO!</strong></p>
-        <p>Premi <strong>GIOCA ORA</strong></p>`;
+        ov.innerHTML = `<h2>UCCELLO DI FUOCO</h2><p>100 Pts: <strong>SANGUE</strong><br>1000 Pts: <strong>GIGANTE</strong><br>3000 Pts: <strong>COVA E RINASCI!</strong></p><p>Premi <strong>GIOCA ORA</strong></p>`;
         gameArea.appendChild(ov);
     });
 </script>
