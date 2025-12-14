@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8" />
-    <title>Uccello di Fuoco - FINAL MASTER</title>
+    <title>Uccello di Fuoco - FINAL STABLE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
@@ -258,7 +258,13 @@
     const playerEl = document.getElementById("player");
     const wormInBeak = document.getElementById("wormInBeak");
     const chicks = [document.getElementById("chick1"), document.getElementById("chick2"), document.getElementById("chick3")];
-    const learningChicksDOM = [document.getElementById("learningChick1"), document.getElementById("learningChick2"), document.getElementById("learningChick3")];
+
+    const learningChicksDOM = [
+        document.getElementById("learningChick1"),
+        document.getElementById("learningChick2"),
+        document.getElementById("learningChick3")
+    ];
+
     const sceneContainer = document.getElementById("sceneContainer");
     const eggsContainer = document.getElementById("eggs");
     const scoreEl = document.getElementById("score");
@@ -276,6 +282,7 @@
     const loadingFill = document.getElementById("loadingFill");
     const loadingBird = document.getElementById("loadingBird");
 
+    // AUDIO
     const audioContext = {
         bg: new Audio('audio/Epoq-Lepidoptera.ogg'),
         crash: new Audio('audio/explosion.mp3'),
@@ -322,6 +329,39 @@
     let isDragging = false;
     let obstacleSpawnTimer = 0, coinSpawnTimer = 0, nestSpawnTimer = 0;
     let facingDirection = 1;
+    let animationFrameId;
+
+    // --- LOGICA DI CARICAMENTO E SALVATAGGIO ---
+    window.onload = function() {
+        const i = new Image(); i.src='bird-sprite-removebg-preview.png';
+
+        const savedLevel = sessionStorage.getItem('savedLevel');
+        if(savedLevel) {
+            // Se c'è un salvataggio, saltiamo al livello corretto
+            startScreen.classList.add('hidden');
+            currentLevel = parseInt(savedLevel);
+            if(currentLevel >= 2) babiesDelivered = parseInt(sessionStorage.getItem('babiesDelivered')) || 0;
+            if(currentLevel >= 3) chicksFed = parseInt(sessionStorage.getItem('chicksFed')) || 0;
+
+            // Pulisci il salvataggio per evitare loop infiniti
+            sessionStorage.removeItem('savedLevel');
+            startGame();
+        }
+    };
+
+    function fullReset() {
+        // Pulisce tutto e ricarica la pagina per tornare all'inizio pulito
+        sessionStorage.clear();
+        window.location.reload();
+    }
+
+    function saveAndReload() {
+        // Salva e ricarica per il checkpoint
+        sessionStorage.setItem('savedLevel', currentLevel);
+        sessionStorage.setItem('babiesDelivered', babiesDelivered);
+        sessionStorage.setItem('chicksFed', chicksFed);
+        window.location.reload();
+    }
 
     function setInitialPlayerPosition() {
         const r = gameArea.getBoundingClientRect();
@@ -406,6 +446,7 @@
     function updateConfidence(val) {
         confidenceFill.style.width = val + "%";
         confidenceText.textContent = `VOLO: ${Math.floor(val)}%`;
+        return val;
     }
 
     function activateMode(type) {
@@ -431,12 +472,15 @@
     }
 
     function startGame() {
-        currentLevel = 1;
-        babiesDelivered = 0; chicksFed = 0; wormsHeld = 0; score = 0; scoreEl.textContent = "0";
+        if(!sessionStorage.getItem('savedLevel')) {
+            babiesDelivered = 0; chicksFed = 0; wormsHeld = 0; score = 0; scoreEl.textContent = "0";
+        }
         continueGame();
     }
 
     function continueGame() {
+        if(animationFrameId) cancelAnimationFrame(animationFrameId);
+
         const ovs = document.querySelectorAll(".game-over-overlay");
         ovs.forEach(o => o.remove());
 
@@ -452,43 +496,7 @@
 
         isRunning = true;
         lastTimestamp = performance.now();
-        requestAnimationFrame(gameLoop);
-    }
-
-    function resetToTitle() {
-        // RESET COMPLETO AL MENU INIZIALE
-        const ovs = document.querySelectorAll(".game-over-overlay");
-        ovs.forEach(o => o.remove());
-
-        gameHeader.style.display = "none";
-        confidenceWrapper.style.display = 'none';
-        learningChicksDOM.forEach(c => c.style.display = 'none');
-
-        currentLevel = 1; score = 0; babiesDelivered = 0; chicksFed = 0;
-
-        startScreen.classList.remove("hidden");
-        // Ripristina l'HTML iniziale del menu
-        startScreen.innerHTML = `
-            <h2>UCCELLO DI FUOCO</h2>
-            <div class="instructions">
-                <strong>TRASCINA</strong> per muoverti.<br>
-                Liv 1: 3000 Punti.<br>
-                Liv 2: Porta i 3 pulcini nei nidi.<br>
-                Liv 3: Nutrili con i vermi.<br>
-                Liv 4: Insegna a volare a TUTTI!
-            </div>
-            <button class="btn" id="startBtn">INIZIO GIOCO</button>
-        `;
-        document.getElementById("startBtn").addEventListener("click", startLoadingSequence);
-
-        // Pulisci schermo
-        obstacles.forEach(o => o.el.remove()); obstacles = [];
-        coins.forEach(c => c.el.remove()); coins = [];
-        flyingNests.forEach(n => n.el.remove()); flyingNests = [];
-
-        playerEl.classList.remove('dead');
-        gameArea.style.background = "var(--sky-fire)";
-        sceneContainer.style.display = 'block';
+        animationFrameId = requestAnimationFrame(gameLoop);
     }
 
     function spawnObstacle() {
@@ -615,7 +623,7 @@
                         isEndingSequence = false; currentLevel = 2; setInitialPlayerPosition();
                         showScorePop(r.width/2-50, r.height/2, msg, "green");
                         audioContext.bg.play(); isRunning = true; lastTimestamp = performance.now();
-                        requestAnimationFrame(gameLoop);
+                        animationFrameId = requestAnimationFrame(gameLoop);
                     }, 2000);
                 }, 3000);
             }, 3000);
@@ -630,7 +638,7 @@
                 setInitialPlayerPosition();
                 showScorePop(gameArea.offsetWidth/2-50, gameArea.offsetHeight/2, msg, "green");
                 audioContext.bg.play(); isRunning = true; lastTimestamp = performance.now();
-                requestAnimationFrame(gameLoop);
+                animationFrameId = requestAnimationFrame(gameLoop);
             }, 2000);
         }
     }
@@ -653,7 +661,7 @@
 
         gameArea.appendChild(ov);
         gameHeader.style.display = "none";
-        document.getElementById("returnBtn").onclick = () => resetToTitle();
+        document.getElementById("returnBtn").onclick = () => fullReset();
     }
 
     function endGame(victory) {
@@ -668,13 +676,16 @@
             if(currentLevel === 3) status = `Nutriti: ${chicksFed}/${MAX_FED}`;
             if(currentLevel === 4) status = `Volo: ${Math.floor(updateConfidence(0))}%`;
 
-            ov.innerHTML = `<h2>GAME OVER</h2><div>${status}</div><button class="btn" id="continueBtn">RIPROVA LIVELLO</button>`;
+            ov.innerHTML = `<h2>GAME OVER</h2><div>${status}</div>
+                            <button class="btn" id="continueBtn" style="margin-bottom:10px;">RIPROVA LIVELLO</button>
+                            <button class="btn" id="fullRestartBtn" style="background:linear-gradient(to right, #555, #333); border-color:#999;">INIZIO GIOCO</button>`;
             gameArea.appendChild(ov);
-            document.getElementById("continueBtn").onclick = () => continueGame();
+            document.getElementById("continueBtn").onclick = () => saveAndReload();
+            document.getElementById("fullRestartBtn").onclick = () => fullReset();
         } else {
             ov.innerHTML = `<h2>GAME OVER</h2><div>Score: <strong>${Math.floor(score)}</strong></div><button class="btn" id="restart">INIZIO GIOCO</button>`;
             gameArea.appendChild(ov);
-            document.getElementById("restart").onclick = () => resetToTitle();
+            document.getElementById("restart").onclick = () => fullReset();
         }
         gameHeader.style.display = "none";
     }
@@ -802,7 +813,7 @@
         coinSpawnTimer += dt*1000; if(coinSpawnTimer > coinRate) { coinSpawnTimer = 0; spawnCoin(); }
         if (currentLevel > 1 && currentLevel < 4) { nestSpawnTimer += dt*1000; if(nestSpawnTimer > 3500) { nestSpawnTimer = 0; spawnNest(); } }
 
-        requestAnimationFrame(gameLoop);
+        animationFrameId = requestAnimationFrame(gameLoop);
     }
 
     function moveP(e) {
@@ -826,7 +837,6 @@
     window.addEventListener('touchend', () => isDragging = false);
 
     startBtn.addEventListener("click", startLoadingSequence);
-    window.addEventListener("load", () => { const i = new Image(); i.src='bird-sprite-removebg-preview.png'; });
 </script>
 </body>
 </html>
