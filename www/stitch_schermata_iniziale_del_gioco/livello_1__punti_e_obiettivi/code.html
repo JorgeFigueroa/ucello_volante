@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="it"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vita Mahjong - Livello 1</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#13ec5b",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102216",
+            },
+            fontFamily: {
+              "display": ["Be Vietnam Pro", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom utilities if needed */
+        .glass-panel {
+            background-color: rgba(16, 34, 22, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white font-display overflow-hidden h-screen w-screen relative select-none">
+<!-- 3D Game World Background -->
+<div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" data-alt="Immersive lush 3D forest environment with giant trees and magical lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCYWG3HVUsssFTKKRCsIP_twpjW2dXSRW4bpcqH82cNB_cCEtWXfvFaiCQ3ZYpBImfrAuCNwV83QdXXXosqsVG4jcl6ghYWbdfeWSF7aJC6aOEd-SAVslldsFGVlk8scpo1Oq29azfJVbbXuj7sC3FVKbv-0RY5u4gqJQ3M2oMV2oP8VCZl8ysiwGVKuza4STJNQwe9wzaEQTg_EwkQiIDyzzBsUfQw8bW8nnp197uWOPQvXOYPKWwnGVmq6hwYa3JKtRcqecsRkxnq');">
+<!-- Vignette Overlay for better UI contrast -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-transparent to-background-dark/60 pointer-events-none"></div>
+</div>
+<!-- HUD Overlay Container -->
+<div class="relative z-10 flex flex-col h-full w-full p-4 md:p-6 lg:p-8 justify-between pointer-events-none">
+<!-- Top Navigation / Header -->
+<header class="flex items-start justify-between w-full pointer-events-auto">
+<!-- Level Title & Badge -->
+<div class="flex flex-col gap-2">
+<div class="glass-panel px-4 py-2 rounded-full flex items-center gap-3 w-fit shadow-lg">
+<div class="bg-primary/20 p-1.5 rounded-full text-primary">
+<span class="material-symbols-outlined text-sm font-bold">forest</span>
+</div>
+<h1 class="text-sm font-bold tracking-wide uppercase text-white">Vita Mahjong <span class="text-white/40 mx-1">|</span> Livello 1</h1>
+</div>
+</div>
+<!-- Game Controls -->
+<div class="flex gap-3">
+<button class="glass-panel size-10 flex items-center justify-center rounded-full hover:bg-background-dark hover:text-primary transition-colors cursor-pointer group shadow-lg">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">pause</span>
+</button>
+<button class="glass-panel size-10 flex items-center justify-center rounded-full hover:bg-background-dark hover:text-primary transition-colors cursor-pointer group shadow-lg">
+<span class="material-symbols-outlined group-hover:rotate-90 transition-transform">settings</span>
+</button>
+</div>
+</header>
+<!-- Main HUD Area -->
+<div class="flex-1 w-full flex justify-between items-start mt-6 pointer-events-none">
+<!-- LEFT COLUMN: Objectives & Score -->
+<div class="flex flex-col gap-4 w-72 pointer-events-auto animate-in fade-in slide-in-from-left-4 duration-500">
+<!-- Objective Card -->
+<div class="glass-panel rounded-xl p-5 shadow-xl flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<h2 class="text-xs uppercase font-bold text-gray-400 tracking-wider">Obiettivo Livello</h2>
+<span class="text-primary text-xs font-bold bg-primary/10 px-2 py-0.5 rounded">Principale</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-white/60 text-sm font-medium">Target:</span>
+<span class="text-xl font-bold text-white">3000 Punti</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between text-[10px] font-semibold tracking-wide text-gray-400">
+<span>PROGRESSO</span>
+<span>0%</span>
+</div>
+<div class="h-2 w-full bg-black/40 rounded-full overflow-hidden border border-white/5">
+<div class="h-full bg-primary shadow-[0_0_10px_rgba(19,236,91,0.5)] rounded-full transition-all duration-300 w-[0%]"></div>
+</div>
+</div>
+<p class="text-[11px] text-gray-400 leading-tight mt-1">
+                        Proteggi la foresta raccogliendo energia vitale.
+                    </p>
+</div>
+<!-- Current Score -->
+<div class="glass-panel rounded-xl p-5 shadow-xl flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs uppercase font-bold text-gray-400 tracking-wider">Punteggio Attuale</span>
+<span class="text-3xl font-extrabold text-white tracking-tight tabular-nums">0</span>
+</div>
+<div class="size-10 rounded-lg bg-white/5 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">stars</span>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Resources (Worms & Chicks) -->
+<div class="flex flex-col gap-3 pointer-events-auto animate-in fade-in slide-in-from-right-4 duration-500">
+<!-- Resource Panel -->
+<div class="glass-panel rounded-xl p-3 shadow-xl flex flex-col gap-3 min-w-[140px]">
+<div class="text-[10px] uppercase font-bold text-gray-500 text-center tracking-widest mb-1">Risorse</div>
+<!-- Worms -->
+<div class="group flex items-center justify-between bg-black/20 hover:bg-black/40 transition-colors p-2 rounded-lg border border-white/5">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-md bg-[#c084fc]/20 flex items-center justify-center text-[#c084fc]">
+<span class="material-symbols-outlined text-lg">bug_report</span>
+</div>
+<span class="text-sm font-bold text-gray-300 group-hover:text-white transition-colors">Vermi</span>
+</div>
+<span class="text-lg font-bold text-white tabular-nums pr-1">0</span>
+</div>
+<!-- Chicks -->
+<div class="group flex items-center justify-between bg-black/20 hover:bg-black/40 transition-colors p-2 rounded-lg border border-white/5">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-md bg-[#facc15]/20 flex items-center justify-center text-[#facc15]">
+<span class="material-symbols-outlined text-lg">flutter_dash</span>
+</div>
+<span class="text-sm font-bold text-gray-300 group-hover:text-white transition-colors">Pulcini</span>
+</div>
+<span class="text-lg font-bold text-white tabular-nums pr-1">3</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom HUD: Flight Indicator -->
+<div class="w-full flex justify-end items-end pointer-events-none mt-auto">
+<div class="glass-panel rounded-xl p-5 shadow-xl w-72 pointer-events-auto border-t-2 border-t-primary/50 relative overflow-hidden group">
+<!-- Background glow effect -->
+<div class="absolute -right-10 -top-10 size-24 bg-primary/20 blur-3xl rounded-full pointer-events-none group-hover:bg-primary/30 transition-all"></div>
+<div class="relative z-10">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary animate-pulse">flight_takeoff</span>
+<span class="text-sm font-bold text-white uppercase tracking-wider">Stato Volo</span>
+</div>
+<span class="text-2xl font-black text-primary tabular-nums drop-shadow-md">0<span class="text-sm align-top ml-0.5">%</span></span>
+</div>
+<!-- Complex Flight Gauge Visual -->
+<div class="relative h-3 w-full bg-black/40 rounded-sm overflow-hidden flex items-center px-0.5">
+<!-- Grid lines -->
+<div class="absolute inset-0 w-full h-full flex justify-between px-1 pointer-events-none z-20 opacity-30">
+<div class="w-px h-full bg-white"></div>
+<div class="w-px h-full bg-white"></div>
+<div class="w-px h-full bg-white"></div>
+<div class="w-px h-full bg-white"></div>
+<div class="w-px h-full bg-white"></div>
+</div>
+<!-- Fill -->
+<div class="h-1.5 bg-gradient-to-r from-primary/50 to-primary rounded-sm shadow-[0_0_15px_rgba(19,236,91,0.8)] w-[5%] transition-all duration-500 ease-out z-10"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

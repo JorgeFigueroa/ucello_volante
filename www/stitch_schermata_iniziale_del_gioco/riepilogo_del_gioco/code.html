@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="it"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vita Mahjong: Riepilogo del Gioco</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#112217", // Matched with component hex
+                        "surface-dark": "#23482f", // Matched with component hex
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro", "Noto Sans", "sans-serif"],
+                        "body": ["Be Vietnam Pro", "Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-x-hidden">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<div class="w-full flex justify-center bg-[#112217] border-b border-solid border-b-[#23482f]">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<header class="flex items-center justify-between whitespace-nowrap px-4 py-3 md:px-10">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 text-primary">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Vita Mahjong: Firebird</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="hidden md:flex items-center gap-9">
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Home</a>
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Classifiche</a>
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Impostazioni</a>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-surface-dark text-white hover:bg-[#2d5c3c] transition-colors text-sm font-bold leading-normal tracking-[0.015em] gap-2">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="truncate hidden sm:inline">Profilo</span>
+</button>
+</div>
+</header>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="px-4 md:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1 gap-6">
+<!-- Heading -->
+<div class="flex flex-wrap justify-between gap-3 px-4 pt-4">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Riepilogo del Gioco</p>
+<p class="text-[#92c9a4] text-base font-normal leading-normal">Missione completata! La Fenice è rinata e la natura è al sicuro.</p>
+</div>
+</div>
+<!-- Stats Dashboard -->
+<div class="flex flex-wrap gap-4 px-4">
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-surface-dark border border-[#2d5c3c] shadow-lg">
+<div class="flex items-center gap-3 mb-1">
+<div class="p-2 bg-[#112217] rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">emoji_events</span>
+</div>
+<p class="text-[#92c9a4] text-sm font-medium leading-normal uppercase tracking-wider">Punteggio</p>
+</div>
+<p class="text-white tracking-tight text-3xl font-bold leading-tight">24,850</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-surface-dark border border-[#2d5c3c] shadow-lg">
+<div class="flex items-center gap-3 mb-1">
+<div class="p-2 bg-[#112217] rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">grid_view</span>
+</div>
+<p class="text-[#92c9a4] text-sm font-medium leading-normal uppercase tracking-wider">Livelli</p>
+</div>
+<p class="text-white tracking-tight text-3xl font-bold leading-tight">4 <span class="text-lg text-[#92c9a4] font-normal">/ 4</span></p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 bg-surface-dark border border-[#2d5c3c] shadow-lg relative overflow-hidden">
+<div class="absolute right-0 top-0 p-12 bg-primary/5 rounded-full -mr-6 -mt-6 blur-2xl"></div>
+<div class="flex items-center gap-3 mb-1">
+<div class="p-2 bg-[#112217] rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">eco</span>
+</div>
+<p class="text-[#92c9a4] text-sm font-medium leading-normal uppercase tracking-wider">Natura Salvata</p>
+</div>
+<p class="text-white tracking-tight text-3xl font-bold leading-tight">100%</p>
+</div>
+</div>
+<!-- Level List Section -->
+<div>
+<h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">map</span>
+                            Progresso Livelli
+                        </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-4">
+<!-- Card Level 1 -->
+<div class="flex flex-col rounded-xl bg-[#193322] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_25px_rgba(19,236,91,0.15)] transition-shadow border border-transparent hover:border-primary/30">
+<div class="h-40 w-full bg-cover bg-center relative" data-alt="Dense green forest with sunlight streaming through leaves" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAD6aCImExczsnPEerKa0ZSrJN_6slc5HM1b012pZ6cSCL9JvKh8gs7F-mM2zj-qbdt_FRKH9zOSo4u-eGe6HgYNUxZ4TWwyK3lOkBuJ9gtWb578yvgGwU2V_SqOtzujUHKc-jztLwaLHa59aoGEWwQ675wERJag523Ujh_mSH54ayfGjiurmzuHO_rcwrmf-269u0s5niZZkivRUfWQADt8cWTzGVUS_KJzfiVFiuNvXlZ4u1UZvGKpH8lfiwl1eNUxrK-uZBs11v7");'>
+<div class="absolute inset-0 bg-gradient-to-t from-[#193322] to-transparent"></div>
+<div class="absolute bottom-3 left-4 flex gap-1">
+<span class="material-symbols-outlined text-yellow-400 text-[20px]">star</span>
+<span class="material-symbols-outlined text-yellow-400 text-[20px]">star</span>
+<span class="material-symbols-outlined text-yellow-400 text-[20px]">star</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3 flex-1">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-white text-lg font-bold leading-tight">Livello 1: La Foresta</p>
+<p class="text-[#92c9a4] text-sm mt-1">Punteggio: 8,200</p>
+</div>
+<span class="px-2 py-1 rounded bg-primary/20 text-primary text-xs font-bold uppercase">Completato</span>
+</div>
+<button class="mt-auto w-full flex cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-[#23482f] text-white hover:bg-primary hover:text-[#112217] transition-colors text-sm font-bold gap-2">
+<span class="material-symbols-outlined text-[18px]">replay</span>
+                                        Rigioca
+                                    </button>
+</div>
+</div>
+<!-- Card Level 2 -->
+<div class="flex flex-col rounded-xl bg-[#193322] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_25px_rgba(19,236,91,0.15)] transition-shadow border border-transparent hover:border-primary/30">
+<div class="h-40 w-full bg-cover bg-center relative" data-alt="Clear blue river flowing through a rocky landscape" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCcznz2mI14eMb1iTsGaKa42mYT55-DgemEMDCyN_6RJgwK5sVDquDlOyNWnyaYRM_OHpxe2Hd8PXwHmsYihpWiZo4ak-BpUbbvyQ-LPw7YbFyTuCLNN_i3GqXZcCgX6u1ZyImx30U-5rVlW8ZIspKZehlfuf0U1sGqhgd--cacN-_rXyHwfIp5hfw5TL1tBIVGxrcO7gi75tM-XmHsL1erEsgQqdMLgPZMXxwfms1YFhbAwOayJW6qwdaIReAH_U12MMjXVLy0DzB8");'>
+<div class="absolute inset-0 bg-gradient-to-t from-[#193322] to-transparent"></div>
+<div class="absolute bottom-3 left-4 flex gap-1">
+<span class="material-symbols-outlined text-yellow-400 text-[20px]">star</span>
+<span class="material-symbols-outlined text-yellow-400 text-[20px]">star</span>
+<span class="material-symbols-outlined text-white/30 text-[20px]">star</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3 flex-1">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-white text-lg font-bold leading-tight">Livello 2: Il Fiume</p>
+<p class="text-[#92c9a4] text-sm mt-1">Punteggio: 6,450</p>
+</div>
+<span class="px-2 py-1 rounded bg-primary/20 text-primary text-xs font-bold uppercase">Completato</span>
+</div>
+<button class="mt-auto w-full flex cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-[#23482f] text-white hover:bg-primary hover:text-[#112217] transition-colors text-sm font-bold gap-2">
+<span class="material-symbols-outlined text-[18px]">replay</span>
+                                        Rigioca
+                                    </button>
+</div>
+</div>
+<!-- Card Level 3 -->
+<div class="flex flex-col rounded-xl bg-[#193322] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_25px_rgba(19,236,91,0.15)] transition-shadow border border-transparent hover:border-primary/30">
+<div class="h-40 w-full bg-cover bg-center relative" data-alt="Majestic mountain peak covered in snow under a starry sky" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBbPoJjfxXM8ETzEOgilzm2ymDitf2i4GJ18SOv5j_SM5kc7qlZJHuvo7GdxJ9coymcQKW5pPMv--wJhCaMR-C_O249LtSGnUcS2kE00UmFt6EJF0M-vI6esJF4NNpSs_OKzvRh2zpA4DbR3JfYMwNBJY27ML5S4qHLdLo_-w0oLnn3ypZKel6D-lapbkm7B3p34cHSnOQirPvdEHQ8ooz7n_-ldbcvX7SEr1GCHqQaCCFwdubaEKnzKGbrYAzCYdVdncbsw36Nx0_P");'>
+<div class="absolute inset-0 bg-gradient-to-t from-[#193322] to-transparent"></div>
+<div class="absolute bottom-3 left-4 flex gap-1">
+<span class="material-symbols-outlined text-yellow-400 text-[20px]">star</span>
+<span class="material-symbols-outlined text-yellow-400 text-[20px]">star</span>
+<span class="material-symbols-outlined text-yellow-400 text-[20px]">star</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-3 flex-1">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-white text-lg font-bold leading-tight">Livello 3: La Montagna</p>
+<p class="text-[#92c9a4] text-sm mt-1">Punteggio: 9,100</p>
+</div>
+<span class="px-2 py-1 rounded bg-primary/20 text-primary text-xs font-bold uppercase">Completato</span>
+</div>
+<button class="mt-auto w-full flex cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-[#23482f] text-white hover:bg-primary hover:text-[#112217] transition-colors text-sm font-bold gap-2">
+<span class="material-symbols-outlined text-[18px]">replay</span>
+                                        Rigioca
+                                    </button>
+</div>
+</div>
+<!-- Card Level 4 -->
+<div class="flex flex-col rounded-xl bg-[#193322] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_25px_rgba(19,236,91,0.15)] transition-shadow border border-primary border-2">
+<div class="h-40 w-full bg-cover bg-center relative" data-alt="Active volcano glowing red with lava in the dark" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAF7wQ39YDWx3_kiXNXzdICMRAv3kjmMOlGXGyrBI7VUpbflH2IzkT9z2C8xq76BNd-5w6tIIL0IN0apR2PYKiaGXhK-9Rzl5w929D8gISdVCjHdJUF0uNaQuYUTQDpLbY9yOAaP-sSwKQTXA8z7CG7MDuOTwng-YOfz_NHHMTgnlFtsXM3oU0L56iMWiwoP2kb6Oh0p_yWi0DZjQS6a0PihR9dSpa4SF4naApZM7SSTztM-ciQ9ZQK_q9JoG4Ibk3H8RDzfVeSGEMH");'>
+<div class="absolute inset-0 bg-gradient-to-t from-[#193322] to-transparent"></div>
+<div class="absolute bottom-3 left-4 flex gap-1">
+<span class="material-symbols-outlined text-white/30 text-[20px]">star</span>
+<span class="material-symbols-outlined text-white/30 text-[20px]">star</span>
+<span class="material-symbols-outlined text-white/30 text-[20px]">star</span>
+</div>
+<div class="absolute top-3 right-3 bg-primary text-[#112217] text-xs font-bold px-2 py-1 rounded shadow-lg">Nuovo Record!</div>
+</div>
+<div class="p-4 flex flex-col gap-3 flex-1">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-white text-lg font-bold leading-tight">Livello 4: Il Vulcano</p>
+<p class="text-[#92c9a4] text-sm mt-1">Punteggio: 1,100</p>
+</div>
+<span class="px-2 py-1 rounded bg-primary text-[#112217] text-xs font-bold uppercase">Appena Concluso</span>
+</div>
+<button class="mt-auto w-full flex cursor-pointer items-center justify-center rounded-lg h-9 px-4 bg-primary text-[#112217] hover:bg-[#0fb345] transition-colors text-sm font-bold gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                                        Continua
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-4 mt-4 flex flex-col md:flex-row gap-4 justify-center items-center border-t border-[#23482f] pt-8">
+<button class="w-full md:w-auto flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-6 bg-[#23482f] text-white hover:bg-[#2d5c3c] transition-colors text-base font-bold gap-2">
+<span class="material-symbols-outlined">home</span>
+                            Menu Principale
+                        </button>
+<button class="w-full md:w-auto flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-6 bg-[#23482f] text-white hover:bg-[#2d5c3c] transition-colors text-base font-bold gap-2">
+<span class="material-symbols-outlined">visibility</span>
+                            Rivedi Livelli
+                        </button>
+<button class="w-full md:w-auto flex min-w-[200px] cursor-pointer items-center justify-center rounded-xl h-12 px-8 bg-primary text-[#112217] hover:bg-[#0fb345] shadow-[0_0_20px_rgba(19,236,91,0.3)] transition-all transform hover:scale-105 text-base font-bold gap-2">
+<span class="material-symbols-outlined">restart_alt</span>
+                            Ricomincia Gioco
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

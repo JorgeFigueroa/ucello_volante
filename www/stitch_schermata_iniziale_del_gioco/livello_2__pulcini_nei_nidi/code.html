@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Livello 2: Pulcini nei Nidi</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                        "surface-dark": "#162e1e", // Slightly lighter than background for cards
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #102216; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #23482f; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #13ec5b; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden">
+<div class="flex h-screen w-full flex-row overflow-hidden">
+<!-- Side Navigation -->
+<aside class="hidden w-64 flex-col border-r border-[#23482f] bg-[#112217] lg:flex">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Logo / Brand -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 shadow-lg shadow-primary/20" data-alt="Abstract green leaf logo for Vita Mahjong" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCjjBjtyA6SKiDg1HSZUGPCdAWG9O1Ru9DIXnFn3qVIVkTOSGk5MQHRJ8e_tJDLMAKs-xStghGVIMz3kQ8_cDvO0GV-nFCbK9hoMVe3JE-S7jfyI7EUJ0y4Up5ICpxUSMQcHSEa660W2uaGjNIvF9QIe3eKgvjwQjOqwzTL3PSyBMv8kuF3JtezybOUkigu0I0PNLBbxyjen7ky1SiENFZegmaAw_ppuZ0Q14gJ8gcDQVU4VI7hDZKsYvrNKHnSBuK39_3VtD_dsta9");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-normal">Vita Mahjong</h1>
+<p class="text-primary text-xs font-medium leading-normal">Salva la Natura</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-col gap-2">
+<a class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-[#23482f] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">home</span>
+<span class="text-sm font-medium">Home</span>
+</a>
+<a class="group flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#23482f] text-white shadow-sm border border-[#23482f]" href="#">
+<span class="material-symbols-outlined text-primary">stadia_controller</span>
+<span class="text-sm font-bold">Livelli</span>
+</a>
+<a class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-[#23482f] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">person</span>
+<span class="text-sm font-medium">Profilo</span>
+</a>
+<a class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-[#23482f] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium">Impostazioni</span>
+</a>
+</div>
+</div>
+<!-- Bottom Info -->
+<div class="flex flex-col gap-4 px-2">
+<div class="rounded-lg bg-[#162e1e] p-4 border border-[#23482f]">
+<p class="text-xs text-slate-400 mb-2">Stagione Corrente</p>
+<p class="text-sm font-bold text-white mb-1">Risveglio della Foresta</p>
+<div class="w-full bg-[#102216] h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex flex-1 flex-col overflow-y-auto h-full relative">
+<!-- Mobile Header (Visible only on small screens) -->
+<div class="lg:hidden flex items-center justify-between p-4 border-b border-[#23482f] bg-[#112217]">
+<span class="text-white font-bold">Vita Mahjong</span>
+<span class="material-symbols-outlined text-white cursor-pointer">menu</span>
+</div>
+<div class="flex-1 max-w-[1280px] w-full mx-auto p-4 md:p-8 flex flex-col gap-6">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-primary/80 text-sm font-medium">
+<span class="material-symbols-outlined text-[18px]">forest</span>
+<span>Mondo 1: La Foresta</span>
+</div>
+<h2 class="text-white text-3xl md:text-4xl font-black leading-tight tracking-tight">
+                            Livello 2: Pulcini nei Nidi
+                        </h2>
+<p class="text-slate-400 text-base font-normal max-w-xl">
+                            Obiettivo: Porta i 3 pulcini nei nidi sicuri. Evita gli ostacoli e proteggi la natura.
+                        </p>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center size-10 rounded-lg bg-[#23482f] hover:bg-[#2f5c3d] text-white transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="flex items-center justify-center size-10 rounded-lg bg-[#23482f] hover:bg-[#2f5c3d] text-white transition-colors">
+<span class="material-symbols-outlined">pause</span>
+</button>
+</div>
+</div>
+<!-- Stats HUD -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Score -->
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-[#162e1e] border border-[#23482f] shadow-sm">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[20px]">stars</span>
+<p class="text-slate-300 text-xs font-bold uppercase tracking-wider">Punteggio</p>
+</div>
+<p class="text-white text-2xl font-black font-mono">0</p>
+</div>
+<!-- Worms -->
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-[#162e1e] border border-[#23482f] shadow-sm">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-lg">🪱</span>
+<p class="text-slate-300 text-xs font-bold uppercase tracking-wider">Vermicelli</p>
+</div>
+<p class="text-white text-2xl font-black font-mono">0<span class="text-slate-500 text-lg">/10</span></p>
+</div>
+<!-- Chicks (Primary Objective) -->
+<div class="col-span-2 md:col-span-2 flex flex-col gap-1 rounded-xl p-4 bg-primary/10 border border-primary/30 shadow-[0_0_15px_rgba(19,236,91,0.1)] relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-primary text-6xl">egg_alt</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-lg">🐣</span>
+<p class="text-primary text-xs font-bold uppercase tracking-wider">Pulcini da Salvare</p>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-white text-3xl font-black leading-none">3</p>
+<p class="text-primary text-sm font-medium mb-1">rimanenti</p>
+</div>
+</div>
+</div>
+<!-- Main Game Viewport -->
+<div class="flex-1 min-h-[400px] relative rounded-2xl overflow-hidden border border-[#23482f] bg-black shadow-2xl group/viewport">
+<!-- 3D Game Placeholder Image -->
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover/viewport:scale-105" data-alt="3D isometric view of a magical forest floor with glowing nests and small yellow chicks wandering on paths" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDoGci-ST3ipBqlEjOE3LWhzPYcifW96S_guiZD4qWx2abBjzlD8olnStbgUV8S3FxtOaFCzojghc6dDRuuCw2QcWlA6Wr6m0eY4aNdy-dYcvT76SSx9fYpmSzFxM18ufR5ltmTeCZcnrRl92ZYEUub4QWSMyqTcpDU_G5MdnnvI-ytBc7dQ92MAVGR1qIGOiMoyxig-KTh3tVxMOtzdh4kOn61MGiRHi0OFuUuUOLy9Zjm-aBIYKyMqhe0tmQpL_64DmtYGa3s6UFo");'>
+<!-- Dark Overlay gradient for UI readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
+</div>
+<!-- In-Game HUD: Objectives Overlay -->
+<div class="absolute top-6 left-6 flex flex-col gap-2 animate-fade-in-down">
+<div class="flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+<div class="size-2 rounded-full bg-primary animate-pulse"></div>
+<span class="text-white text-sm font-medium tracking-wide">Obiettivo Attivo</span>
+</div>
+</div>
+<!-- In-Game HUD: Nests Indicators (Simulated) -->
+<div class="absolute top-[30%] left-[60%] flex flex-col items-center gap-1 group/marker cursor-pointer">
+<div class="px-2 py-1 bg-black/70 rounded text-[10px] text-white font-bold opacity-0 group-hover/marker:opacity-100 transition-opacity">Nido #1</div>
+<span class="material-symbols-outlined text-primary drop-shadow-[0_0_8px_rgba(19,236,91,0.8)] text-4xl animate-bounce">location_on</span>
+</div>
+<div class="absolute top-[60%] left-[20%] flex flex-col items-center gap-1 group/marker cursor-pointer">
+<div class="px-2 py-1 bg-black/70 rounded text-[10px] text-white font-bold opacity-0 group-hover/marker:opacity-100 transition-opacity">Nido #2</div>
+<span class="material-symbols-outlined text-white/50 drop-shadow-md text-3xl">location_on</span>
+</div>
+<!-- Right Side HUD: Flight Gauge -->
+<div class="absolute right-6 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-md border border-white/10 p-3 rounded-full flex flex-col items-center gap-3 h-64">
+<span class="material-symbols-outlined text-primary/80 text-xl">flight</span>
+<div class="flex-1 w-2 bg-white/10 rounded-full relative overflow-hidden flex flex-col justify-end">
+<!-- Fill level -->
+<div class="w-full bg-primary h-[0%] transition-all duration-500 shadow-[0_0_10px_#13ec5b]"></div>
+</div>
+<span class="text-xs font-bold font-mono text-white">0%</span>
+</div>
+<!-- Bottom Action Panel (Overlay) -->
+<div class="absolute bottom-6 left-6 right-6 md:left-auto md:w-[400px]">
+<div class="bg-[#102216]/90 backdrop-blur-xl border border-[#326744] p-4 rounded-xl shadow-xl flex items-center justify-between gap-4">
+<div class="flex flex-col">
+<h4 class="text-white text-sm font-bold">Guida i pulcini</h4>
+<p class="text-slate-400 text-xs">Usa il mouse per tracciare il percorso.</p>
+</div>
+<button class="bg-primary hover:bg-green-400 text-[#102216] px-5 py-2 rounded-lg font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-[0_0_10px_rgba(19,236,91,0.4)]">
+                                Inizia Volo
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

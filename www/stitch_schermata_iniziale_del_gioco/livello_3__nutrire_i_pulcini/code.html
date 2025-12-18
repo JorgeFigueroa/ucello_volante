@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Livello 3: Nutrire i Pulcini</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec5b",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for game-like feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #102216; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #23482f; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #13ec5b; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark overflow-hidden font-display text-white selection:bg-primary selection:text-black">
+<div class="relative h-screen w-full flex flex-col">
+<!-- Game Viewport (Simulated 3D Environment) -->
+<!-- The background image represents the 3D scene (Forest floor with nest) -->
+<div class="absolute inset-0 z-0 bg-cover bg-center pointer-events-none" data-alt="3D render of a lush green forest floor with moss and ferns" style="background-image: linear-gradient(rgba(16, 34, 22, 0.3), rgba(16, 34, 22, 0.6)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuB59DowartyWWfmF5RZbGhdd_OK6Jm7FbPYCr5y6C8o2iYvBNv5do2cP7LYYf9lCq4eGdOvIkajgbCpC8sjKUhnNs2dh82bXqbmBMLNcfv3Vmeb7WiuRYzghGGG1t2p5YzY9CPwfbsWoHPrGi06snJsmULWxNzZkbcbkVJd41yQvtsxnDV632FsDOzTRvdOsX3y8HBy_HrEiHYiENLH4UroZPBc-AGkePQ6JC3kShVHWr-85hXzwi85dcSzwIRzZPQKuR0v8_ix3t-4');">
+</div>
+<!-- HUD: Top Bar -->
+<header class="relative z-50 flex items-center justify-between border-b border-[#23482f]/50 bg-[#112217]/80 backdrop-blur-md px-6 py-4 shadow-lg">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center rounded-lg bg-[#23482f] p-2 text-white hover:bg-[#326744] transition-colors">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+</button>
+<div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight uppercase text-shadow">Livello 3: Nutrire i Pulcini</h2>
+<div class="flex items-center gap-2 text-xs font-medium text-primary/80">
+<span class="material-symbols-outlined text-[14px]">forest</span>
+<span>Foresta Antica</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#23482f] text-white hover:bg-primary hover:text-black transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#23482f] text-white hover:bg-primary hover:text-black transition-colors">
+<span class="material-symbols-outlined">pause</span>
+</button>
+</div>
+</header>
+<!-- Main Game UI Overlay Container -->
+<div class="relative z-10 flex flex-1 flex-col justify-between p-6">
+<!-- Top HUD Area: Stats & Resources -->
+<div class="flex flex-wrap items-start justify-between gap-6">
+<!-- Left: Score & Flight Meter -->
+<div class="flex flex-col gap-4 w-full max-w-xs">
+<!-- Score Card -->
+<div class="flex flex-col gap-1 rounded-xl border border-[#326744] bg-[#102216]/90 p-4 shadow-lg backdrop-blur-sm">
+<div class="flex justify-between items-center">
+<p class="text-[#92c9a4] text-xs font-bold tracking-widest uppercase">LV.3 Score</p>
+<span class="material-symbols-outlined text-primary text-sm">stars</span>
+</div>
+<p class="text-white text-3xl font-black leading-none tracking-tight">1,250</p>
+</div>
+<!-- Flight Progress -->
+<div class="flex flex-col gap-2 rounded-xl border border-[#326744] bg-[#102216]/90 p-4 shadow-lg backdrop-blur-sm">
+<div class="flex justify-between items-end">
+<p class="text-white text-sm font-bold uppercase tracking-wide">Volo Progress</p>
+<p class="text-primary text-xl font-bold leading-none">45%</p>
+</div>
+<div class="w-full rounded-full bg-[#23482f] h-3 shadow-inner">
+<div class="h-3 rounded-full bg-primary shadow-[0_0_10px_rgba(19,236,91,0.5)] transition-all duration-500 ease-out" style="width: 45%;"></div>
+</div>
+<p class="text-[#92c9a4] text-xs leading-normal">Nutri i pulcini per completare il volo.</p>
+</div>
+</div>
+<!-- Right: Resources / Inventory -->
+<div class="flex gap-3">
+<!-- Worms Counter -->
+<div class="flex items-center gap-3 rounded-xl border border-[#326744] bg-[#102216]/90 px-5 py-3 shadow-lg backdrop-blur-sm min-w-[120px]">
+<div class="rounded-full bg-[#23482f] p-2 text-[#e3a09e]">
+<span class="material-symbols-outlined">pest_control</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[#92c9a4] text-[10px] font-bold uppercase tracking-wider">Vermi</span>
+<span class="text-white text-2xl font-black leading-none">0</span>
+</div>
+</div>
+<!-- Chicks Counter -->
+<div class="flex items-center gap-3 rounded-xl border border-primary/50 bg-[#102216]/90 px-5 py-3 shadow-lg backdrop-blur-sm min-w-[120px] ring-1 ring-primary/20">
+<div class="rounded-full bg-primary p-2 text-black">
+<span class="material-symbols-outlined">flutter_dash</span>
+</div>
+<div class="flex flex-col">
+<span class="text-primary text-[10px] font-bold uppercase tracking-wider">Pulcini</span>
+<span class="text-white text-2xl font-black leading-none">3</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Area: Gameplay Hints (Floating near intended 3D objects) -->
+<!-- Simulating 3D World Markers -->
+<div class="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+<div class="flex flex-col items-center gap-2 animate-bounce">
+<div class="bg-primary/90 text-black text-xs font-bold px-2 py-1 rounded shadow-lg backdrop-blur-sm">
+                        Ho fame!
+                    </div>
+<span class="material-symbols-outlined text-primary text-4xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">arrow_drop_down</span>
+</div>
+</div>
+<!-- Bottom Area: Objective Card -->
+<div class="mx-auto w-full max-w-2xl">
+<div class="relative overflow-hidden rounded-xl border border-[#326744] bg-[#102216]/95 p-1 shadow-2xl backdrop-blur-md">
+<!-- Decorative gradient line -->
+<div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"></div>
+<div class="flex flex-col sm:flex-row items-center gap-6 p-5">
+<!-- Icon illustration -->
+<div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#23482f] text-primary shadow-inner">
+<span class="material-symbols-outlined text-4xl">egg_alt</span>
+</div>
+<div class="flex flex-1 flex-col gap-1 text-center sm:text-left">
+<h3 class="text-white text-xl font-bold tracking-tight">Obiettivo: Nutrire la Nidiata</h3>
+<p class="text-[#92c9a4] text-sm font-medium leading-relaxed">
+                                Cerca i vermi nascosti nel terreno e clicca sui pulcini per farli crescere.
+                                Riempi la barra di volo per completare il livello.
+                            </p>
+</div>
+<!-- Action Button -->
+<button class="shrink-0 cursor-pointer rounded-lg bg-primary px-6 py-3 text-sm font-bold text-black shadow-[0_0_15px_rgba(19,236,91,0.3)] transition-transform active:scale-95 hover:bg-[#3bf979]">
+                            INIZIA
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

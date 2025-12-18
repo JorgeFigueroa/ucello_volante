@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="it"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Livello 4: Insegnare a Volare</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#13ec5b",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102216",
+              "hud-bg": "rgba(16, 34, 22, 0.85)",
+            },
+            fontFamily: {
+              "display": ["Be Vietnam Pro", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for HUD panels if needed */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #13ec5b; 
+            border-radius: 3px;
+        }
+        
+        /* HUD Glass Effect */
+        .hud-panel {
+            background-color: rgba(17, 34, 23, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(19, 236, 91, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-white font-display overflow-hidden h-screen w-full relative">
+<!-- 3D Game Background Simulation -->
+<div class="absolute inset-0 z-0 select-none">
+<img alt="First person view of a lush green forest canopy with bright blue sky and sun rays filtering through leaves, simulating a flight environment" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBGa3J-wewuPtsGwVAFnPepLKHtTyuIW91GCYYIDVN6uQ-v_Dr6ys_rNOY-at26tZNl5ujeJtNbJUSvz8QAquomLJfDY_2KlCj9_VV2V05Wmo43lsa9qVMjZu7Pvb_6Y0fYsiLr5RW1LBfgzE628kTs7DARw5lEeyeAH-WGVzogHu3tWyroSiQWx12_wC98QNfhK0yUWGoIoCx-SH-wN5jLq-xPXmDPaAtXlM_Uj27GmJXNHBzxQjw3VCEP1RShmtUm0KIgwIJbKXY"/>
+<!-- Vignette and Gradient Overlay for better UI contrast -->
+<div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80"></div>
+</div>
+<!-- Main UI Layout (HUD) -->
+<div class="relative z-10 flex flex-col h-full pointer-events-none"> <!-- pointer-events-none lets clicks pass through to 'game' -->
+<!-- TOP NAVIGATION HUD -->
+<header class="pointer-events-auto px-6 py-4 flex items-center justify-between border-b border-white/10 bg-gradient-to-b from-black/80 to-transparent">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary border border-primary/30">
+<span class="material-symbols-outlined">flight_takeoff</span>
+</div>
+<div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-wide uppercase drop-shadow-md">Livello 4</h2>
+<p class="text-primary text-sm font-medium tracking-wider">Insegnare a Volare</p>
+</div>
+</div>
+<div class="hidden md:flex flex-1 justify-center gap-2">
+<!-- Center Status Indicator -->
+<div class="hud-panel px-4 py-1 rounded-full flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary animate-pulse"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-white/80">Area Attiva</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center gap-6 bg-black/40 px-4 py-2 rounded-lg border border-white/5 backdrop-blur-sm">
+<a class="text-white/80 hover:text-primary transition-colors text-sm font-medium flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">home</span> Home
+                    </a>
+<a class="text-white/80 hover:text-primary transition-colors text-sm font-medium flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">map</span> Mappa
+                    </a>
+<a class="text-white/80 hover:text-primary transition-colors text-sm font-medium flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span> Inventario
+                    </a>
+</div>
+<button class="flex items-center justify-center rounded-lg size-10 bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/10">
+<span class="material-symbols-outlined">pause</span>
+</button>
+</div>
+</header>
+<!-- MIDDLE SECTION (Split Left/Right) -->
+<div class="flex-1 flex justify-between p-6 overflow-hidden">
+<!-- LEFT: Stats Panel -->
+<div class="flex flex-col gap-4 pointer-events-auto w-64">
+<!-- Main Score Card -->
+<div class="hud-panel rounded-xl p-5 flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<p class="text-white/70 text-xs font-bold uppercase tracking-wider">Punteggio LV.4</p>
+<span class="material-symbols-outlined text-primary/50 text-sm">trophy</span>
+</div>
+<p class="text-white text-3xl font-black tracking-tight drop-shadow-lg">1,250</p>
+</div>
+<!-- Resources Grid -->
+<div class="grid grid-cols-2 gap-3">
+<div class="hud-panel rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute -right-2 -top-2 size-8 bg-orange-500/20 rounded-full blur-xl"></div>
+<p class="text-white/70 text-[10px] font-bold uppercase leading-tight">Vermi<br/>Raccolti</p>
+<div class="flex items-end justify-between">
+<p class="text-white text-2xl font-bold">0</p>
+<span class="text-2xl filter drop-shadow-md">🪱</span>
+</div>
+</div>
+<div class="hud-panel rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute -right-2 -top-2 size-8 bg-yellow-400/20 rounded-full blur-xl"></div>
+<p class="text-white/70 text-[10px] font-bold uppercase leading-tight">Pulcini<br/>Salvati</p>
+<div class="flex items-end justify-between">
+<p class="text-white text-2xl font-bold">3</p>
+<span class="text-2xl filter drop-shadow-md">🐣</span>
+</div>
+</div>
+</div>
+<!-- Mini Objective Prompt -->
+<div class="hud-panel p-4 rounded-xl mt-2 border-l-4 border-l-primary">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-sm">campaign</span>
+<h4 class="text-sm font-bold text-white">Nuova Missione</h4>
+</div>
+<p class="text-xs text-white/80 leading-relaxed">
+                        Guida i pulcini verso le correnti ascensionali. Assicurati che abbiano mangiato abbastanza vermi.
+                    </p>
+</div>
+</div>
+<!-- RIGHT: Location Info (Collapsible style) -->
+<div class="hidden lg:flex flex-col gap-4 pointer-events-auto w-72 items-end">
+<div class="hud-panel rounded-xl p-5 w-full">
+<div class="flex items-center gap-3 mb-3 border-b border-white/10 pb-3">
+<span class="material-symbols-outlined text-primary">landscape</span>
+<h3 class="text-white font-bold text-base">Area di Volo</h3>
+</div>
+<div class="relative h-32 rounded-lg overflow-hidden mb-3 border border-white/10">
+<img alt="Map visualization of the flight area with wind currents" class="w-full h-full object-cover opacity-80" data-location="Foresta Alta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlnbuYjqOCUefpZcRZSl6mqdQe5XWqGhd2-voxxUmRTcar16g0yhrFPnGQ12PbhDVC1Z0d1cwK8GAuZO1X4CcVQY3OTZCBqwIzjia4WhfxvNaJdY0xSVWOMJxlHNM4Scefn9A6SQ028cJeiFXlhnoUt8-jOaChiwpTOY6Wc73AMSkjIptShoADv5vTlkxuc-RALbnBUKENmmvFeci_YerYl_5Mq5VOQ_gyyOGr3mMpe5RWNb9j-HLyg4FGXTXQ2dnDWpfPTLOyTkeW"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/20">
+<span class="material-symbols-outlined text-white/80 text-4xl drop-shadow-lg">air</span>
+</div>
+</div>
+<p class="text-xs text-white/70 leading-normal">
+                        Ambiente 3D aperto: Cime degli alberi e correnti ascensionali. Attenzione ai rami sporgenti.
+                    </p>
+<button class="mt-4 w-full flex items-center justify-center gap-2 rounded-lg h-9 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold border border-primary/30 transition-all uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">explore</span> Scansiona Area
+                    </button>
+</div>
+</div>
+</div>
+<!-- BOTTOM: Action & Progress -->
+<div class="p-6 pt-0 flex flex-col items-center gap-6 pointer-events-auto">
+<!-- Contextual Action Button (Floating) -->
+<div class="flex gap-4">
+<button class="group relative overflow-hidden rounded-full h-16 w-16 bg-white/10 hover:bg-primary hover:scale-105 transition-all duration-300 border-2 border-primary/50 flex items-center justify-center shadow-[0_0_20px_rgba(19,236,91,0.3)]">
+<span class="material-symbols-outlined text-3xl text-white group-hover:text-background-dark transition-colors">arrow_upward</span>
+<span class="absolute -bottom-6 text-[10px] font-bold text-white opacity-0 group-hover:opacity-100 group-hover:bottom-1 transition-all">Lancia</span>
+</button>
+</div>
+<!-- Main Progress Bar Panel -->
+<div class="hud-panel w-full max-w-3xl rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-center gap-6 border-t-4 border-t-primary">
+<!-- Label & Percentage -->
+<div class="flex md:flex-col items-center md:items-start justify-between w-full md:w-auto gap-1 min-w-[140px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary animate-pulse">school</span>
+<p class="text-white text-sm font-bold uppercase tracking-wider">Maestria VOLO</p>
+</div>
+<p class="text-white text-4xl font-black font-mono tabular-nums leading-none tracking-tight">0<span class="text-lg text-primary/80">%</span></p>
+</div>
+<!-- Bar & Hint -->
+<div class="flex-1 flex flex-col gap-3 w-full">
+<div class="relative w-full h-6 bg-black/40 rounded-full overflow-hidden border border-white/10 shadow-inner">
+<!-- Stripes pattern for empty part -->
+<div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, #ffffff 10px, #ffffff 11px);"></div>
+<!-- Fill -->
+<div class="h-full bg-gradient-to-r from-primary/80 to-primary relative" style="width: 0%;">
+<div class="absolute inset-0 bg-white/20 animate-[pulse_2s_infinite]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<p class="text-primary text-xs md:text-sm font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">flag</span>
+                            Obiettivo: Insegna a volare a TUTTI!
+                        </p>
+<div class="flex gap-1">
+<div class="h-1.5 w-4 rounded-full bg-white/20"></div>
+<div class="h-1.5 w-4 rounded-full bg-white/20"></div>
+<div class="h-1.5 w-4 rounded-full bg-white/20"></div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="hidden md:flex min-w-[140px] h-12 cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary hover:bg-green-400 text-background-dark text-sm font-bold leading-normal tracking-wide shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 active:translate-y-0">
+<span>INIZIA LEZIONE</span>
+<span class="material-symbols-outlined text-lg">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

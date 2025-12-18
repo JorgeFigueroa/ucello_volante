@@ -9,7 +9,7 @@
         /* --- STILI --- */
         :root {
             --container-bg: #000;
-            --sky-fire: linear-gradient(to bottom, #4a1e11 0%, #2a0a0a 80%, #000000 100%);
+            --sky-fire: url('immagini/Gemini_Generated_Image_rvepx3rvepx3rve.png');
             --sky-blue: linear-gradient(to bottom, #0288d1 0%, #01579b 80%, #000000 100%);
             --sky-garden: linear-gradient(to bottom, #0097a7 0%, #006064 100%);
             --sky-high: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
@@ -88,13 +88,22 @@
         }
         .btn:active { transform: scale(0.96); box-shadow: inset 0 2px 10px rgba(0,0,0,0.8); }
 
+        .level-select-container { margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .level-btn {
+            font-family: 'Cinzel', serif; padding: 5px 15px; border-radius: 4px; border: 1px solid #eecfa1;
+            background: linear-gradient(to bottom, #5d4037, #3e2723); color: #fff; font-weight: 700;
+            cursor: pointer; font-size: 1rem; transition: all 0.2s;
+        }
+        .level-btn:hover { background: linear-gradient(to bottom, #8d6e63, #5d4037); transform: scale(1.05); }
+        .level-btn:active { transform: scale(0.95); }
+
         /* UI */
         .header { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; align-items: center; z-index: 20; pointer-events: none; }
         .header-right { display: flex; gap: 10px; align-items: center; pointer-events: auto; }
         .score { font-size: 1.1rem; padding: 5px 15px; border-radius: 999px; background: rgba(0,0,0,0.6); border: 2px solid rgba(255, 255, 255, 0.3); text-shadow: 1px 1px 2px black; font-weight: 800; color: var(--accent-gold); display: flex; align-items: center; gap: 10px;}
         .mute-btn { background: rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; width: 40px; height: 40px; color: #fff; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; }
 
-        .game-area { position: absolute; inset: 0; overflow: hidden; background: var(--sky-fire); touch-action: none; cursor: grab; transition: background 1.5s ease; }
+        .game-area { position: absolute; inset: 0; overflow: hidden; background: var(--sky-fire); touch-action: none; cursor: grab; transition: background 1.5s ease; background-size: cover; background-position: center; }
         .game-area:active { cursor: grabbing; }
 
         /* SCENARIO */
@@ -154,9 +163,24 @@
 
         .obstacle { position: absolute; width: 90px; height: 100px; background-image: url('fire-36.gif'); background-size: 100% 100%; mix-blend-mode: screen; z-index: 5; }
         .obstacle.orange { filter: brightness(1.3) saturate(1.5); }
-        .obstacle.bomb { filter: grayscale(100%) brightness(0.8) contrast(1.5); z-index: 6; animation: bomb-pulse 0.4s infinite alternate; }
-        .obstacle.bomb::before { content: ''; position: absolute; top: -15px; left: 50%; width: 4px; height: 15px; background: #8d6e63; transform: translateX(-50%) rotate(-10deg); }
-        .obstacle.bomb::after { content: ''; position: absolute; top: -28px; left: 48%; width: 14px; height: 14px; background: radial-gradient(circle, #ffffff, #ffff00, #ff0000); border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 10px #ffff00; animation: fuse-burn 0.1s infinite alternate; }
+        .obstacle.bomb {
+            background-image: none;
+            background-color: black;
+            border-radius: 50%;
+            filter: none;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            color: white;
+            text-shadow: 1px 1px 2px red;
+            z-index: 6;
+            animation: bomb-pulse 0.4s infinite alternate;
+        }
+        .obstacle.bomb::before { content: '💣'; }
+        .obstacle.bomb::after { content: ''; display: none; }
         @keyframes bomb-pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
         @keyframes fuse-burn { 0% { transform: translateX(-50%) scale(1); opacity: 0.8; } 100% { transform: translateX(-50%) scale(1.5); opacity: 1; } }
 
@@ -181,6 +205,41 @@
         @keyframes explode { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
         .score-pop { position: absolute; color: var(--accent-gold); font-weight: 900; font-size: 1.6rem; animation: floatUp 0.8s forwards; z-index: 20; pointer-events: none; text-shadow: 0 0 8px #000; }
         @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-50px); opacity: 0; } }
+
+        .path-point {
+            position: absolute; width: 10px; height: 10px;
+            background: radial-gradient(circle, #ffffff, #ffff00, rgba(255,255,0,0));
+            border-radius: 50%; z-index: 7; pointer-events: none;
+            box-shadow: 0 0 8px #ffff00; animation: pulse-point 1s infinite alternate;
+        }
+        @keyframes pulse-point { from { transform: scale(0.8); opacity: 0.7; } to { transform: scale(1.2); opacity: 1; } }
+
+        .rhythm-note {
+            position: absolute; width: 40px; height: 40px;
+            background: radial-gradient(circle, #9c27b0, #673ab7);
+            border-radius: 50%; z-index: 7; pointer-events: none;
+            box-shadow: 0 0 15px #e040fb; display: flex; justify-content: center; align-items: center;
+            font-size: 24px; font-weight: bold; color: white;
+            animation: note-pulse 0.8s infinite alternate;
+            opacity: 0; transform: scale(0.5);
+        }
+        .rhythm-note.active { animation: note-pulse 0.4s infinite alternate; }
+        @keyframes note-pulse { from { transform: scale(0.8); opacity: 0.8; } to { transform: scale(1.1); opacity: 1; } }
+
+        .feather {
+            position: absolute; width: 40px; height: 40px; font-size: 30px;
+            z-index: 7; pointer-events: none; filter: drop-shadow(0 0 5px white);
+            animation: float-feather 2s infinite alternate ease-in-out;
+        }
+        .feather::after { content: '🪶'; }
+        @keyframes float-feather { from { transform: translateY(-10px) rotate(-10deg); } to { transform: translateY(10px) rotate(10deg); } }
+        
+        .perch {
+            position: absolute; width: 60px; height: 20px;
+            background-color: #8B4513; border: 3px solid #D2691E; border-radius: 10px;
+            z-index: 7; box-shadow: 0 4px 6px rgba(0,0,0,0.3); animation: pulse-perch 2s infinite alternate;
+        }
+        @keyframes pulse-perch { from { border-color: #D2691E; } to { border-color: #FFD700; } }
 
         .hidden { display: none !important; }
     </style>
@@ -227,6 +286,12 @@
                 Liv 4: Insegna a volare a TUTTI!
             </div>
             <button class="btn" id="startBtn">INIZIO GIOCO</button>
+            <div class="level-select-container">
+                <button class="level-btn" data-level="1">LV 1</button>
+                <button class="level-btn" data-level="2">LV 2</button>
+                <button class="level-btn" data-level="3">LV 3</button>
+                <button class="level-btn" data-level="4">LV 4</button>
+            </div>
         </div>
 
         <div class="scene-container" id="sceneContainer">
@@ -247,6 +312,8 @@
         <div class="learning-chick" id="learningChick1"></div>
         <div class="learning-chick" id="learningChick2"></div>
         <div class="learning-chick" id="learningChick3"></div>
+
+        <div id="level4Instructions" class="hidden" style="position:absolute; top: 120px; left: 50%; transform: translateX(-50%); font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px black; z-index: 30; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 10px;"></div>
 
         <div class="saffi-watermark">By Saffi</div>
     </div>
@@ -331,6 +398,51 @@
     let facingDirection = 1;
     let animationFrameId;
 
+    // --- LEVEL 4 NEW MECHANICS ---
+    let level4Variant = 3; // Default to Collect & Guide
+    let level4State = {
+        phase: 'none', 
+        pathIndex: 0,
+        pointIndex: 0,
+        chickIndex: 0,
+        playerPathProgress: 0,
+        score: 0, 
+        currentNoteIndex: 0,
+        chicksSaved: 0
+    };
+    
+    // VARIANT 1: Follow the Leader
+    const flightPaths = [
+        [ {x:100, y:300}, {x:200, y:250}, {x:300, y:300}, {x:400, y:350} ],
+        [ {x:100, y:350}, {x:150, y:250}, {x:250, y:250}, {x:300, y:350}, {x:350, y:250} ],
+        [ {x:50, y:400}, {x:150, y:200}, {x:250, y:400}, {x:350, y:200}, {x:450, y:400} ]
+    ];
+    let pathPoints = []; 
+    let currentChickIndex = 0;
+
+    // VARIANT 2: Rhythm Flight
+    const beatmap = [
+        { time: 1000, x: 100 }, { time: 1500, x: 300 }, { time: 2000, x: 200 },
+        { time: 2500, x: 150 }, { time: 3000, x: 350 }, { time: 3500, x: 250 },
+        { time: 4000, x: 100 }, { time: 4500, x: 300 }, { time: 5000, x: 200 },
+        { time: 5500, x: 150 }, { time: 6000, x: 350 }, { time: 6500, x: 250 },
+        { time: 7000, x: 100 }, { time: 7500, x: 300 }, { time: 8000, x: 200 },
+        { time: 8500, x: 150 }, { time: 9000, x: 350 }, { time: 9500, x: 250 },
+        { time: 10000, x: 100 }, { time: 10500, x: 300 }, { time: 11000, x: 200 },
+        { time: 11500, x: 150 }, { time: 12000, x: 350 }, { time: 12500, x: 250 }
+    ];
+    let rhythmNotes = [];
+    let rhythmTimer = 0;
+    let notesHit = 0;
+    let notesMissed = 0;
+
+    // VARIANT 3: Collect & Guide
+    let feathers = [];
+    let perches = [];
+    let playerPoweredUp = false;
+    let powerUpTimer = 0;
+
+
     // --- LOGICA DI CARICAMENTO E SALVATAGGIO ---
     window.onload = function() {
         const i = new Image(); i.src='bird-sprite-removebg-preview.png';
@@ -382,7 +494,7 @@
         if (currentLevel === 1) {
             levelBadge.textContent = "LV.1";
             sceneContainer.style.display = 'none'; eggsContainer.style.opacity = 1;
-            gameArea.style.background = "var(--sky-fire)";
+            gameArea.style.background = "url('immagini/Gemini_Generated_Image_rvepx3rvepx3rve.png')";
         } else if (currentLevel === 2) {
             levelBadge.textContent = "LV.2";
             currentChicksCount = MAX_BABIES - babiesDelivered;
@@ -398,22 +510,67 @@
         } else if (currentLevel === 4) {
             levelBadge.textContent = "LV.4";
             scoreText.style.display = 'none';
-            confidenceWrapper.style.display = 'block';
-            updateConfidence(0);
-
+            const instructions = document.getElementById('level4Instructions');
+            
+            // Clean up previous level 4 elements
             flyingChicks = [];
-            for(let i=0; i<3; i++) {
-                flyingChicks.push({
-                    x: (r.width/2 - 30) + (i - 1) * 60,
-                    y: 50 + (i * 30),
-                    vy: 0,
-                    confidence: 0,
-                    active: true,
-                    el: learningChicksDOM[i]
+            learningChicksDOM.forEach(c => c.style.display = 'none');
+            pathPoints.forEach(p => p.remove()); pathPoints = [];
+            rhythmNotes.forEach(n => n.el.remove()); rhythmNotes = [];
+            feathers.forEach(f => f.el.remove()); feathers = [];
+            perches.forEach(p => { if(p.el) p.el.remove(); }); 
+            // Reset perches array but keep coords? No, re-init based on variant.
+            
+            if (level4Variant === 1) { // Follow the Leader
+                confidenceWrapper.style.display = 'none';
+                level4State = { phase: 'player-demo', pathIndex: 0, pointIndex: 0, chickIndex: 0, playerPathProgress: 0 };
+                currentChickIndex = 0;
+                
+                // Prepare first chick
+                const r = gameArea.getBoundingClientRect();
+                flyingChicks.push({ x: r.width / 2, y: 100, vx: 0, vy: 0, el: learningChicksDOM[0], active: true, confidence: 0 });
+                learningChicksDOM[0].style.display = 'block';
+                flyingChicks[0].el.style.left = flyingChicks[0].x + 'px';
+                flyingChicks[0].el.style.top = flyingChicks[0].y + 'px';
+                
+                instructions.textContent = "Segui la scia di luce!";
+                instructions.classList.remove('hidden');
+                drawPathGuides(flightPaths[level4State.pathIndex]);
+                gameArea.style.background = "var(--sky-high)";
+
+            } else if (level4Variant === 2) { // Rhythm Flight
+                confidenceWrapper.style.display = 'block';
+                level4State = { phase: 'rhythm-play', score: 0, currentNoteIndex: 0 };
+                notesHit = 0; notesMissed = 0; rhythmTimer = 0;
+                
+                instructions.textContent = "Tocca le note a ritmo!";
+                instructions.classList.remove('hidden');
+                gameArea.style.background = "var(--sky-blue)";
+
+            } else if (level4Variant === 3) { // Collect & Guide
+                confidenceWrapper.style.display = 'none';
+                level4State = { phase: 'collect-guide', chicksSaved: 0 };
+                perches = [
+                    { x: 50, y: 100, el: null, occupied: false },
+                    { x: gameArea.clientWidth - 100, y: 100, el: null, occupied: false },
+                    { x: gameArea.clientWidth / 2 - 25, y: 50, el: null, occupied: false }
+                ];
+                
+                // Setup chicks on ground
+                learningChicksDOM.forEach((c, i) => {
+                    c.style.display = 'block';
+                    c.style.top = (gameArea.clientHeight - 60) + 'px';
+                    c.style.left = (50 + i * 100) + 'px';
                 });
-                learningChicksDOM[i].style.display = 'block';
+                for(let i=0; i<3; i++) {
+                    flyingChicks.push({ el: learningChicksDOM[i], x: 50 + i * 100, y: gameArea.clientHeight - 60, isFollowing: false, isSaved: false });
+                }
+
+                instructions.textContent = "Raccogli le piume per sollevare i pulcini!";
+                instructions.classList.remove('hidden');
+                spawnPerches();
+                gameArea.style.background = "var(--sky-high)";
             }
-            gameArea.style.background = "var(--sky-high)";
         }
     }
 
@@ -591,6 +748,30 @@
         gameArea.appendChild(pop); setTimeout(() => pop.remove(), 800);
     }
 
+    function drawPathGuides(path) {
+        pathPoints.forEach(p => p.remove());
+        pathPoints = [];
+        path.forEach(p => {
+            const pointEl = document.createElement('div');
+            pointEl.classList.add('path-point');
+            pointEl.style.left = p.x + 'px';
+            pointEl.style.top = p.y + 'px';
+            gameArea.appendChild(pointEl);
+            pathPoints.push(pointEl);
+        });
+    }
+
+    function spawnPerches() {
+        perches.forEach(p => {
+            const el = document.createElement('div');
+            el.classList.add('perch');
+            el.style.left = p.x + 'px';
+            el.style.top = p.y + 'px';
+            gameArea.appendChild(el);
+            p.el = el;
+        });
+    }
+
     function checkCol(el1, el2) {
         const r1 = el1.getBoundingClientRect();
         const r2 = el2.getBoundingClientRect();
@@ -708,53 +889,150 @@
 
         // LIV 4
         if (currentLevel === 4) {
-            let allSaved = true;
-            let totalConfidence = 0;
-            let activeCount = 0;
+            const instructions = document.getElementById('level4Instructions');
 
-            flyingChicks.forEach(fc => {
-                if (!fc.active) { totalConfidence += 100; return; }
-                allSaved = false; activeCount++;
-
-                fc.vy += GRAVITY * dt;
-                fc.y += fc.vy * dt;
-
-                let diffX = playerX - fc.x;
-                fc.x += diffX * 1.5 * dt;
-
-                const pRect = playerEl.getBoundingClientRect();
-                const cAbsLeft = gameArea.getBoundingClientRect().left + fc.x;
-                const cAbsTop = gameArea.getBoundingClientRect().top + fc.y;
-                const cRect = { left: cAbsLeft, top: cAbsTop, width: 60, height: 60, bottom: cAbsTop + 60, right: cAbsLeft + 60 };
-
-                if (checkColSimple(pRect, cRect)) {
-                    if (pRect.top > cRect.top) {
-                        fc.vy = JUMP_FORCE;
-                        playSound('coin');
-                        fc.confidence += 8;
-                        showScorePop(fc.x, fc.y, "❤", "red");
+            if (level4Variant === 1) { // Follow the Leader
+                const state = level4State;
+                switch(state.phase) {
+                    case 'player-demo':
+                        if (state.pointIndex < flightPaths[state.pathIndex].length) {
+                            const targetPoint = flightPaths[state.pathIndex][state.pointIndex];
+                            const pRect = playerEl.getBoundingClientRect();
+                            const dist = Math.hypot(pRect.left - targetPoint.x, pRect.top - targetPoint.y);
+                            if (dist < 60) {
+                                playSound('coin');
+                                pathPoints[state.pointIndex].style.display = 'none';
+                                state.pointIndex++;
+                            }
+                        }
+                        if (state.pointIndex >= flightPaths[state.pathIndex].length) {
+                            state.phase = 'chick-imitation';
+                            instructions.textContent = "Stagli vicino per dargli fiducia!";
+                            pathPoints.forEach(p => p.remove()); pathPoints = [];
+                            const chick = flyingChicks[state.chickIndex];
+                            chick.x = flightPaths[state.pathIndex][0].x;
+                            chick.y = flightPaths[state.pathIndex][0].y;
+                            state.pointIndex = 0;
+                            confidenceWrapper.style.display = 'block';
+                            updateConfidence(0);
+                        }
+                        break;
+                    case 'chick-imitation':
+                        const chick = flyingChicks[state.chickIndex];
+                        if (!chick.active) break;
+                        if (state.pointIndex < flightPaths[state.pathIndex].length) {
+                            const target = flightPaths[state.pathIndex][state.pointIndex];
+                            const speed = 150 * dt;
+                            let dx = target.x - chick.x; let dy = target.y - chick.y;
+                            const dist = Math.hypot(dx, dy);
+                            if(dist < speed) { chick.x = target.x; chick.y = target.y; state.pointIndex++; }
+                            else { chick.x += (dx / dist) * speed; chick.y += (dy / dist) * speed; }
+                            chick.el.style.left = chick.x + 'px'; chick.el.style.top = chick.y + 'px';
+                        } else {
+                            state.phase = 'player-demo'; state.pointIndex = 0;
+                            instructions.textContent = "Riprova! Mostragli di nuovo la via.";
+                            drawPathGuides(flightPaths[state.pathIndex]);
+                            break;
+                        }
+                        const pRect = playerEl.getBoundingClientRect();
+                        const cRect = chick.el.getBoundingClientRect();
+                        const proximity = Math.hypot(pRect.left - cRect.left, pRect.top - cRect.top);
+                        if (proximity < 150) { chick.confidence += 50 * dt; }
+                        else { chick.confidence -= 10 * dt; if (chick.confidence < 0) chick.confidence = 0; }
+                        updateConfidence(chick.confidence);
+                        if (chick.confidence >= 100) {
+                            playSound('win'); chick.active = false;
+                            chick.el.style.transition = "top 1s ease-in, opacity 1s";
+                            chick.el.style.top = "-100px"; chick.el.style.opacity = "0";
+                            state.chickIndex++;
+                            if (state.chickIndex >= 3) { setTimeout(() => triggerLevelEnding(4), 1500); }
+                            else {
+                                state.pathIndex++; state.pointIndex = 0; state.phase = 'player-demo';
+                                instructions.textContent = "Ottimo! Ora il prossimo!";
+                                setTimeout(() => {
+                                    instructions.textContent = "Segui la nuova scia!";
+                                    learningChicksDOM[state.chickIndex].style.display = 'block';
+                                    flyingChicks.push({ x: gameArea.clientWidth / 2, y: 100, vx: 0, vy: 0, el: learningChicksDOM[state.chickIndex], active: true, confidence: 0 });
+                                    drawPathGuides(flightPaths[state.pathIndex]);
+                                }, 1500);
+                            }
+                        }
+                        break;
+                }
+            } else if (level4Variant === 2) { // Rhythm Flight
+                rhythmTimer += dt * 1000;
+                while (level4State.currentNoteIndex < beatmap.length && rhythmTimer >= beatmap[level4State.currentNoteIndex].time) {
+                    const noteData = beatmap[level4State.currentNoteIndex];
+                    const el = document.createElement("div"); el.classList.add("rhythm-note");
+                    el.style.left = noteData.x + "px"; el.style.top = "-50px";
+                    gameArea.appendChild(el);
+                    rhythmNotes.push({ el, x: noteData.x, y: -50, active: true });
+                    level4State.currentNoteIndex++;
+                }
+                for (let i = rhythmNotes.length - 1; i >= 0; i--) {
+                    const note = rhythmNotes[i];
+                    if (!note.active) continue;
+                    note.y += (150 * dt); note.el.style.top = note.y + "px";
+                    if (note.y > 0 && note.el.style.opacity === "0") {
+                        note.el.style.transition = "opacity 0.5s, transform 0.5s"; note.el.style.opacity = "1"; note.el.style.transform = "scale(1)";
+                    }
+                    if (checkCol(playerEl, note.el)) {
+                        playSound('coin'); notesHit++; note.active = false; note.el.remove(); rhythmNotes.splice(i, 1);
+                    } else if (note.y > gameArea.clientHeight + 50) {
+                        notesMissed++; note.active = false; note.el.remove(); rhythmNotes.splice(i, 1);
                     }
                 }
-
-                if (fc.y > gameArea.clientHeight) { endGame(false); return; }
-
-                if (fc.confidence >= 100) {
-                    fc.active = false;
-                    fc.el.style.transition = "top 1s ease-in";
-                    fc.el.style.top = "-200px";
-                    playSound('win');
-                } else {
-                    totalConfidence += fc.confidence;
-                    fc.el.style.top = fc.y + "px";
-                    fc.el.style.left = fc.x + "px";
-                    fc.el.style.transform = `rotate(${fc.vy > 0 ? 10 : -10}deg)`;
+                const totalNotes = beatmap.length;
+                const processedNotes = level4State.currentNoteIndex;
+                const scorePercentage = processedNotes > 0 ? (notesHit / processedNotes) * 100 : 0;
+                updateConfidence(scorePercentage);
+                confidenceText.textContent = `Ritmo: ${notesHit} / ${processedNotes}`;
+                if (level4State.currentNoteIndex >= beatmap.length && rhythmNotes.length === 0) {
+                    if (notesHit >= totalNotes * 0.7) { setTimeout(() => triggerLevelEnding(4), 1000); }
+                    else { setTimeout(() => endGame(false), 1000); }
                 }
-            });
-
-            if (!isRunning) return;
-
-            updateConfidence(totalConfidence / 3);
-            if (allSaved) { setTimeout(() => triggerLevelEnding(4), 1000); }
+            } else if (level4Variant === 3) { // Collect & Guide
+                if (playerPoweredUp) {
+                    powerUpTimer -= dt * 1000;
+                    if (powerUpTimer <= 0) { playerPoweredUp = false; playerEl.classList.remove('super-mode'); }
+                }
+                if (Math.random() < 0.02) {
+                    const el = document.createElement("div"); el.classList.add("feather");
+                    el.style.left = Math.random() * (gameArea.clientWidth - 40) + "px"; el.style.top = "-50px";
+                    gameArea.appendChild(el);
+                    feathers.push({ el, x: parseInt(el.style.left), y: -50, active: true });
+                }
+                for (let i = feathers.length - 1; i >= 0; i--) {
+                    const feather = feathers[i]; feather.y += (100 * dt); feather.el.style.top = feather.y + 'px';
+                    if (feather.y > gameArea.clientHeight) { feather.el.remove(); feathers.splice(i, 1); continue; }
+                    if (checkCol(playerEl, feather.el)) {
+                        playSound('win'); playerPoweredUp = true; powerUpTimer = 5000;
+                        playerEl.classList.add('super-mode'); feather.el.remove(); feathers.splice(i, 1);
+                    }
+                }
+                flyingChicks.forEach(chick => {
+                    if (chick.isSaved) return;
+                    if (!chick.isFollowing) {
+                        if (playerPoweredUp && Math.hypot(playerX - chick.x, playerY - chick.y) < 80) { chick.isFollowing = true; }
+                    } else {
+                        const speed = 200 * dt;
+                        const dx = (playerX - 20) - chick.x; const dy = (playerY + 50) - chick.y;
+                        const dist = Math.hypot(dx, dy);
+                        if(dist < speed) { chick.x += dx; chick.y += dy; }
+                        else { chick.x += (dx / dist) * speed; chick.y += (dy / dist) * speed; }
+                        chick.el.style.left = chick.x + 'px'; chick.el.style.top = chick.y + 'px';
+                        for(const perch of perches) {
+                            if (!perch.occupied && Math.hypot(chick.x - perch.x, chick.y - perch.y) < 40) {
+                                playSound('win'); chick.isFollowing = false; chick.isSaved = true;
+                                perch.occupied = true; perch.el.style.animation = 'none'; perch.el.style.borderColor = '#39ff14';
+                                level4State.chicksSaved++; chick.el.style.top = (perch.y - 40) + 'px';
+                                if (level4State.chicksSaved >= 3) { setTimeout(() => triggerLevelEnding(4), 1000); }
+                                return;
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         for (let i = obstacles.length - 1; i >= 0; i--) {
@@ -837,6 +1115,15 @@
     window.addEventListener('touchend', () => isDragging = false);
 
     startBtn.addEventListener("click", startLoadingSequence);
+
+    document.querySelectorAll('.level-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            currentLevel = parseInt(e.target.dataset.level);
+            // Resettiamo eventuali salvataggi per evitare conflitti
+            sessionStorage.removeItem('savedLevel');
+            startLoadingSequence();
+        });
+    });
 </script>
 </body>
 </html>
