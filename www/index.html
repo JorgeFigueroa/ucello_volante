@@ -9,8 +9,8 @@
         /* --- STILI --- */
         :root {
             --container-bg: #000;
-            --sky-fire: url('immagini/Gemini_Generated_Image_rvepx3rvepx3rve.png');
-            --sky-blue: linear-gradient(to bottom, #0288d1 0%, #01579b 80%, #000000 100%);
+            --sky-fire: url('immagini/Gemini_Generated_Image_csntdrcsntdrcsnt.png');
+            --sky-blue: url('immagini/Gemini_Generated_Image_vwx8mavwx8mavwx8.png');
             --sky-garden: linear-gradient(to bottom, #0097a7 0%, #006064 100%);
             --sky-high: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
             --sky-sunset: linear-gradient(to bottom, #ff512f 0%, #dd2476 60%, #2c3e50 100%);
@@ -103,7 +103,7 @@
         .score { font-size: 1.1rem; padding: 5px 15px; border-radius: 999px; background: rgba(0,0,0,0.6); border: 2px solid rgba(255, 255, 255, 0.3); text-shadow: 1px 1px 2px black; font-weight: 800; color: var(--accent-gold); display: flex; align-items: center; gap: 10px;}
         .mute-btn { background: rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; width: 40px; height: 40px; color: #fff; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; }
 
-        .game-area { position: absolute; inset: 0; overflow: hidden; background: var(--sky-fire); touch-action: none; cursor: grab; transition: background 1.5s ease; background-size: cover; background-position: center; }
+        .game-area { position: absolute; inset: 0; overflow: hidden; background: var(--sky-fire); touch-action: none; cursor: grab; transition: background 1.5s ease; background-size: 100% 100%; background-repeat: no-repeat; background-position: center; }
         .game-area:active { cursor: grabbing; }
 
         /* SCENARIO */
@@ -151,7 +151,13 @@
         .confidence-fill { width: 0%; height: 100%; background: linear-gradient(to right, #ffeb3b, #ff9800); transition: width 0.1s linear; }
         .confidence-text { position: absolute; width: 100%; text-align: center; color: white; font-size: 14px; font-weight: bold; line-height: 25px; text-shadow: 1px 1px 1px black; }
 
-        .worm-in-beak { position: absolute; top: 10px; right: -10px; font-size: 25px; transform: rotate(45deg); display: none; z-index: 12; filter: drop-shadow(0 0 2px yellow); }
+        .worm-in-beak {
+            position: absolute; top: 15px; right: -15px; width: 25px; height: 8px;
+            background: #ef9a9a; border-radius: 4px;
+            transform: rotate(-15deg); display: none; z-index: 12;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            font-size: 0;
+        }
 
         .player.super-mode { filter: sepia(100%) saturate(2500%) hue-rotate(-60deg) brightness(1.1) contrast(150%) !important; }
         .player.ultra-mode { filter: sepia(100%) saturate(800%) hue-rotate(70deg) brightness(1.5) contrast(130%) !important; z-index: 12; }
@@ -170,8 +176,10 @@
         .obstacle { position: absolute; width: 90px; height: 100px; background-image: url('fire-36.gif'); background-size: 100% 100%; mix-blend-mode: screen; z-index: 5; }
         .obstacle.orange { filter: brightness(1.3) saturate(1.5); }
         .obstacle.bomb {
-            background-image: none;
-            background-color: black;
+            background-image: url('bombe.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: transparent;
             border-radius: 50%;
             filter: none;
             width: 110px;
@@ -179,13 +187,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 50px;
-            color: white;
-            text-shadow: 1px 1px 2px red;
+            font-size: 0;
+            color: transparent;
             z-index: 6;
             animation: bomb-pulse 0.4s infinite alternate;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        .obstacle.bomb::before { content: '💣'; }
+        .obstacle.bomb::before { content: ''; }
         .obstacle.bomb::after { content: ''; display: none; }
         @keyframes bomb-pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
         @keyframes fuse-burn { 0% { transform: translateX(-50%) scale(1); opacity: 0.8; } 100% { transform: translateX(-50%) scale(1.5); opacity: 1; } }
@@ -193,16 +201,46 @@
         .coin { position: absolute; width: 42px; height: 42px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffffff, #ffd700, #ff8c00); border: 3px solid #b8860b; z-index: 6; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 900; color: #5c1a0a; animation: spin 1s infinite alternate; }
         .coin::after { content: '$'; }
 
-        .worm { position: absolute; width: 40px; height: 40px; font-size: 30px; display: flex; justify-content: center; align-items: center; z-index: 6; animation: spin 1s infinite alternate; }
-        .worm::after { content: '🪱'; filter: drop-shadow(0 0 5px pink); }
+        .worm {
+            position: absolute; width: 40px; height: 12px;
+            background: repeating-linear-gradient(90deg, #e57373 0, #ef9a9a 5px, #e57373 10px);
+            border-radius: 6px;
+            z-index: 6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            animation: wiggle 0.6s infinite ease-in-out;
+            font-size: 0;
+        }
+        .worm::after { 
+            content: ''; position: absolute; right: -3px; top: 1px; width: 6px; height: 10px; 
+            background: #d32f2f; border-radius: 50%; /* Testa del verme */
+        }
+        
+        @keyframes wiggle { 
+            0% { transform: scaleX(1) rotate(0deg) translateY(0); } 
+            25% { transform: scaleX(0.9) rotate(5deg) translateY(-2px); }
+            50% { transform: scaleX(0.8) rotate(0deg) translateY(0); }
+            75% { transform: scaleX(0.9) rotate(-5deg) translateY(-2px); }
+            100% { transform: scaleX(1) rotate(0deg) translateY(0); } 
+        }
 
-        .flying-nest { position: absolute; width: 70px; height: 40px; background: #8d6e63; border-radius: 0 0 40px 40px; border: 3px solid #5d4037; z-index: 6; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .flying-nest::after { content: '🪹'; font-size: 20px; position: absolute; top: -15px; }
-        .flying-nest.snake::before { content: '🐍'; font-size: 35px; position: absolute; top: -25px; left: 15px; filter: drop-shadow(0 0 5px red); animation: bomb-pulse 0.5s infinite; }
-        .flying-nest.lizard::before { content: '🦎'; font-size: 35px; position: absolute; top: -25px; left: 15px; filter: drop-shadow(0 0 5px orange); }
-        .flying-nest.safe::after { content: '🪹'; font-size: 20px; position: absolute; top: -15px; left: 25px; }
-
-        .hungry-nest { position: absolute; width: 80px; height: 50px; background: #5d4037; border-radius: 0 0 40px 40px; border: 4px solid #3e2723; z-index: 6; display: flex; justify-content: center; }
+        .flying-nest { 
+            position: absolute; width: 80px; height: 45px; 
+            background: radial-gradient(ellipse at center, #a1887f 0%, #5d4037 100%); 
+            border-radius: 10px 10px 60px 60px; 
+            border: 4px solid #3e2723; 
+            z-index: 6; 
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.5); 
+        }
+        .flying-nest::after { content: '🪹'; font-size: 24px; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); }
+        
+        .hungry-nest { 
+            position: absolute; width: 90px; height: 55px; 
+            background: radial-gradient(ellipse at center, #8d6e63 0%, #3e2723 100%); 
+            border-radius: 10px 10px 70px 70px; 
+            border: 5px solid #2b1d1a; 
+            z-index: 6; display: flex; justify-content: center; 
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.6);
+        }
         .hungry-nest::after { content: '🐣'; font-size: 30px; position: absolute; top: -15px; animation: bounce 0.5s infinite alternate; }
         @keyframes bounce { from { top: -15px; } to { top: -25px; } }
 
@@ -502,13 +540,15 @@
         if (currentLevel === 1) {
             levelBadge.textContent = "LV.1";
             sceneContainer.style.display = 'none'; eggsContainer.style.opacity = 1;
-            gameArea.style.background = "url('immagini/Gemini_Generated_Image_rvepx3rvepx3rve.png')";
+            gameArea.style.backgroundImage = "url('immagini/Gemini_Generated_Image_csntdrcsntdrcsnt.png')";
+            gameArea.style.backgroundSize = "100% 100%";
         } else if (currentLevel === 2) {
             levelBadge.textContent = "LV.2";
             currentChicksCount = MAX_BABIES - babiesDelivered;
             updateChickVisuals();
             babyCounter.style.display = "inline"; babyCounter.textContent = `🐣 ${babiesDelivered}/${MAX_BABIES}`;
-            gameArea.style.background = "var(--sky-blue)";
+            gameArea.style.backgroundImage = "var(--sky-blue)";
+            gameArea.style.backgroundSize = "100% 100%";
         } else if (currentLevel === 3) {
             levelBadge.textContent = "LV.3";
             scoreText.style.display = 'none';
