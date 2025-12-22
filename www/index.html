@@ -1,1188 +1,573 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <title>Uccello di Fuoco - FINAL STABLE</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
-    <style>
-        /* --- STILI --- */
-        :root {
-            --container-bg: #000;
-            --sky-fire: url('immagini/Gemini_Generated_Image_csntdrcsntdrcsnt.png');
-            --sky-blue: url('immagini/Gemini_Generated_Image_vwx8mavwx8mavwx8.png');
-            --sky-garden: linear-gradient(to bottom, #0097a7 0%, #006064 100%);
-            --sky-high: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
-            --sky-sunset: linear-gradient(to bottom, #ff512f 0%, #dd2476 60%, #2c3e50 100%);
-            --accent-gold: #ffd700; --text-light: #ffffff;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pádel Club Horizonte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --verde-padel: #0f9d58;
+      --azul-noche: #0b1221;
+      --gris-oscuro: #1d2735;
+      --verde-suave: #d7f2e3;
+      --texto: #e9edf5;
+    }
 
-        * {box-sizing: border-box;margin: 0;padding: 0;font-family: 'Segoe UI', sans-serif; user-select: none;}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
 
-        body {
-            background: #050f05;
-            color: var(--text-light); display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; overflow: hidden; touch-action: none; margin: 0;
-        }
+    body {
+      background: radial-gradient(circle at 20% 20%, rgba(15, 157, 88, 0.2), transparent 30%),
+                  radial-gradient(circle at 80% 10%, rgba(15, 157, 88, 0.2), transparent 30%),
+                  var(--azul-noche);
+      color: var(--texto);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .game-wrapper {
-            background: var(--container-bg); width: 100%; max-width: 480px; height: 100vh;
-            position: relative; display: flex; flex-direction: column; overflow: hidden;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
+    header {
+      background: linear-gradient(90deg, #0c5e32, #0f9d58);
+      color: white;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-        .saffi-watermark {
-            position: absolute; bottom: 10px; right: 15px;
-            font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 700;
-            color: rgba(255, 255, 255, 0.5); z-index: 1000; pointer-events: none;
-            text-shadow: 1px 1px 2px #000; text-transform: uppercase; letter-spacing: 1px;
-        }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
 
-        /* LOADING */
-        .loading-screen {
-            position: absolute; inset: 0; background: linear-gradient(to bottom, #0a4e2a, #1b5e20);
-            z-index: 9999; display: none; flex-direction: column; justify-content: space-between; align-items: center;
-            padding: 50px 20px; text-align: center;
-        }
-        .loading-quote-top { font-family: 'Lora', serif; font-size: 1.6rem; font-weight: 700; color: #fff; max-width: 90%; line-height: 1.3; }
-        .loading-center-content { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 50px; }
-        .loading-bar-container { width: 85%; height: 16px; background: rgba(255,255,255,0.2); border-radius: 10px; position: relative; overflow: visible; }
-        .loading-bar-fill { height: 100%; width: 0%; background: #4caf50; border-radius: 10px; transition: width 0.1s linear; }
-        .loading-bird {
-            position: absolute; top: -50px; left: 0%; width: 60px; height: 60px;
-            background-image: url('bird-sprite-removebg-preview.png');
-            background-size: 200% 200%; background-repeat: no-repeat; background-position: 0% 0%;
-            transform: translateX(-50%); filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
-            animation: fly-cycle 0.3s steps(1) infinite; transition: left 0.1s linear;
-        }
-        .loading-quote-bottom { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: #81c784; }
-        .loading-logo { font-family: 'Fredoka One', cursive; font-size: 2.2rem; color: #fdd835; text-shadow: 2px 2px 0px #5d4037; display: flex; align-items: center; gap: 10px; }
-        .loading-logo::before { content: '🀄'; font-size: 1.8rem; }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
 
-        /* OVERLAYS */
-        .game-over-overlay {
-            position: absolute; inset: 0; background: radial-gradient(circle, #1b4d1b 0%, #0d2b0d 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            gap: 25px; text-align: center; color: #f0e68c; z-index: 50;
-            border: 8px solid #b87333; margin: 10px; border-radius: 12px;
-            box-shadow: inset 0 0 20px #000, 0 0 0 4px #5e3b1f, inset 0 0 0 2px #eecfa1;
-            padding: 20px;
-        }
-        .game-over-overlay.sunset-theme {
-            background: linear-gradient(to bottom, #ff512f 0%, #dd2476 60%, #2c3e50 100%);
-            border: none; box-shadow: none;
-        }
-        .game-over-overlay h2 {
-            font-family: 'Cinzel', serif; font-size: 2.8rem; font-weight: 700;
-            background: linear-gradient(to bottom, #ffd700, #b87333); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.8)); margin: 0; line-height: 1.1; text-transform: uppercase;
-        }
-        .instructions {
-            font-family: 'Lora', serif; margin-top: 10px; color: #e0e0e0; font-size: 0.95rem; max-width: 90%; line-height: 1.5;
-            border-top: 1px solid rgba(184, 115, 51, 0.5); border-bottom: 1px solid rgba(184, 115, 51, 0.5); padding: 15px 0;
-        }
-        .btn {
-            font-family: 'Cinzel', serif; padding: 12px 40px; border-radius: 4px; border: 2px solid #eecfa1;
-            background: linear-gradient(to bottom, #b87333, #8b4513); color: #fff; font-weight: 700; font-size: 1.3rem;
-            cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-shadow: 1px 1px 2px black;
-        }
-        .btn:active { transform: scale(0.96); box-shadow: inset 0 2px 10px rgba(0,0,0,0.8); }
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      border: 2px solid white;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.12);
+    }
 
-        .level-select-container { margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .level-btn {
-            font-family: 'Cinzel', serif; padding: 5px 15px; border-radius: 4px; border: 1px solid #eecfa1;
-            background: linear-gradient(to bottom, #5d4037, #3e2723); color: #fff; font-weight: 700;
-            cursor: pointer; font-size: 1rem; transition: all 0.2s;
-        }
-        .level-btn:hover { background: linear-gradient(to bottom, #8d6e63, #5d4037); transform: scale(1.05); }
-        .level-btn:active { transform: scale(0.95); }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
 
-        /* UI */
-        .header { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; align-items: center; z-index: 20; pointer-events: none; }
-        .header-right { display: flex; gap: 10px; align-items: center; pointer-events: auto; }
-        .score { font-size: 1.1rem; padding: 5px 15px; border-radius: 999px; background: rgba(0,0,0,0.6); border: 2px solid rgba(255, 255, 255, 0.3); text-shadow: 1px 1px 2px black; font-weight: 800; color: var(--accent-gold); display: flex; align-items: center; gap: 10px;}
-        .mute-btn { background: rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; width: 40px; height: 40px; color: #fff; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 12px;
+      border-radius: 10px;
+      transition: background 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .game-area { position: absolute; inset: 0; overflow: hidden; background: var(--sky-fire); touch-action: none; cursor: grab; transition: background 1.5s ease; background-size: 100% 100%; background-repeat: no-repeat; background-position: center; }
-        .game-area:active { cursor: grabbing; }
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
 
-        /* SCENARIO */
-        .scene-container { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; pointer-events: none; display: none; z-index: 8; }
-        .tree-trunk { position: absolute; bottom: 0; right: 20%; width: 60px; height: 400px; background: repeating-linear-gradient(90deg, #3e2723 0px, #5d4037 5px, #3e2723 10px); border-radius: 10px 10px 0 0; }
-        .branch { position: absolute; bottom: 250px; right: 20%; width: 150px; height: 20px; background: #5d4037; transform: rotate(-10deg); border-radius: 10px; }
-        .nest-static { position: absolute; bottom: 265px; right: 45%; width: 80px; height: 40px; background: #8d6e63; border-radius: 0 0 40px 40px; border: 4px solid #5d4037; z-index: 9; overflow: visible; }
-        .eggs-container { position: absolute; top: -15px; left: 15px; display: flex; gap: 2px; }
-        .egg { width: 15px; height: 20px; background: #fff8e1; border-radius: 50%; border: 1px solid #d7ccc8; }
-        .leaf { position: absolute; background: rgba(46, 125, 50, 0.9); border-radius: 50%; }
+    .dropdown {
+      position: relative;
+    }
 
-        /* PLAYER */
-        .player {
-            position: absolute; width: 90px; height: 90px;
-            background-image: url('bird-sprite-removebg-preview.png');
-            background-size: 200% 200%; background-repeat: no-repeat; background-position: 0% 0%;
-            background-color: transparent; left: 50%; top: 380px; z-index: 10;
-            animation: fly-cycle 0.4s steps(1) infinite;
-            transition: transform 0.1s, filter 0.3s ease;
-            filter: sepia(100%) saturate(2000%) hue-rotate(20deg) brightness(120%);
-            pointer-events: none;
-        }
-        .chick-follower {
-            position: absolute; width: 40px; height: 40px;
-            background-image: url('bird-sprite-removebg-preview.png');
-            background-size: 200% 200%; background-repeat: no-repeat; background-position: 0% 0%;
-            z-index: 9; animation: fly-cycle 0.2s steps(1) infinite;
-            filter: sepia(100%) saturate(2000%) hue-rotate(20deg) brightness(120%);
-            transition: left 0.1s linear, top 0.1s linear;
-        }
-        .learning-chick {
-            position: absolute; width: 50px; height: 50px;
-            background-image: url('bird-sprite-removebg-preview.png');
-            background-size: 200% 200%; background-repeat: no-repeat; background-position: 0% 0%;
-            z-index: 9; animation: fly-panic 0.15s steps(1) infinite;
-            filter: none; display: none;
-        }
-        @keyframes fly-panic { 0% { background-position: 0% 0%; } 50% { background-position: 0% 100%; } 100% { background-position: 0% 0%; } }
+    .dropdown-menu {
+      position: absolute;
+      top: 120%;
+      left: 0;
+      background: var(--gris-oscuro);
+      padding: 12px 0;
+      border-radius: 12px;
+      min-width: 210px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-5px);
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
 
-        .confidence-bar-wrapper {
-            position: absolute; top: 60px; left: 50%; transform: translateX(-50%);
-            width: 200px; height: 25px; background: rgba(0,0,0,0.5);
-            border: 2px solid #fff; border-radius: 15px; overflow: hidden; display: none; z-index: 30;
-        }
-        .confidence-fill { width: 0%; height: 100%; background: linear-gradient(to right, #ffeb3b, #ff9800); transition: width 0.1s linear; }
-        .confidence-text { position: absolute; width: 100%; text-align: center; color: white; font-size: 14px; font-weight: bold; line-height: 25px; text-shadow: 1px 1px 1px black; }
+    .dropdown:hover .dropdown-menu,
+    .dropdown:focus-within .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
 
-        .worm-in-beak {
-            position: absolute; top: 15px; right: -15px; width: 25px; height: 8px;
-            background: #ef9a9a; border-radius: 4px;
-            transform: rotate(-15deg); display: none; z-index: 12;
-            box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-            font-size: 0;
-        }
+    .dropdown-menu li a {
+      display: block;
+      padding: 10px 18px;
+      color: white;
+      font-weight: 500;
+    }
 
-        .player.super-mode { filter: sepia(100%) saturate(2500%) hue-rotate(-60deg) brightness(1.1) contrast(150%) !important; }
-        .player.ultra-mode { filter: sepia(100%) saturate(800%) hue-rotate(70deg) brightness(1.5) contrast(130%) !important; z-index: 12; }
-        .player.landing { animation: fly-cycle 0.2s steps(1) infinite; filter: none !important; transform: scale(0.6) !important; transition: left 2s, top 2s; }
-        .player.incubating { animation: happy-bounce 0.5s infinite alternate !important; filter: none !important; transform: scale(0.7) !important; transition: left 2s, top 2s; }
-        @keyframes happy-bounce { from { margin-top: 0; } to { margin-top: -10px; } }
-        @keyframes fly-cycle { 0% { background-position: 0% 0%; } 33% { background-position: 0% 100%; } 66% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
-        .player.dead { animation-play-state: paused; filter: grayscale(100%) brightness(0.4) contrast(1.2) !important; }
-        .player.dirty {
-            animation-play-state: paused;
-            filter: grayscale(100%) brightness(0.3) sepia(100%) hue-rotate(0deg) !important;
-            transform: scale(0.9) rotate(15deg) !important;
-            transition: all 0.2s ease-out;
-        }
+    .dropdown-menu li a:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
 
-        .obstacle { position: absolute; width: 90px; height: 100px; background-image: url('fire-36.gif'); background-size: 100% 100%; mix-blend-mode: screen; z-index: 5; }
-        .obstacle.orange { filter: brightness(1.3) saturate(1.5); }
-        .obstacle.bomb {
-            background-image: url('bombe.jpg');
-            background-size: cover;
-            background-position: center;
-            background-color: transparent;
-            border-radius: 50%;
-            filter: none;
-            width: 110px;
-            height: 110px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0;
-            color: transparent;
-            z-index: 6;
-            animation: bomb-pulse 0.4s infinite alternate;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        .obstacle.bomb::before { content: ''; }
-        .obstacle.bomb::after { content: ''; display: none; }
-        @keyframes bomb-pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
-        @keyframes fuse-burn { 0% { transform: translateX(-50%) scale(1); opacity: 0.8; } 100% { transform: translateX(-50%) scale(1.5); opacity: 1; } }
+    .cta-btn {
+      background: white;
+      color: #0c5e32;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 25px rgba(12, 94, 50, 0.25);
+    }
 
-        .coin { position: absolute; width: 42px; height: 42px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffffff, #ffd700, #ff8c00); border: 3px solid #b8860b; z-index: 6; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 900; color: #5c1a0a; animation: spin 1s infinite alternate; }
-        .coin::after { content: '$'; }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(12, 94, 50, 0.35);
+    }
 
-        .worm {
-            position: absolute; width: 40px; height: 12px;
-            background: repeating-linear-gradient(90deg, #e57373 0, #ef9a9a 5px, #e57373 10px);
-            border-radius: 6px;
-            z-index: 6;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            animation: wiggle 0.6s infinite ease-in-out;
-            font-size: 0;
-        }
-        .worm::after { 
-            content: ''; position: absolute; right: -3px; top: 1px; width: 6px; height: 10px; 
-            background: #d32f2f; border-radius: 50%; /* Testa del verme */
-        }
-        
-        @keyframes wiggle { 
-            0% { transform: scaleX(1) rotate(0deg) translateY(0); } 
-            25% { transform: scaleX(0.9) rotate(5deg) translateY(-2px); }
-            50% { transform: scaleX(0.8) rotate(0deg) translateY(0); }
-            75% { transform: scaleX(0.9) rotate(-5deg) translateY(-2px); }
-            100% { transform: scaleX(1) rotate(0deg) translateY(0); } 
-        }
+    .highlight-bar {
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-        .flying-nest { 
-            position: absolute; width: 80px; height: 45px; 
-            background: radial-gradient(ellipse at center, #a1887f 0%, #5d4037 100%); 
-            border-radius: 10px 10px 60px 60px; 
-            border: 4px solid #3e2723; 
-            z-index: 6; 
-            box-shadow: inset 0 5px 10px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.5); 
-        }
-        .flying-nest::after { content: '🪹'; font-size: 24px; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); }
-        
-        .hungry-nest { 
-            position: absolute; width: 90px; height: 55px; 
-            background: radial-gradient(ellipse at center, #8d6e63 0%, #3e2723 100%); 
-            border-radius: 10px 10px 70px 70px; 
-            border: 5px solid #2b1d1a; 
-            z-index: 6; display: flex; justify-content: center; 
-            box-shadow: inset 0 5px 10px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.6);
-        }
-        .hungry-nest::after { content: '🐣'; font-size: 30px; position: absolute; top: -15px; animation: bounce 0.5s infinite alternate; }
-        @keyframes bounce { from { top: -15px; } to { top: -25px; } }
+    .highlight-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: var(--verde-suave);
+      font-weight: 600;
+    }
 
-        .delivering-chick { position: absolute; width: 30px; height: 30px; background-image: url('bird-sprite-removebg-preview.png'); background-size: 200% 200%; z-index: 20; transition: all 0.5s ease-out; }
-        .explosion { position: absolute; width: 120px; height: 120px; background: radial-gradient(circle, #ff4500, #ffcc00, transparent); border-radius: 50%; animation: explode 0.4s forwards; z-index: 15; pointer-events: none; mix-blend-mode: screen; }
-        .explosion.bomb-blast { width: 200px; height: 200px; background: radial-gradient(circle, #fff, #ff0000, #000); mix-blend-mode: normal; z-index: 100; animation: explode-bomb 0.6s forwards; }
-        @keyframes explode { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
-        @keyframes explode-bomb { 0% { transform: scale(0.5); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.8; } 100% { transform: scale(2.0); opacity: 0; } }
-        .score-pop { position: absolute; color: var(--accent-gold); font-weight: 900; font-size: 1.6rem; animation: floatUp 0.8s forwards; z-index: 20; pointer-events: none; text-shadow: 0 0 8px #000; }
-        @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-50px); opacity: 0; } }
+    .highlight-tag {
+      background: rgba(15, 157, 88, 0.2);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+    }
 
-        .path-point {
-            position: absolute; width: 10px; height: 10px;
-            background: radial-gradient(circle, #ffffff, #ffff00, rgba(255,255,0,0));
-            border-radius: 50%; z-index: 7; pointer-events: none;
-            box-shadow: 0 0 8px #ffff00; animation: pulse-point 1s infinite alternate;
-        }
-        @keyframes pulse-point { from { transform: scale(0.8); opacity: 0.7; } to { transform: scale(1.2); opacity: 1; } }
+    .hero {
+      max-width: 1200px;
+      margin: 28px auto 0;
+      padding: 0 20px;
+    }
 
-        .rhythm-note {
-            position: absolute; width: 40px; height: 40px;
-            background: radial-gradient(circle, #9c27b0, #673ab7);
-            border-radius: 50%; z-index: 7; pointer-events: none;
-            box-shadow: 0 0 15px #e040fb; display: flex; justify-content: center; align-items: center;
-            font-size: 24px; font-weight: bold; color: white;
-            animation: note-pulse 0.8s infinite alternate;
-            opacity: 0; transform: scale(0.5);
-        }
-        .rhythm-note.active { animation: note-pulse 0.4s infinite alternate; }
-        @keyframes note-pulse { from { transform: scale(0.8); opacity: 0.8; } to { transform: scale(1.1); opacity: 1; } }
+    .hero-card {
+      background: linear-gradient(120deg, rgba(15, 157, 88, 0.12), rgba(12, 94, 50, 0.18)),
+                  rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
 
-        .feather {
-            position: absolute; width: 40px; height: 40px; font-size: 30px;
-            z-index: 7; pointer-events: none; filter: drop-shadow(0 0 5px white);
-            animation: float-feather 2s infinite alternate ease-in-out;
-        }
-        .feather::after { content: '🪶'; }
-        @keyframes float-feather { from { transform: translateY(-10px) rotate(-10deg); } to { transform: translateY(10px) rotate(10deg); } }
-        
-        .perch {
-            position: absolute; width: 60px; height: 20px;
-            background-color: #8B4513; border: 3px solid #D2691E; border-radius: 10px;
-            z-index: 7; box-shadow: 0 4px 6px rgba(0,0,0,0.3); animation: pulse-perch 2s infinite alternate;
-        }
-        @keyframes pulse-perch { from { border-color: #D2691E; } to { border-color: #FFD700; } }
+    .hero-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 8px;
+      letter-spacing: 0.4px;
+    }
 
-        .hidden { display: none !important; }
-    </style>
+    .hero-text p {
+      color: #d4e6d8;
+      margin-bottom: 14px;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: white;
+    }
+
+    .search-bar button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: #13b46a;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .search-bar button:hover {
+      background: #0f9d58;
+      transform: translateY(-1px);
+    }
+
+    .hero-visual {
+      position: relative;
+      background: radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.12), transparent 45%),
+                  rgba(255, 255, 255, 0.02);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-visual img {
+      width: 100%;
+      border-radius: 14px;
+      object-fit: cover;
+      min-height: 240px;
+      filter: saturate(1.1);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 28px auto;
+      padding: 0 20px 60px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    aside {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 20px;
+      position: sticky;
+      top: 110px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    aside h2 {
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 8px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input, select, textarea {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: white;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid rgba(15, 157, 88, 0.6);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #0f9d58, #13b46a);
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .content {
+      display: grid;
+      gap: 18px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .section-title span {
+      width: 44px;
+      height: 3px;
+      background: linear-gradient(90deg, #13b46a, transparent);
+      border-radius: 10px;
+    }
+
+    article {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    article img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .article-body {
+      padding: 16px 18px 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .meta {
+      color: #9fb6aa;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+    }
+
+    footer {
+      margin-top: auto;
+      background: #0a0f1a;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 22px 20px;
+      text-align: center;
+      color: #b8c9c0;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 1000px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: static;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav ul {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .hero-card {
+        grid-template-columns: 1fr;
+      }
+
+      article {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="game-wrapper">
-    <div class="header" id="gameHeader" style="display:none;">
-        <div class="score">
-            <span id="levelBadge" style="margin-right:10px; color:cyan;">LV.1</span>
-            <span id="scoreText">Score: <span id="score">0</span></span>
-            <span id="wormCounter" style="display:none; color:#ffcc00; margin-left:10px;">🪱 0</span>
-            <span id="babyCounter" style="display:none; margin-left:10px;">🐣 3</span>
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-mark">P</div>
+        <div>
+          <div>Pádel Club</div>
+          <small>Horizonte Verde</small>
         </div>
-        <div class="header-right">
-            <button class="mute-btn" id="muteBtn">🔊</button>
-        </div>
+      </div>
+      <nav aria-label="Navegación principal">
+        <ul>
+          <li class="dropdown">
+            <a href="#" aria-haspopup="true" aria-expanded="false">Competiciones ▾</a>
+            <ul class="dropdown-menu" aria-label="Competiciones">
+              <li><a href="#">Liga Nocturna</a></li>
+              <li><a href="#">Circuito Federado</a></li>
+              <li><a href="#">Ranking Social</a></li>
+              <li><a href="#">Clínicas de fin de semana</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" aria-haspopup="true" aria-expanded="false">Club &amp; Escuela ▾</a>
+            <ul class="dropdown-menu" aria-label="Club y escuela">
+              <li><a href="#">Entrenamientos Pro</a></li>
+              <li><a href="#">Campus Juvenil</a></li>
+              <li><a href="#">Tecnificación mixta</a></li>
+              <li><a href="#">Alquiler de pistas</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Tienda</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </nav>
+      <button class="cta-btn">Reserva tu pista</button>
     </div>
-
-    <div class="confidence-bar-wrapper" id="confidenceWrapper">
-        <div class="confidence-fill" id="confidenceFill"></div>
-        <div class="confidence-text">VOLO: 0%</div>
+    <div class="highlight-bar" role="status">
+      <div class="highlight-inner">
+        <span class="highlight-tag">Novedad</span>
+        <span>Se abren inscripciones para el Torneo de Primavera con premios Head.</span>
+        <span class="highlight-tag">Streaming</span>
+        <span>Semifinales este viernes 20:00h en nuestro canal.</span>
+      </div>
     </div>
+  </header>
 
-    <div class="game-area" id="gameArea">
-        <div class="loading-screen" id="loadingScreen">
-            <div class="loading-quote-top">"protegge la natura per ciclo di vita sano"</div>
-            <div class="loading-center-content">
-                <div class="loading-bar-container">
-                    <div class="loading-bird" id="loadingBird"></div>
-                    <div class="loading-bar-fill" id="loadingFill"></div>
-                </div>
-                <div class="loading-quote-bottom">- vita e amore fano la differenza</div>
-            </div>
-            <div class="loading-logo">Vita Mahjong</div>
+  <section class="hero">
+    <div class="hero-card">
+      <div class="hero-text">
+        <h1>Vive el pádel con intensidad y comunidad</h1>
+        <p>Entrena con técnicos certificados, apúntate a ligas sociales y descubre un club pensado para mejorar tu juego punto a punto.</p>
+        <div class="search-bar" aria-label="Buscador de actividades">
+          <input type="search" placeholder="Busca partidos, torneos o clases..." aria-label="Buscar" />
+          <button type="button">Buscar</button>
         </div>
-
-        <div class="game-over-overlay" id="startScreen">
-            <h2>UCCELLO DI FUOCO</h2>
-            <div class="instructions">
-                <strong>TRASCINA</strong> per muoverti.<br>
-                Liv 1: 3000 Punti.<br>
-                Liv 2: Porta i 3 pulcini nei nidi.<br>
-                Liv 3: Nutrili con i vermi.<br>
-                Liv 4: Insegna a volare a TUTTI!
-            </div>
-            <button class="btn" id="startBtn">INIZIO GIOCO</button>
-            <div class="level-select-container">
-                <button class="level-btn" data-level="1">LV 1</button>
-                <button class="level-btn" data-level="2">LV 2</button>
-                <button class="level-btn" data-level="3">LV 3</button>
-                <button class="level-btn" data-level="4">LV 4</button>
-            </div>
-        </div>
-
-        <div class="scene-container" id="sceneContainer">
-            <div class="tree-trunk"></div> <div class="branch"></div>
-            <div class="nest-static"><div class="eggs-container" id="eggs"><div class="egg"></div><div class="egg"></div><div class="egg"></div></div></div>
-            <div class="leaf" style="bottom: 350px; right: 15%; width: 100px; height: 100px;"></div>
-            <div class="leaf" style="bottom: 380px; right: 25%; width: 80px; height: 80px;"></div>
-            <div class="leaf" style="bottom: 320px; right: 5%; width: 90px; height: 90px;"></div>
-        </div>
-
-        <div class="player" id="player">
-            <div class="worm-in-beak" id="wormInBeak">🪱</div>
-        </div>
-        <div class="chick-follower" id="chick1" style="display:none;"></div>
-        <div class="chick-follower" id="chick2" style="display:none;"></div>
-        <div class="chick-follower" id="chick3" style="display:none;"></div>
-
-        <div class="learning-chick" id="learningChick1"></div>
-        <div class="learning-chick" id="learningChick2"></div>
-        <div class="learning-chick" id="learningChick3"></div>
-
-        <div id="level4Instructions" class="hidden" style="position:absolute; top: 120px; left: 50%; transform: translateX(-50%); font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px black; z-index: 30; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 10px;"></div>
-
-        <div class="saffi-watermark">By Saffi</div>
+      </div>
+      <div class="hero-visual">
+        <img src="https://images.unsplash.com/photo-1505666287802-931dc83948e0?auto=format&fit=crop&w=900&q=80" alt="Jugadores de pádel celebrando un punto" />
+      </div>
     </div>
-</div>
-
-<script>
-    const gameArea = document.getElementById("gameArea");
-    const gameHeader = document.getElementById("gameHeader");
-    const playerEl = document.getElementById("player");
-    const wormInBeak = document.getElementById("wormInBeak");
-    const chicks = [document.getElementById("chick1"), document.getElementById("chick2"), document.getElementById("chick3")];
-
-    const learningChicksDOM = [
-        document.getElementById("learningChick1"),
-        document.getElementById("learningChick2"),
-        document.getElementById("learningChick3")
-    ];
-
-    const sceneContainer = document.getElementById("sceneContainer");
-    const eggsContainer = document.getElementById("eggs");
-    const scoreEl = document.getElementById("score");
-    const scoreText = document.getElementById("scoreText");
-    const levelBadge = document.getElementById("levelBadge");
-    const babyCounter = document.getElementById("babyCounter");
-    const wormCounter = document.getElementById("wormCounter");
-    const confidenceWrapper = document.getElementById("confidenceWrapper");
-    const confidenceFill = document.getElementById("confidenceFill");
-    const confidenceText = document.querySelector(".confidence-text");
-    const startBtn = document.getElementById("startBtn");
-    const startScreen = document.getElementById("startScreen");
-    const muteBtn = document.getElementById("muteBtn");
-    const loadingScreen = document.getElementById("loadingScreen");
-    const loadingFill = document.getElementById("loadingFill");
-    const loadingBird = document.getElementById("loadingBird");
-
-    // AUDIO
-    const audioContext = {
-        bg: new Audio('audio/Epoq-Lepidoptera.ogg'),
-        crash: new Audio('audio/explosion.mp3'),
-        coin: new Audio('audio/week7-brrring.mp3'),
-        smash: new Audio('audio/missile.mp3'),
-        win: new Audio('audio/week7-brrring.mp3')
-    };
-    audioContext.bg.loop = true; audioContext.bg.volume = 0.3;
-
-    let isMuted = false;
-    function playSound(type) {
-        if (isMuted) return;
-        try {
-            if (type === 'coin' || type === 'smash') {
-                const s = audioContext[type].cloneNode(); s.volume = audioContext[type].volume; s.play().catch(e => {});
-            } else { audioContext[type].play().catch(e => {}); }
-        } catch(e) {}
-    }
-    function stopMusic() { audioContext.bg.pause(); }
-
-    muteBtn.addEventListener("click", () => {
-        isMuted = !isMuted; muteBtn.textContent = isMuted ? "🔇" : "🔊";
-        if (isMuted) audioContext.bg.pause(); else if (isRunning) audioContext.bg.play();
-    });
-
-    let playerX = 0, playerY = 0;
-    let obstacles = [], coins = [], flyingNests = [];
-    let lastTimestamp = 0, isRunning = false;
-    let score = 0;
-    let currentLevel = 1;
-
-    let currentChicksCount = 0, babiesDelivered = 0;
-    const MAX_BABIES = 3;
-    let wormsHeld = 0, chicksFed = 0;
-    const MAX_FED = 3;
-
-    let flyingChicks = [];
-    const GRAVITY = 300;
-    const JUMP_FORCE = -280;
-
-    let isSuperMode = false, isUltraMode = false;
-    let powerEndTime = 0;
-    let isEndingSequence = false;
-    let isDragging = false;
-    let obstacleSpawnTimer = 0, coinSpawnTimer = 0, nestSpawnTimer = 0;
-    let facingDirection = 1;
-    let animationFrameId;
-
-    // --- LEVEL 4 NEW MECHANICS ---
-    let level4Variant = 3; // Default to Collect & Guide
-    let level4State = {
-        phase: 'none', 
-        pathIndex: 0,
-        pointIndex: 0,
-        chickIndex: 0,
-        playerPathProgress: 0,
-        score: 0, 
-        currentNoteIndex: 0,
-        chicksSaved: 0
-    };
-    
-    // VARIANT 1: Follow the Leader
-    const flightPaths = [
-        [ {x:100, y:300}, {x:200, y:250}, {x:300, y:300}, {x:400, y:350} ],
-        [ {x:100, y:350}, {x:150, y:250}, {x:250, y:250}, {x:300, y:350}, {x:350, y:250} ],
-        [ {x:50, y:400}, {x:150, y:200}, {x:250, y:400}, {x:350, y:200}, {x:450, y:400} ]
-    ];
-    let pathPoints = []; 
-    let currentChickIndex = 0;
-
-    // VARIANT 2: Rhythm Flight
-    const beatmap = [
-        { time: 1000, x: 100 }, { time: 1500, x: 300 }, { time: 2000, x: 200 },
-        { time: 2500, x: 150 }, { time: 3000, x: 350 }, { time: 3500, x: 250 },
-        { time: 4000, x: 100 }, { time: 4500, x: 300 }, { time: 5000, x: 200 },
-        { time: 5500, x: 150 }, { time: 6000, x: 350 }, { time: 6500, x: 250 },
-        { time: 7000, x: 100 }, { time: 7500, x: 300 }, { time: 8000, x: 200 },
-        { time: 8500, x: 150 }, { time: 9000, x: 350 }, { time: 9500, x: 250 },
-        { time: 10000, x: 100 }, { time: 10500, x: 300 }, { time: 11000, x: 200 },
-        { time: 11500, x: 150 }, { time: 12000, x: 350 }, { time: 12500, x: 250 }
-    ];
-    let rhythmNotes = [];
-    let rhythmTimer = 0;
-    let notesHit = 0;
-    let notesMissed = 0;
-
-    // VARIANT 3: Collect & Guide
-    let feathers = [];
-    let perches = [];
-    let playerPoweredUp = false;
-    let powerUpTimer = 0;
-
-
-    // --- LOGICA DI CARICAMENTO E SALVATAGGIO ---
-    window.onload = function() {
-        const i = new Image(); i.src='bird-sprite-removebg-preview.png';
-
-        const savedLevel = sessionStorage.getItem('savedLevel');
-        if(savedLevel) {
-            // Se c'è un salvataggio, saltiamo al livello corretto
-            startScreen.classList.add('hidden');
-            currentLevel = parseInt(savedLevel);
-            if(currentLevel >= 2) babiesDelivered = parseInt(sessionStorage.getItem('babiesDelivered')) || 0;
-            if(currentLevel >= 3) chicksFed = parseInt(sessionStorage.getItem('chicksFed')) || 0;
-
-            // Pulisci il salvataggio per evitare loop infiniti
-            sessionStorage.removeItem('savedLevel');
-            startGame();
-        }
-    };
-
-    function fullReset() {
-        // Pulisce tutto e ricarica la pagina per tornare all'inizio pulito
-        sessionStorage.clear();
-        window.location.reload();
-    }
-
-    function saveAndReload() {
-        // Salva e ricarica per il checkpoint
-        sessionStorage.setItem('savedLevel', currentLevel);
-        sessionStorage.setItem('babiesDelivered', babiesDelivered);
-        sessionStorage.setItem('chicksFed', chicksFed);
-        window.location.reload();
-    }
-
-    function setInitialPlayerPosition() {
-        const r = gameArea.getBoundingClientRect();
-        playerX = r.width/2 - 45; playerY = r.height - 150;
-        updatePlayerCSS();
-
-        playerEl.classList.remove('dead', 'dirty', 'super-mode', 'ultra-mode', 'landing', 'incubating');
-        playerEl.style.display = 'block';
-        wormInBeak.style.display = 'none';
-        chicks.forEach(c => c.style.display = 'none');
-        learningChicksDOM.forEach(c => c.style.display = 'none');
-        confidenceWrapper.style.display = 'none';
-
-        scoreText.style.display = 'inline';
-        wormCounter.style.display = 'none';
-        babyCounter.style.display = 'none';
-
-        if (currentLevel === 1) {
-            levelBadge.textContent = "LV.1";
-            sceneContainer.style.display = 'none'; eggsContainer.style.opacity = 1;
-            gameArea.style.backgroundImage = "url('immagini/Gemini_Generated_Image_csntdrcsntdrcsnt.png')";
-            gameArea.style.backgroundSize = "100% 100%";
-        } else if (currentLevel === 2) {
-            levelBadge.textContent = "LV.2";
-            currentChicksCount = MAX_BABIES - babiesDelivered;
-            updateChickVisuals();
-            babyCounter.style.display = "inline"; babyCounter.textContent = `🐣 ${babiesDelivered}/${MAX_BABIES}`;
-            gameArea.style.backgroundImage = "var(--sky-blue)";
-            gameArea.style.backgroundSize = "100% 100%";
-        } else if (currentLevel === 3) {
-            levelBadge.textContent = "LV.3";
-            scoreText.style.display = 'none';
-            wormCounter.style.display = "inline"; wormCounter.textContent = `🪱 ${wormsHeld}`;
-            babyCounter.style.display = "inline"; babyCounter.textContent = `🐣 ${chicksFed}/${MAX_FED}`;
-            gameArea.style.background = "var(--sky-garden)";
-        } else if (currentLevel === 4) {
-            levelBadge.textContent = "LV.4";
-            scoreText.style.display = 'none';
-            const instructions = document.getElementById('level4Instructions');
-            
-            // Clean up previous level 4 elements
-            flyingChicks = [];
-            learningChicksDOM.forEach(c => c.style.display = 'none');
-            pathPoints.forEach(p => p.remove()); pathPoints = [];
-            rhythmNotes.forEach(n => n.el.remove()); rhythmNotes = [];
-            feathers.forEach(f => f.el.remove()); feathers = [];
-            perches.forEach(p => { if(p.el) p.el.remove(); }); 
-            // Reset perches array but keep coords? No, re-init based on variant.
-            
-            if (level4Variant === 1) { // Follow the Leader
-                confidenceWrapper.style.display = 'none';
-                level4State = { phase: 'player-demo', pathIndex: 0, pointIndex: 0, chickIndex: 0, playerPathProgress: 0 };
-                currentChickIndex = 0;
-                
-                // Prepare first chick
-                const r = gameArea.getBoundingClientRect();
-                flyingChicks.push({ x: r.width / 2, y: 100, vx: 0, vy: 0, el: learningChicksDOM[0], active: true, confidence: 0 });
-                learningChicksDOM[0].style.display = 'block';
-                flyingChicks[0].el.style.left = flyingChicks[0].x + 'px';
-                flyingChicks[0].el.style.top = flyingChicks[0].y + 'px';
-                
-                instructions.textContent = "Segui la scia di luce!";
-                instructions.classList.remove('hidden');
-                drawPathGuides(flightPaths[level4State.pathIndex]);
-                gameArea.style.background = "var(--sky-high)";
-
-            } else if (level4Variant === 2) { // Rhythm Flight
-                confidenceWrapper.style.display = 'block';
-                level4State = { phase: 'rhythm-play', score: 0, currentNoteIndex: 0 };
-                notesHit = 0; notesMissed = 0; rhythmTimer = 0;
-                
-                instructions.textContent = "Tocca le note a ritmo!";
-                instructions.classList.remove('hidden');
-                gameArea.style.background = "var(--sky-blue)";
-
-            } else if (level4Variant === 3) { // Collect & Guide
-                confidenceWrapper.style.display = 'none';
-                level4State = { phase: 'collect-guide', chicksSaved: 0 };
-                perches = [
-                    { x: 50, y: 100, el: null, occupied: false },
-                    { x: gameArea.clientWidth - 100, y: 100, el: null, occupied: false },
-                    { x: gameArea.clientWidth / 2 - 25, y: 50, el: null, occupied: false }
-                ];
-                
-                // Setup chicks on ground
-                learningChicksDOM.forEach((c, i) => {
-                    c.style.display = 'block';
-                    c.style.top = (gameArea.clientHeight - 60) + 'px';
-                    c.style.left = (50 + i * 100) + 'px';
-                });
-                for(let i=0; i<3; i++) {
-                    flyingChicks.push({ el: learningChicksDOM[i], x: 50 + i * 100, y: gameArea.clientHeight - 60, isFollowing: false, isSaved: false });
-                }
-
-                instructions.textContent = "Raccogli le piume per sollevare i pulcini!";
-                instructions.classList.remove('hidden');
-                spawnPerches();
-                gameArea.style.background = "var(--sky-high)";
-            }
-        }
-    }
-
-    function updatePlayerCSS() {
-        playerEl.style.left = playerX + "px"; playerEl.style.top = playerY + "px";
-        let scale = "scale(1)";
-        if (isUltraMode) scale = "scale(1.5)"; else if (isSuperMode) scale = "scale(1.2)";
-        playerEl.style.transform = `scaleX(${facingDirection}) ${scale}`;
-
-        if (currentLevel === 2 && currentChicksCount > 0) {
-            for(let i=0; i<currentChicksCount; i++) {
-                const chick = chicks[i];
-                const gap = 50 * (i+1);
-                const cx = playerX - (facingDirection * gap * 0.5);
-                const cy = playerY + (gap * 0.8);
-                chick.style.left = cx + "px"; chick.style.top = cy + "px";
-                chick.style.transform = `scaleX(${facingDirection})`;
-            }
-        }
-    }
-
-    function updateChickVisuals() {
-        if(currentLevel !== 2) return;
-        for(let i=0; i<3; i++) {
-            if(i < currentChicksCount) chicks[i].style.display = 'block'; else chicks[i].style.display = 'none';
-        }
-        babyCounter.textContent = `🐣 ${babiesDelivered}/${MAX_BABIES}`;
-    }
-
-    function updateConfidence(val) {
-        confidenceFill.style.width = val + "%";
-        confidenceText.textContent = `VOLO: ${Math.floor(val)}%`;
-        return val;
-    }
-
-    function activateMode(type) {
-        powerEndTime = performance.now() + 10000;
-        if (type === 'super') { isSuperMode = true; playerEl.classList.add('super-mode'); }
-        else { isUltraMode = true; playerEl.classList.add('ultra-mode'); }
-    }
-    function deactivateModes() {
-        isSuperMode = false; isUltraMode = false;
-        playerEl.classList.remove('super-mode', 'ultra-mode');
-    }
-
-    function startLoadingSequence() {
-        startScreen.classList.add('hidden'); loadingScreen.style.display = "flex";
-        try { audioContext.bg.play().catch(e=>{}); } catch(e){}
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += 0.5; loadingFill.style.width = progress + "%"; loadingBird.style.left = progress + "%";
-            if(progress >= 100) {
-                clearInterval(interval); setTimeout(() => { loadingScreen.style.display = "none"; startGame(); }, 400);
-            }
-        }, 20);
-    }
-
-    function startGame() {
-        if(!sessionStorage.getItem('savedLevel')) {
-            babiesDelivered = 0; chicksFed = 0; wormsHeld = 0; score = 0; scoreEl.textContent = "0";
-        }
-        continueGame();
-    }
-
-    function continueGame() {
-        if(animationFrameId) cancelAnimationFrame(animationFrameId);
-
-        const ovs = document.querySelectorAll(".game-over-overlay");
-        ovs.forEach(o => o.remove());
-
-        obstacles.forEach(o => o.el.remove()); obstacles = [];
-        coins.forEach(c => c.el.remove()); coins = [];
-        flyingNests.forEach(n => n.el.remove()); flyingNests = [];
-
-        setInitialPlayerPosition();
-        gameHeader.style.display = "flex";
-        isSuperMode = false; isUltraMode = false; isEndingSequence = false;
-
-        try { audioContext.bg.play().catch(e=>{}); } catch(e){}
-
-        isRunning = true;
-        lastTimestamp = performance.now();
-        animationFrameId = requestAnimationFrame(gameLoop);
-    }
-
-    function spawnObstacle() {
-        const el = document.createElement("div"); el.classList.add("obstacle");
-        const rand = Math.random() * 100;
-        let type = 'orange', val = 30, bomb = false;
-        if ((score > 500 || currentLevel > 1) && rand > 85) { bomb = true; type = 'bomb'; val = 0; }
-        else {
-            if (rand > 90) { type = 'darkred'; val = 120; }
-            else if (rand > 70) { type = 'green'; val = 100; }
-            else if (rand > 40) { type = 'bordeaux'; val = 60; }
-        }
-        el.classList.add(type);
-        const r = gameArea.getBoundingClientRect();
-        const x = Math.random() * (r.width - 90);
-        gameArea.appendChild(el);
-        el.style.left = x + "px"; el.style.top = "-100px";
-        obstacles.push({el, x, y: -100, val, bomb});
-    }
-
-    function spawnCoin() {
-        const r = gameArea.getBoundingClientRect();
-        const startX = Math.random() * (r.width - 140);
-        const isHoriz = Math.random() > 0.5;
-        for(let i=0; i<3; i++) {
-            const el = document.createElement("div"); el.classList.add(currentLevel === 3 ? "worm" : "coin");
-            let cx = isHoriz ? startX + (i*45) : startX;
-            let cy = isHoriz ? -50 : -50 - (i*45);
-            gameArea.appendChild(el);
-            el.style.left = cx+"px"; el.style.top = cy+"px";
-            coins.push({el, x: cx, y: cy});
-        }
-    }
-
-    function spawnNest() {
-        if (currentLevel === 2) {
-            const el = document.createElement("div"); el.classList.add("flying-nest");
-            const rand = Math.random();
-            let hasSnake = false;
-            if (rand > 0.6) { hasSnake = true; if (rand > 0.8) el.classList.add("snake"); else el.classList.add("lizard"); el.classList.add("snake"); }
-            else { el.classList.add("safe"); }
-            const r = gameArea.getBoundingClientRect();
-            const x = Math.random() * (r.width - 80);
-            gameArea.appendChild(el);
-            el.style.left = x+"px"; el.style.top = "-50px";
-            flyingNests.push({el, x, y: -50, hasSnake: hasSnake, type: 'safe'});
-        } else if (currentLevel === 3) {
-            const el = document.createElement("div"); el.classList.add("hungry-nest");
-            const r = gameArea.getBoundingClientRect();
-            const isLeft = Math.random() > 0.5;
-            const x = isLeft ? 10 : r.width - 90;
-            gameArea.appendChild(el);
-            el.style.left = x+"px"; el.style.top = "-50px";
-            flyingNests.push({el, x, y: -50, type: 'hungry'});
-        }
-    }
-
-    function animateDelivery(nestX, nestY) {
-        if (currentChicksCount <= 0) return;
-        const chickEl = chicks[currentChicksCount - 1];
-        const rect = chickEl.getBoundingClientRect();
-        const animChick = document.createElement("div");
-        animChick.classList.add("delivering-chick");
-        animChick.style.left = (rect.left) + "px"; animChick.style.top = (rect.top) + "px";
-        document.body.appendChild(animChick);
-
-        setTimeout(() => {
-            animChick.style.left = (nestX + gameArea.getBoundingClientRect().left + 20) + "px";
-            animChick.style.top = (nestY + gameArea.getBoundingClientRect().top) + "px";
-            animChick.style.transform = "scale(0.5)"; animChick.style.opacity = "0";
-        }, 10);
-        setTimeout(() => { animChick.remove(); }, 600);
-
-        currentChicksCount--; babiesDelivered++; updateChickVisuals(); playSound('win');
-        if (babiesDelivered >= MAX_BABIES) setTimeout(() => triggerLevelEnding(2), 800);
-    }
-
-    function showExplosion(x, y, isGiant, isBomb) {
-        const ex = document.createElement("div"); ex.classList.add("explosion");
-        let offset = 0;
-        if(isBomb) {
-            ex.classList.add("bomb-blast");
-            offset = -45; // Centra l'esplosione più grande (200px) sulla bomba (110px) -> diff ~90px / 2
-        }
-        if(isGiant) ex.style.transform = "scale(1.5)";
-        ex.style.left = (x + offset) + "px"; ex.style.top = (y + offset) + "px";
-        gameArea.appendChild(ex);
-        setTimeout(() => ex.remove(), 600);
-    }
-
-    function showScorePop(x, y, text, style) {
-        const pop = document.createElement("div"); pop.classList.add("score-pop");
-        if(style === "green") { pop.style.color = "#39ff14"; pop.style.textShadow = "0 0 10px #39ff14"; }
-        else if(style === "red") { pop.style.color = "red"; }
-        pop.textContent = text; pop.style.left = x + "px"; pop.style.top = y + "px";
-        gameArea.appendChild(pop); setTimeout(() => pop.remove(), 800);
-    }
-
-    function drawPathGuides(path) {
-        pathPoints.forEach(p => p.remove());
-        pathPoints = [];
-        path.forEach(p => {
-            const pointEl = document.createElement('div');
-            pointEl.classList.add('path-point');
-            pointEl.style.left = p.x + 'px';
-            pointEl.style.top = p.y + 'px';
-            gameArea.appendChild(pointEl);
-            pathPoints.push(pointEl);
-        });
-    }
-
-    function spawnPerches() {
-        perches.forEach(p => {
-            const el = document.createElement('div');
-            el.classList.add('perch');
-            el.style.left = p.x + 'px';
-            el.style.top = p.y + 'px';
-            gameArea.appendChild(el);
-            p.el = el;
-        });
-    }
-
-    function checkCol(el1, el2) {
-        const r1 = el1.getBoundingClientRect();
-        const r2 = el2.getBoundingClientRect();
-        const p = 15;
-        return !(r1.right-p < r2.left || r1.left+p > r2.right || r1.bottom-p < r2.top || r1.top+p > r2.bottom);
-    }
-
-    function checkColSimple(r1, r2) {
-        return !(r1.left > r2.left + r2.width || r1.left + r1.width < r2.left || r1.top > r2.top + r2.height || r1.top + r1.height < r2.top);
-    }
-
-    function triggerLevelEnding(completedLevel) {
-        isEndingSequence = true; isRunning = false; stopMusic(); playSound('win');
-        obstacles.forEach(o => o.el.remove()); coins.forEach(c => c.el.remove()); flyingNests.forEach(n => n.el.remove());
-        deactivateModes();
-
-        let msg = "";
-        if(completedLevel === 1) {
-            msg = "LIVELLO 2!";
-            sceneContainer.style.display = 'block';
-            const r = gameArea.getBoundingClientRect();
-            playerEl.classList.add('landing');
-            playerEl.style.left = (r.width * 0.55 - 45) + "px";
-            playerEl.style.top = (r.height - 330) + "px";
-            setTimeout(() => {
-                playerEl.classList.remove('landing'); playerEl.classList.add('incubating'); playSound('coin');
-                setTimeout(() => {
-                    eggsContainer.style.opacity = 0;
-                    setTimeout(() => {
-                        isEndingSequence = false; currentLevel = 2; setInitialPlayerPosition();
-                        showScorePop(r.width/2-50, r.height/2, msg, "green");
-                        audioContext.bg.play(); isRunning = true; lastTimestamp = performance.now();
-                        animationFrameId = requestAnimationFrame(gameLoop);
-                    }, 2000);
-                }, 3000);
-            }, 3000);
-        } else if(completedLevel === 4) {
-            startGrandFinale();
-        } else {
-            if(completedLevel === 2) msg = "LIVELLO 3!";
-            if(completedLevel === 3) msg = "LIVELLO 4!";
-            setTimeout(() => {
-                isEndingSequence = false;
-                currentLevel = completedLevel + 1;
-                setInitialPlayerPosition();
-                showScorePop(gameArea.offsetWidth/2-50, gameArea.offsetHeight/2, msg, "green");
-                audioContext.bg.play(); isRunning = true; lastTimestamp = performance.now();
-                animationFrameId = requestAnimationFrame(gameLoop);
-            }, 2000);
-        }
-    }
-
-    function startGrandFinale() {
-        const ov = document.createElement("div"); ov.classList.add("game-over-overlay");
-        ov.classList.add("sunset-theme");
-
-        ov.innerHTML = `
-            <h2 style="font-size:3.5rem; text-shadow:2px 2px 10px #000;">FAMIGLIA RIUNITA</h2>
-            <div style="font-family:'Lora',serif; font-size:1.5rem; color:#fff; margin-bottom:30px;">La natura è salva grazie a te.</div>
-            <div style="display:flex; gap:10px; margin-bottom:40px;">
-                 <div style="width:80px; height:80px; background:url('bird-sprite-removebg-preview.png'); background-size:200%; animation:fly-cycle 0.3s steps(1) infinite;"></div>
-                 <div style="width:50px; height:50px; background:url('bird-sprite-removebg-preview.png'); background-size:200%; animation:fly-cycle 0.2s steps(1) infinite;"></div>
-                 <div style="width:50px; height:50px; background:url('bird-sprite-removebg-preview.png'); background-size:200%; animation:fly-cycle 0.2s steps(1) infinite;"></div>
-                 <div style="width:50px; height:50px; background:url('bird-sprite-removebg-preview.png'); background-size:200%; animation:fly-cycle 0.2s steps(1) infinite;"></div>
-            </div>
-            <button class="btn" id="returnBtn">RITORNA</button>
-        `;
-
-        gameArea.appendChild(ov);
-        gameHeader.style.display = "none";
-        document.getElementById("returnBtn").onclick = () => fullReset();
-    }
-
-    function endGame(victory) {
-        isRunning = false; isDragging = false;
-        stopMusic();
-        const ov = document.createElement("div"); ov.classList.add("game-over-overlay");
-        playerEl.classList.add('dead'); playSound('crash');
-
-        if(currentLevel >= 2) {
-            let status = "";
-            if(currentLevel === 2) status = `Pulcini Salvi: ${babiesDelivered}/${MAX_BABIES}`;
-            if(currentLevel === 3) status = `Nutriti: ${chicksFed}/${MAX_FED}`;
-            if(currentLevel === 4) status = `Volo: ${Math.floor(updateConfidence(0))}%`;
-
-            ov.innerHTML = `<h2>GAME OVER</h2><div>${status}</div>
-                            <button class="btn" id="continueBtn" style="margin-bottom:10px;">RIPROVA LIVELLO</button>
-                            <button class="btn" id="fullRestartBtn" style="background:linear-gradient(to right, #555, #333); border-color:#999;">INIZIO GIOCO</button>`;
-            gameArea.appendChild(ov);
-            document.getElementById("continueBtn").onclick = () => saveAndReload();
-            document.getElementById("fullRestartBtn").onclick = () => fullReset();
-        } else {
-            ov.innerHTML = `<h2>GAME OVER</h2><div>Score: <strong>${Math.floor(score)}</strong></div><button class="btn" id="restart">INIZIO GIOCO</button>`;
-            gameArea.appendChild(ov);
-            document.getElementById("restart").onclick = () => fullReset();
-        }
-        gameHeader.style.display = "none";
-    }
-
-    function gameLoop(ts) {
-        if(!isRunning) return;
-
-        let dt = (ts - lastTimestamp) / 1000;
-        if(dt > 0.1) dt = 0.1;
-        lastTimestamp = ts;
-
-        if (currentLevel === 1 && score >= 3000 && !isEndingSequence) { triggerLevelEnding(1); return; }
-        if ((isSuperMode || isUltraMode) && ts > powerEndTime) deactivateModes();
-        if (currentLevel === 1 && !isSuperMode && !isUltraMode) {
-            if (score >= 1000 && score % 1000 < 50) activateMode('ultra');
-            else if (score >= 100 && score % 200 < 30) activateMode('super');
-        }
-
-        const dy = (200 + score * 0.05 + (currentLevel*20)) * dt;
-
-        // LIV 4
-        if (currentLevel === 4) {
-            const instructions = document.getElementById('level4Instructions');
-
-            if (level4Variant === 1) { // Follow the Leader
-                const state = level4State;
-                switch(state.phase) {
-                    case 'player-demo':
-                        if (state.pointIndex < flightPaths[state.pathIndex].length) {
-                            const targetPoint = flightPaths[state.pathIndex][state.pointIndex];
-                            const pRect = playerEl.getBoundingClientRect();
-                            const dist = Math.hypot(pRect.left - targetPoint.x, pRect.top - targetPoint.y);
-                            if (dist < 60) {
-                                playSound('coin');
-                                pathPoints[state.pointIndex].style.display = 'none';
-                                state.pointIndex++;
-                            }
-                        }
-                        if (state.pointIndex >= flightPaths[state.pathIndex].length) {
-                            state.phase = 'chick-imitation';
-                            instructions.textContent = "Stagli vicino per dargli fiducia!";
-                            pathPoints.forEach(p => p.remove()); pathPoints = [];
-                            const chick = flyingChicks[state.chickIndex];
-                            chick.x = flightPaths[state.pathIndex][0].x;
-                            chick.y = flightPaths[state.pathIndex][0].y;
-                            state.pointIndex = 0;
-                            confidenceWrapper.style.display = 'block';
-                            updateConfidence(0);
-                        }
-                        break;
-                    case 'chick-imitation':
-                        const chick = flyingChicks[state.chickIndex];
-                        if (!chick.active) break;
-                        if (state.pointIndex < flightPaths[state.pathIndex].length) {
-                            const target = flightPaths[state.pathIndex][state.pointIndex];
-                            const speed = 150 * dt;
-                            let dx = target.x - chick.x; let dy = target.y - chick.y;
-                            const dist = Math.hypot(dx, dy);
-                            if(dist < speed) { chick.x = target.x; chick.y = target.y; state.pointIndex++; }
-                            else { chick.x += (dx / dist) * speed; chick.y += (dy / dist) * speed; }
-                            chick.el.style.left = chick.x + 'px'; chick.el.style.top = chick.y + 'px';
-                        } else {
-                            state.phase = 'player-demo'; state.pointIndex = 0;
-                            instructions.textContent = "Riprova! Mostragli di nuovo la via.";
-                            drawPathGuides(flightPaths[state.pathIndex]);
-                            break;
-                        }
-                        const pRect = playerEl.getBoundingClientRect();
-                        const cRect = chick.el.getBoundingClientRect();
-                        const proximity = Math.hypot(pRect.left - cRect.left, pRect.top - cRect.top);
-                        if (proximity < 150) { chick.confidence += 50 * dt; }
-                        else { chick.confidence -= 10 * dt; if (chick.confidence < 0) chick.confidence = 0; }
-                        updateConfidence(chick.confidence);
-                        if (chick.confidence >= 100) {
-                            playSound('win'); chick.active = false;
-                            chick.el.style.transition = "top 1s ease-in, opacity 1s";
-                            chick.el.style.top = "-100px"; chick.el.style.opacity = "0";
-                            state.chickIndex++;
-                            if (state.chickIndex >= 3) { setTimeout(() => triggerLevelEnding(4), 1500); }
-                            else {
-                                state.pathIndex++; state.pointIndex = 0; state.phase = 'player-demo';
-                                instructions.textContent = "Ottimo! Ora il prossimo!";
-                                setTimeout(() => {
-                                    instructions.textContent = "Segui la nuova scia!";
-                                    learningChicksDOM[state.chickIndex].style.display = 'block';
-                                    flyingChicks.push({ x: gameArea.clientWidth / 2, y: 100, vx: 0, vy: 0, el: learningChicksDOM[state.chickIndex], active: true, confidence: 0 });
-                                    drawPathGuides(flightPaths[state.pathIndex]);
-                                }, 1500);
-                            }
-                        }
-                        break;
-                }
-            } else if (level4Variant === 2) { // Rhythm Flight
-                rhythmTimer += dt * 1000;
-                while (level4State.currentNoteIndex < beatmap.length && rhythmTimer >= beatmap[level4State.currentNoteIndex].time) {
-                    const noteData = beatmap[level4State.currentNoteIndex];
-                    const el = document.createElement("div"); el.classList.add("rhythm-note");
-                    el.style.left = noteData.x + "px"; el.style.top = "-50px";
-                    gameArea.appendChild(el);
-                    rhythmNotes.push({ el, x: noteData.x, y: -50, active: true });
-                    level4State.currentNoteIndex++;
-                }
-                for (let i = rhythmNotes.length - 1; i >= 0; i--) {
-                    const note = rhythmNotes[i];
-                    if (!note.active) continue;
-                    note.y += (150 * dt); note.el.style.top = note.y + "px";
-                    if (note.y > 0 && note.el.style.opacity === "0") {
-                        note.el.style.transition = "opacity 0.5s, transform 0.5s"; note.el.style.opacity = "1"; note.el.style.transform = "scale(1)";
-                    }
-                    if (checkCol(playerEl, note.el)) {
-                        playSound('coin'); notesHit++; note.active = false; note.el.remove(); rhythmNotes.splice(i, 1);
-                    } else if (note.y > gameArea.clientHeight + 50) {
-                        notesMissed++; note.active = false; note.el.remove(); rhythmNotes.splice(i, 1);
-                    }
-                }
-                const totalNotes = beatmap.length;
-                const processedNotes = level4State.currentNoteIndex;
-                const scorePercentage = processedNotes > 0 ? (notesHit / processedNotes) * 100 : 0;
-                updateConfidence(scorePercentage);
-                confidenceText.textContent = `Ritmo: ${notesHit} / ${processedNotes}`;
-                if (level4State.currentNoteIndex >= beatmap.length && rhythmNotes.length === 0) {
-                    if (notesHit >= totalNotes * 0.7) { setTimeout(() => triggerLevelEnding(4), 1000); }
-                    else { setTimeout(() => endGame(false), 1000); }
-                }
-            } else if (level4Variant === 3) { // Collect & Guide
-                if (playerPoweredUp) {
-                    powerUpTimer -= dt * 1000;
-                    if (powerUpTimer <= 0) { playerPoweredUp = false; playerEl.classList.remove('super-mode'); }
-                }
-                if (Math.random() < 0.02) {
-                    const el = document.createElement("div"); el.classList.add("feather");
-                    el.style.left = Math.random() * (gameArea.clientWidth - 40) + "px"; el.style.top = "-50px";
-                    gameArea.appendChild(el);
-                    feathers.push({ el, x: parseInt(el.style.left), y: -50, active: true });
-                }
-                for (let i = feathers.length - 1; i >= 0; i--) {
-                    const feather = feathers[i]; feather.y += (100 * dt); feather.el.style.top = feather.y + 'px';
-                    if (feather.y > gameArea.clientHeight) { feather.el.remove(); feathers.splice(i, 1); continue; }
-                    if (checkCol(playerEl, feather.el)) {
-                        playSound('win'); playerPoweredUp = true; powerUpTimer = 5000;
-                        playerEl.classList.add('super-mode'); feather.el.remove(); feathers.splice(i, 1);
-                    }
-                }
-                flyingChicks.forEach(chick => {
-                    if (chick.isSaved) return;
-                    if (!chick.isFollowing) {
-                        if (playerPoweredUp && Math.hypot(playerX - chick.x, playerY - chick.y) < 80) { chick.isFollowing = true; }
-                    } else {
-                        const speed = 200 * dt;
-                        const dx = (playerX - 20) - chick.x; const dy = (playerY + 50) - chick.y;
-                        const dist = Math.hypot(dx, dy);
-                        if(dist < speed) { chick.x += dx; chick.y += dy; }
-                        else { chick.x += (dx / dist) * speed; chick.y += (dy / dist) * speed; }
-                        chick.el.style.left = chick.x + 'px'; chick.el.style.top = chick.y + 'px';
-                        for(const perch of perches) {
-                            if (!perch.occupied && Math.hypot(chick.x - perch.x, chick.y - perch.y) < 40) {
-                                playSound('win'); chick.isFollowing = false; chick.isSaved = true;
-                                perch.occupied = true; perch.el.style.animation = 'none'; perch.el.style.borderColor = '#39ff14';
-                                level4State.chicksSaved++; chick.el.style.top = (perch.y - 40) + 'px';
-                                if (level4State.chicksSaved >= 3) { setTimeout(() => triggerLevelEnding(4), 1000); }
-                                return;
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        for (let i = obstacles.length - 1; i >= 0; i--) {
-            let o = obstacles[i]; o.y += dy; o.el.style.top = o.y + "px";
-            if (o.y > window.innerHeight) { o.el.remove(); obstacles.splice(i, 1); continue; }
-            if (checkCol(playerEl, o.el)) {
-                if (o.bomb) {
-                    showExplosion(o.x, o.y, false, true);
-                    playerEl.classList.add('dirty');
-                    playSound('crash');
-                    isRunning = false; // Ferma il gioco ma aspetta a mostrare il menu
-                    setTimeout(() => endGame(false), 1500); // Ritardo di 1.5 secondi
-                    return;
-                }
-                if (isSuperMode || isUltraMode) {
-                    playSound('smash'); o.el.remove(); obstacles.splice(i, 1);
-                    score += o.val; scoreEl.textContent = score;
-                    showExplosion(o.x, o.y, isUltraMode, false);
-                } else { endGame(false); return; }
-            }
-        }
-
-        for (let i = coins.length - 1; i >= 0; i--) {
-            let c = coins[i]; c.y += dy; c.el.style.top = c.y + "px";
-            if (c.y > window.innerHeight) { c.el.remove(); coins.splice(i, 1); continue; }
-            if (checkCol(playerEl, c.el)) {
-                playSound('coin');
-                if (currentLevel === 3) {
-                    wormsHeld++; wormCounter.textContent = `🪱 ${wormsHeld}`; wormInBeak.style.display = 'block';
-                } else {
-                    score += 50; scoreEl.textContent = score;
-                }
-                c.el.remove(); coins.splice(i, 1);
-            }
-        }
-
-        if (currentLevel === 2 || currentLevel === 3) {
-            for (let i = flyingNests.length - 1; i >= 0; i--) {
-                let n = flyingNests[i]; n.y += dy; n.el.style.top = n.y + "px";
-                if (n.y > window.innerHeight) { n.el.remove(); flyingNests.splice(i, 1); continue; }
-                if (checkCol(playerEl, n.el)) {
-                    if (currentLevel === 2) {
-                        if (n.hasSnake) { showExplosion(n.x, n.y, false, true); endGame(false); return; }
-                        else { n.el.remove(); flyingNests.splice(i, 1); animateDelivery(n.x, n.y); }
-                    } else if (currentLevel === 3) {
-                        if (n.type === 'hungry') {
-                            if (wormsHeld > 0) {
-                                wormsHeld--; wormCounter.textContent = `🪱 ${wormsHeld}`;
-                                if(wormsHeld === 0) wormInBeak.style.display = 'none';
-                                chicksFed++; babyCounter.textContent = `🐣 ${chicksFed}/${MAX_FED}`;
-                                playSound('win'); n.el.remove(); flyingNests.splice(i, 1);
-                                showScorePop(n.x, n.y, "YUM!", "green");
-                                if (chicksFed >= MAX_FED) { setTimeout(() => triggerLevelEnding(3), 1000); }
-                            } else { showScorePop(n.x, n.y, "Serve Cibo!", "red"); }
-                        }
-                    }
-                }
-            }
-        }
-
-        obstacleSpawnTimer += dt*1000; if(obstacleSpawnTimer > 1200) { obstacleSpawnTimer = 0; spawnObstacle(); }
-        let coinRate = currentLevel === 4 ? 4000 : 2000;
-        coinSpawnTimer += dt*1000; if(coinSpawnTimer > coinRate) { coinSpawnTimer = 0; spawnCoin(); }
-        if (currentLevel > 1 && currentLevel < 4) { nestSpawnTimer += dt*1000; if(nestSpawnTimer > 3500) { nestSpawnTimer = 0; spawnNest(); } }
-
-        animationFrameId = requestAnimationFrame(gameLoop);
-    }
-
-    function moveP(e) {
-        if(isEndingSequence) return;
-        const r = gameArea.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        let nx = clientX - r.left - 45;
-        let ny = clientY - r.top - 45;
-        if(nx < playerX) facingDirection = -1; else facingDirection = 1;
-        playerX = Math.max(0, Math.min(r.width - 90, nx));
-        playerY = Math.max(0, Math.min(r.height - 90, ny));
-        updatePlayerCSS();
-    }
-
-    gameArea.addEventListener('mousedown', (e) => { if(isRunning && !isEndingSequence) { isDragging = true; moveP(e); } });
-    window.addEventListener('mousemove', (e) => { if(isRunning && isDragging) { e.preventDefault(); moveP(e); } });
-    window.addEventListener('mouseup', () => isDragging = false);
-    gameArea.addEventListener('touchstart', (e) => { if(isRunning && !isEndingSequence) { isDragging = true; moveP(e); } }, {passive: false});
-    window.addEventListener('touchmove', (e) => { if(isRunning && isDragging) { e.preventDefault(); moveP(e); } }, {passive: false});
-    window.addEventListener('touchend', () => isDragging = false);
-
-    startBtn.addEventListener("click", startLoadingSequence);
-
-    document.querySelectorAll('.level-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            currentLevel = parseInt(e.target.dataset.level);
-            // Resettiamo eventuali salvataggi per evitare conflitti
-            sessionStorage.removeItem('savedLevel');
-            startLoadingSequence();
-        });
-    });
-</script>
+  </section>
+
+  <main>
+    <aside>
+      <h2>Regístrate y juega</h2>
+      <p>Forma parte de la comunidad Pádel Club Horizonte y recibe plazas anticipadas.</p>
+      <form>
+        <div>
+          <label for="name">Nombre completo</label>
+          <input type="text" id="name" name="name" placeholder="Ej. Lucía Gómez" required />
+        </div>
+        <div>
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" placeholder="tu@email.com" required />
+        </div>
+        <div>
+          <label for="level">Nivel estimado</label>
+          <select id="level" name="level">
+            <option>Iniciación</option>
+            <option>Intermedio</option>
+            <option>Avanzado</option>
+            <option>Competición</option>
+          </select>
+        </div>
+        <div>
+          <label for="goals">Objetivos</label>
+          <textarea id="goals" name="goals" rows="3" placeholder="Quiero mejorar mi bandeja, competir los jueves..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="reset" class="btn-secondary">Limpiar</button>
+          <button type="submit" class="btn-primary">Enviar solicitud</button>
+        </div>
+      </form>
+    </aside>
+
+    <section class="content" aria-label="Artículos destacados">
+      <div class="section-title">
+        <span></span>
+        <h2>Artículos y novedades</h2>
+      </div>
+
+      <article>
+        <img src="https://images.unsplash.com/photo-1546518074-25c0ba44f0a4?auto=format&fit=crop&w=600&q=80" alt="Pareja en la red de pádel" />
+        <div class="article-body">
+          <div class="meta">Publicado el 14 de abril</div>
+          <h3>Claves tácticas para dominar la red</h3>
+          <p>Aprende a cerrar la pista con voleas profundas, comunicación en pareja y patrones de salida cuando te superan con un globo.</p>
+        </div>
+      </article>
+
+      <article>
+        <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=600&q=80" alt="Palas de pádel en una pista" />
+        <div class="article-body">
+          <div class="meta">Publicado el 9 de abril</div>
+          <h3>Guía de palas para potencia sin perder control</h3>
+          <p>Probamos cinco modelos con balance alto y superficies rugosas que ayudan a imprimir efecto sin sacrificar la manejabilidad en defensa.</p>
+        </div>
+      </article>
+
+      <article>
+        <img src="https://images.unsplash.com/photo-1519861158823-3c9e63b598b1?auto=format&fit=crop&w=600&q=80" alt="Jugadores entrenando saque" />
+        <div class="article-body">
+          <div class="meta">Publicado el 2 de abril</div>
+          <h3>Microciclos de entrenamiento para subir de nivel</h3>
+          <p>Planifica cuatro semanas combinando fuerza específica, trabajo de piernas y sesiones de vídeo-análisis con nuestros coaches.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    © 2024 Pádel Club Horizonte · Comunidad creada por jugadores para jugadores · Contacto: hola@pclub.com
+  </footer>
 </body>
 </html>
